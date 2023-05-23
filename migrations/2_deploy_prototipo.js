@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const Agronomo = artifacts.require("Agronomo");
 const Viticoltore = artifacts.require("Viticoltore");
 const Produttore = artifacts.require("Produttore");
@@ -49,6 +51,8 @@ module.exports = async function (deployer) {
   await deployer.deploy(Customer, contract1Instance.address, contract2Instance.address, contract3Instance.address,
       contract4Instance.address, contract5Instance.address, contract7Instance.address, {privateFor: privateFor},);
 
+  const contract8Instance = await Customer.deployed();
+
   await deployer.deploy(
     SimulatoreSensori,
     contract1Instance.address,
@@ -58,4 +62,16 @@ module.exports = async function (deployer) {
     contract5Instance.address,
     contract6Instance.address, {privateFor: privateFor,}
   );
+
+  const addressesData = `
+  var AgronomoContractAddr = "${contract1Instance.address}";
+  var ViticoltoreContractAddr = "${contract2Instance.address}";
+  var ProduttoreContractAddr = "${contract3Instance.address}";
+  var ImbottigliatoreContractAddr = "${contract4Instance.address}";
+  var DistributoreContractAddr = "${contract5Instance.address}";
+  var RivenditoreContractAddr = "${contract6Instance.address}";
+  var EnteCertificatoreContractAddr = "${contract7Instance.address}";
+  var CustomerContractAddr = "${contract8Instance.address}";
+`;
+  fs.writeFileSync('./contract_addresses.js', addressesData);
 };
