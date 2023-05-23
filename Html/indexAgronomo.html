@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinTraWine - Agronomo</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="../contract_addresses.js"></script>
+    <script src="../Js/Agronomo.js"></script>
+    
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 60px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+      }
+
+      button[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .output {
+        background-color: #d3d3d3;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .readonly {
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }
+    </style>
+  </head>
+  <body>
+     <div class="container">
+       <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
+      <h1>BinTraWine - Agronomo</h1>
+
+      <div id="addAuthorizedForm">
+        <label for="addAuthorized">Add Authorized</label>
+        <input type="text" id="viticoltoreContractAddress" placeholder="Address" />
+        <button type="submit" onclick="addAuthorized()">Add</button>
+      </div>
+
+      <!-- <form id="removeAuthorizedForm">
+        <label for="removeAuthorized">Remove Authorized</label>
+        <input type="text" id="removeAuthorized" placeholder="Address" />
+        <button type="submit">Remove</button>
+      </form> -->
+
+      <div id="setAnalisiQualitaProdottoForm">
+        <label for="setAnalisiQualitaProdotto"
+          >Inserimento Analisi Qualita Prodotto</label
+        >
+        <input
+          type="text"
+          id="setAnalisiQualitaProdottoIdTerreno"
+          readonly
+        />
+
+        <input
+          type="text"
+          id="setAnalisiQualitaProdotto"
+          placeholder="AnalisiQualitaProdotto"
+        />
+
+        <button type="submit" onclick="setAnalisiQualitaProdotto()">Submit</button>
+      </div>
+
+      <div id="setCertificazioneUvaAppezzamentoForm">
+        <label for="setCertificazioneUvaAppezzamento"
+          >Inserimento Certificazione Uva Appezzamento</label
+        >
+        <input
+          type="text"
+          id="setCertificazioneUvaAppezzamentoIdTerreno"
+          readonly
+        />
+        <input type="text" id="setCertificazioneUvaAppezzamento" placeholder="CertficazioneUvaAppezzamento"/>
+        <button type="submit" onclick="setCertificazioneUvaAppezzamento()">Submit</button>
+      </div>
+
+        <div id="getAnalisiQualitaProdotto">
+          <label for="getAnalisiQualitaProdotto"
+            >Get Analisi Qualita prodotto</label
+          >
+          <input
+            type="text"
+            id="getAnalisiQualitaProdottoIdTerreno"
+            placeholder="Id Terreno"
+          />
+        <button type="submit" onclick="getAnalisiQualitaProdotto()">Get</button>
+        <span id="resultAnalisiQualitaProdotto" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+      </div>
+
+      <div id="getCertificazioneUvaAppezzamento">
+        <label for="getCertificazioneUvaAppezzamento"
+          >Get Certificazione Uva Appezzamento</label
+        >
+        <input
+          type="text"
+          id="getCertificazioneUvaAppezzamentoIdTerreno"
+          placeholder="Id Terreno"
+        />
+      <button type="submit" onclick="getCertificazioneUvaAppezzamento()">Get</button>
+      <span id="resultCertificazioneUvaAppezzamento" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+    </div>
+
+    <div id="getDatiSensoriAgronomo">
+      <label for="getDatiSensoriAgronomo"
+        >Get Dati Sensori Agronomo</label
+      >
+      <input
+        type="text"
+        id="getDatiSensoriAgronomoIdTerreno"
+        placeholder="Id Terreno"
+      />
+    <button type="submit" onclick="getDatiSensoriAgronomo()">Get</button>
+    <span id="resultDatiSensoriAgronomo" style="position:absolute; margin-left:30px; margin-top:10px; white-space: pre-line;"></span>
+  </div>
+</html>
+

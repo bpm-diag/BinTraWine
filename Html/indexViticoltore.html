@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinTraWine - Viticoltore</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="../contract_addresses.js"></script>
+    <script src="../Js/Viticoltore.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+      }
+
+      button[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .output {
+        background-color: #d3d3d3;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+     <div class="container">
+       <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
+      <h1>BinTraWine - Viticoltore</h1>
+
+      <div id="addAuthorizedForm">
+        <label for="addAuthorized">Add Authorized</label>
+        <input type="text" id="produttoreContractAddress" placeholder="Address" />
+        <button type="submit" onclick="addAuthorized()">Add</button>
+      </div>
+
+      <!-- <form id="removeAuthorizedForm">
+        <label for="removeAuthorized">Remove Authorized</label>
+        <input type="text" id="removeAuthorized" placeholder="Address" />
+        <button type="submit">Remove</button>
+      </form> -->
+
+      <div id="setDataRaccoltaForm">
+        <label for="setDataRaccolta"
+          >Inserimento Data Raccolta</label
+        >
+        <input
+          type="text"
+          id="setDataRaccoltaIdTerreno"
+          placeholder="Id Terreno"
+        />
+        <input
+          type="text"
+          id="setDataRaccolta"
+          placeholder="dataRaccolta"
+        />
+        <button type="submit" onclick="setDataRaccolta()">Submit</button>
+      </div>
+
+      <div id="setDatiFornitureForm">
+        <label for="setDatiForniture"
+          >Inserimento Dati Forniture</label
+        >
+        <input
+          type="text"
+          id="setDatiFornitureIdTerreno"
+          placeholder="Id Terreno"
+        />
+        <input type="text" id="setDatiForniture" placeholder="datiForniture"/>
+        <button type="submit" onclick="setDatiForniture()">Submit</button>
+      </div>
+
+        <div id="setDestinazioneUvaForm">
+          <label for="setDestinazioneUva"
+            >Inserimento Destinazione Uva</label
+          >
+          <input
+            type="text"
+            id="setDestinazioneUvaIdTerreno"
+            placeholder="Id Terreno"
+          />
+          <input
+            type="text"
+            id="setDestinazioneUva"
+            placeholder="destinazioneUva"
+          />
+        <button type="submit" onclick="setDestinazioneUva()">Submit</button>
+        <div id="result"></div>
+      </div>
+
+      <div id="setPrezzoVenditaForm">
+        <label for="setPrezzoVendita"
+          >Inserimento Vendita</label
+        >
+        <input
+          type="text"
+          id="setVenditaId"
+          readonly
+        />
+        <input
+          type="text"
+          id="nomeProdottoVendita"
+          placeholder="nome Prodotto"
+        />
+        <input type="text"
+        id="prezzoVendita"
+        placeholder="prezzo Vendita"
+        />
+        <input type="text"
+        id="quantitaVendita"
+        placeholder="quantita Vendita"
+        />
+        <input type="text"
+        id="nomeClienteVendita"
+        placeholder="nome Cliente Vendita"
+        />
+        <input type="text"
+        id="dataVendita"
+        placeholder="data Vendita"
+         />
+         <input type="text"
+         id="addressesVendite"
+         placeholder="address venditore e cliente"
+          />
+      <button type="submit" onclick="setVendita()">Submit</button>
+
+    </div>
+
+    <div id="getDataRaccolta">
+      <label for="getDataRaccolta"
+        >Get Data Raccolta</label
+      >
+      <input
+        type="text"
+        id="getDataRaccoltaIdTerreno"
+        placeholder="Id Terreno"
+      />
+    <button type="submit" onclick="getDataRaccolta()">Get</button>
+    <span id="resultDataRaccolta" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+  </div>
+
+  <div id="getDatiForniture">
+    <label for="getDatiForniture"
+      >Get Dati Forniture</label
+    >
+    <input
+      type="text"
+      id="getDatiFornitureIdTerreno"
+      placeholder="Id Terreno"
+    />
+  <button type="submit" onclick="getDatiForniture()">Get</button>
+  <span id="resultDatiForniture" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getDestinazioneUva">
+  <label for="getDestinazioneUva"
+    >Get Destinazione Uva</label
+  >
+  <input
+    type="text"
+    id="getDestinazioneUvaIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDestinazioneUva()">Get</button>
+<span id="resultDestinazioneUva" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getDatiVendita">
+  <label for="getDatiVendita"
+    >Get Dati Vendita</label
+  >
+  <input
+    type="text"
+    id="getDatiVenditaIdVendita"
+    placeholder="Id Vendita"
+  />
+<button type="submit" onclick="getDatiVendita()">Get</button>
+<span id="resultDatiVendita" style="position:absolute; margin-left:30px; margin-top:10px; white-space: pre-line;"></span>
+</div>
+
+<div id="getDatiSensoriViticoltore">
+  <label for="getDatiSensoriViticoltore"
+    >Get Dati Sensori Viticoltore</label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriViticoltoreIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDatiSensoriViticoltore()">Get</button>
+<span id="resultDatiSensoriViticoltore" style="position:absolute; margin-left:30px; margin-top:10px; white-space: pre-line;"></span>
+</div>
+
+<div>
+  <label style="font-size:24px;">Dati Agronomo:</label>
+</div>
+<h1></h1>
+
+<div id="getUmiditaTerreno">
+  <label for="getUmiditaTerreno"
+    >Get Umidita Terreno</label
+  >
+  <input
+    type="text"
+    id="getUmiditaTerrenoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getUmiditaTerreno()">Get</button>
+<span id="resultUmiditaTerreno" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getTemperaturaTerreno">
+  <label for="getTemperaturaTerreno"
+    >Get Temperatura Terreno</label
+  >
+  <input
+    type="text"
+    id="getTemperaturaTerrenoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getTemperaturaTerreno()">Get</button>
+<span id="resultTemperaturaTerreno" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getPioggiaTerreno">
+  <label for="getPioggiaTerreno"
+    >Get Pioggia Terreno</label
+  >
+  <input
+    type="text"
+    id="getPioggiaTerrenoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getPioggiaTerreno()">Get</button>
+<span id="resultPioggiaTerreno" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getSuperficieTerreno">
+  <label for="getSuperficieTerreno"
+    >Get Superficie Terreno</label
+  >
+  <input
+    type="text"
+    id="getSuperficieTerrenoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getSuperficieTerreno()">Get</button>
+<span id="resultSuperficieTerreno" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+</html>

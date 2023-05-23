@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinTraWine - Ente Certificatore</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="../contract_addresses.js"></script>
+    <script src="../Js/EnteCertificatore.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+      }
+
+      button[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .output {
+        background-color: #d3d3d3;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+     <div class="container">
+       <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
+      <h1>BinTraWine - Ente Certificatore</h1>
+
+    <!--  <form id="addAuthorizedForm">
+        <label for="addAuthorized">Add Authorized</label>
+        <input type="text" id="addAuthorized" placeholder="Address" />
+        <button type="submit">Add</button>
+      </form> -->
+
+    <!--  <form id="removeAuthorizedForm">
+        <label for="removeAuthorized">Remove Authorized</label>
+        <input type="text" id="removeAuthorized" placeholder="Address" />
+        <button type="submit">Remove</button>
+      </form> -->
+
+      <div id="setValidazioneForm">
+        <label for="setDestinazione">
+          Inserimento Validazione</label>
+        <input
+          type="text"
+          id="setValidazioneIdLotto"
+          readonly
+        />
+        <input
+          type="text"
+          id="setValidazione"
+          placeholder="Validazione"
+        />
+        <button type="submit" onclick="setValidazione()">Submit</button>
+      </div>
+
+      <div id="setCertificazioneForm">
+        <label for="setCertificazione">
+          Inserimento Certificazione</label
+        >
+        <input
+          type="text"
+          id="setCertificazioneIdLotto"
+          readonly
+        />
+        <input type="text"
+        id="setCertificazione"
+        placeholder="Certificazione"/>
+        <button type="submit" onclick="setCertificazione()">Submit</button>
+      </div>
+
+    <div id="getValidazione">
+      <label for="getValidazione"
+        >Get Validazione</label
+      >
+      <input
+        type="text"
+        id="getValidazioneIdLotto"
+        placeholder="Id Lotto"
+      />
+    <button type="submit" onclick="getValidazione()">Get</button>
+    <span id="resultValidazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+  </div>
+
+  <div id="getCertificazione">
+    <label for="getCertificazione"
+      >Get Certificazione</label
+    >
+    <input
+      type="text"
+      id="getCertificazioneIdLotto"
+      placeholder="Id Lotto"
+    />
+  <button type="submit" onclick="getCertificazione()">Get</button>
+  <span id="resultCertificazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div >
+  <label style="font-size:24px;">Dati Agronomo:</label>
+</div>
+<h1></h1>
+
+<div id="getAnalisiQualitaProdotto">
+  <label for="getAnalisiQualitaProdotto"
+    >Get Analisi Qualità Prodotto</label
+  >
+  <input
+    type="text"
+    id="getAnalisiQualitaProdottoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getAnalisiQualitaProdotto()">Get</button>
+<span id="resultAnalisiQualitaProdotto" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getCertificazioneUvaAppezzamento">
+  <label for="getCertificazioneUvaAppezzamento"
+    >Get Certificazione Uva Appezzamento</label
+  >
+  <input
+    type="text"
+    id="getCertificazioneUvaAppezzamentoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getCertificazioneUvaAppezzamento()">Get</button>
+<span id="resultCertificazioneUvaAppezzamento" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getDatiSensoriAgronomo">
+  <label for="getDatiSensoriAgronomo"
+    >Get Dati Sensori Agronomo</label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriAgronomoIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDatiSensoriAgronomo()">Get</button>
+<span id="resultDatiSensoriAgronomo" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+</div>
+
+<div>
+  <label style="font-size:24px;">Dati Viticoltore:</label>
+</div>
+<h2></h2>
+
+<div id="getDataRaccolta">
+  <label for="getDataRaccolta"
+    >Get Data Raccolta</label
+  >
+  <input
+    type="text"
+    id="getDataRaccoltaIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDataRaccolta()">Get</button>
+<span id="resultDataRaccolta" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getDatiForniture">
+  <label for="getDatiForniture"
+    >Get Dati Forniture</label
+  >
+  <input
+    type="text"
+    id="getDatiFornitureIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDatiForniture()">Get</button>
+<span id="resultDatiForniture" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getDestinazioneUva">
+  <label for="getDestinazioneUva"
+    >Get Destinazione Uva</label
+  >
+  <input
+    type="text"
+    id="getDestinazioneUvaIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDestinazioneUva()">Get</button>
+<span id="resultDestinazioneUva" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getDatiVenditaViticoltore">
+  <label for="getDatiVenditaViticoltore"
+    >Get Dati Vendita Viticoltore -> Produttore</label
+  >
+  <input
+    type="text"
+    id="getDatiVenditaViticoltoreIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDatiVenditaViticoltore()">Get</button>
+<span id="resultDatiVenditaViticoltore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+
+<div id="getDatiSensoriViticoltore">
+  <label for="getDatiSensoriViticoltore"
+    >Get Dati Sensori Viticoltore</label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriViticoltoreIdTerreno"
+    placeholder="Id Terreno"
+  />
+<button type="submit" onclick="getDatiSensoriViticoltore()">Get</button>
+<span id="resultDatiSensoriViticoltore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+
+<div>
+<label style="font-size:24px;">Dati Produttore:</label>
+</div>
+<h3></h3>
+
+<div id="getProdottiVinificazione">
+  <label for="getProdottiVinificazione"
+    >Get Prodotti Vinificazione</label
+  >
+  <input
+    type="text"
+    id="getProdottiVinificazioneIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getProdottiVinificazione()">Get</button>
+<span id="resultProdottiVinificazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getQuantitaVinoOttenuto">
+  <label for="getQuantitaVinoOttenuto"
+    >Get Quantita Vino Ottenuto</label
+  >
+  <input
+    type="text"
+    id="getQuantitaVinoOttenutoIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getQuantitaVinoOttenuto()">Get</button>
+<span id="resultQuantitaVinoOttenuto" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getQuantitaVinoRivendicato">
+  <label for="getQuantitaVinoRivendicato"
+    >Get Quantita Vino Rivendicato</label
+  >
+  <input
+    type="text"
+    id="getQuantitaVinoRivendicatoIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getQuantitaVinoRivendicato()">Get</button>
+<span id="resultQuantitaVinoRivendicato" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getDatiSensoriProduttore">
+  <label for="getDatiSensoriProduttore"
+    >Get Dati Sensori Produttore </label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriProduttoreIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getDatiSensoriProduttore()">Get</button>
+<span id="resultDatiSensoriProduttore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+
+<div>
+  <label style="font-size:24px;">Dati Imbottigliatore:</label>
+</div>
+<h4></h4>
+
+<div id="getSolfiti">
+  <label for="getSolfiti"
+    >Get Presenza Solfiti</label
+  >
+  <input
+    type="text"
+    id="getSolfitiIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getSolfiti()">Get</button>
+<span id="resultSolfiti" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getAllergeni">
+  <label for="getAllergeni"
+    >Get Presenza Allergeni</label
+  >
+  <input
+    type="text"
+    id="getAllergeniIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getAllergeni()">Get</button>
+<span id="resultAllergeni" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getLocalitaUve">
+  <label for="getLocalitaUve"
+    >Get Località Uve</label
+  >
+  <input
+    type="text"
+    id="getLocalitaUveIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getLocalitaUve()">Get</button>
+<span id="resultLocalitaUve" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getCodiceBarre">
+  <label for="getCodiceBarre"
+    >Get Codice a Barre</label
+  >
+  <input
+    type="text"
+    id="getCodiceBarreIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getCodiceBarre()">Get</button>
+<span id="resultCodiceBarre" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+<div id="getDatiSensoriImbottigliatore">
+  <label for="getDatiSensoriImbottigliatore"
+    >Get Dati Sensori Imbottigliatore</label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriImbottigliatoreIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getDatiSensoriImbottigliatore()">Get</button>
+<span id="resultDatiSensoriImbottigliatore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+
+<div>
+  <label style="font-size:24px;">Dati Distributore:</label>
+  <h5></h5>
+
+  <div id="getDestinazione">
+    <label for="getDestinazione"
+      >Get Destinazione Consegna</label
+    >
+    <input
+      type="text"
+      id="getDestinazioneIdLotto"
+      placeholder="Id Lotto"
+    />
+  <button type="submit" onclick="getDestinazione()">Get</button>
+  <span id="resultDestinazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+
+  <div id="getDatiVenditaDistributore">
+    <label for="getDatiVenditaDistributore"
+      >Get Dati Vendita Distributore -> Rivenditore</label
+    >
+    <input
+      type="text"
+      id="getDatiVenditaDistributoreIdLotto"
+      placeholder="Id Lotto"
+    />
+  <button type="submit" onclick="getDatiVenditaDistributore()">Get</button>
+  <span id="resultDatiVenditaDistributore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+
+  <div id="getDatiSensoriDistributore">
+    <label for="getDatiSensoriDistributore"
+      >Get Dati Sensori Distributore</label
+    >
+    <input
+      type="text"
+      id="getDatiSensoriDistributoreIdLotto"
+      placeholder="Id Lotto"
+    />
+  <button type="submit" onclick="getDatiSensoriDistributore()">Get</button>
+  <span id="resultDatiSensoriDistributore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+
+  <div>
+    <label style="font-size:24px;">Dati Rivenditore:</label>
+  </div>
+  <h6></h6>
+
+  <div id="getDatiSensoriRivenditore">
+    <label for="getDatiSensoriRivenditore"
+      >Get Dati Sensori Rivenditore</label
+    >
+    <input
+      type="text"
+      id="getDatiSensoriRivenditoreIdLotto"
+      placeholder="Id Lotto"
+    />
+  <button type="submit" onclick="getDatiSensoriRivenditore()">Get</button>
+  <span id="resultDatiSensoriRivenditore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+</div>
+</html>

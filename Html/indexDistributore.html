@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinTraWine - Distributore</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="../contract_addresses.js"></script>
+    <script src="../Js/Distributore.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+      }
+
+      button[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .output {
+        background-color: #d3d3d3;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+     <div class="container">
+       <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
+      <h1>BinTraWine - Distributor</h1>
+
+      <div id="addAuthorizedForm">
+        <label for="addAuthorized">Add Authorized</label>
+        <input type="text" id="rivenditoreContractAddress" placeholder="Address" />
+        <button type="submit" onclick="addAuthorized()">Add</button>
+      </div>
+
+      <!-- <form id="removeAuthorizedForm">
+        <label for="removeAuthorized">Remove Authorized</label>
+        <input type="text" id="removeAuthorized" placeholder="Address" />
+        <button type="submit">Remove</button>
+      </form> -->
+
+      <div id="setDestinazioneForm">
+        <label for="setDestinazione">
+          Insert Delivery Destination</label>
+        <input
+          type="text"
+          id="setDestinazioneIdLotto"
+          readonly
+        />
+        <input
+          type="text"
+          id="setDestinazione"
+          placeholder="Destination"
+        />
+        <button type="submit" onclick="setDestinazione()">Submit</button>
+      </div>
+
+      <div id="setDatiVenditaForm">
+        <label for="setDatiVendita">
+         Insert Sale Data</label
+        >
+        <input
+          type="text"
+          id="setDatiVenditaIdLotto"
+          readonly
+        />
+        <input type="text"
+        id="prezzoVendita"
+        placeholder="Price"/>
+        <input type="text"
+        id="nomeProdottoVendita"
+        placeholder="Product Name"/>
+        <input type="text"
+        id="quantitaVendita"
+        placeholder="Amount"/>
+        <input type="text"
+        id="nomeClienteVendita"
+        placeholder="Customer Name"/>
+        <input type="text"
+        id="dataVendita"
+        placeholder="Date"/>
+        <input type="text"
+        id="addressesVendite"
+        placeholder="Seller and Customer addresses"/>
+        <button type="submit" onclick="setDatiVendita()">Submit</button>
+      </div>
+
+    <div id="getDestinazione">
+      <label for="getDestinazione"
+        >Get Delivery Destination</label
+      >
+      <input
+        type="text"
+        id="getDestinazioneIdLotto"
+        placeholder="Batch Id"
+      />
+    <button type="submit" onclick="getDestinazione()">Get</button>
+    <span id="resultDestinazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+  </div>
+
+  <div id="getPrezzoVendita">
+    <label for="getPrezzoVendita"
+      >Get Sale Data</label
+    >
+    <input
+      type="text"
+      id="getDatiVenditaIdLotto"
+      placeholder="Batch Id"
+    />
+  <button type="submit" onclick="getDatiVendita()">Get</button>
+  <span id="resultDatiVendita" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+</div>
+
+<div id="getDatiSensoriDistributore">
+  <label for="getDatiSensoriDistributore"
+    >Get Distributor Sensors Data</label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriDistributoreIdLotto"
+    placeholder="Batch Id"
+  />
+<button type="submit" onclick="getDatiSensoriDistributore()">Get</button>
+<span id="resultDatiSensoriDistributore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
+</div>
+
+<div>
+  <label style="font-size:24px;">Bottler Data:</label>
+</div>
+<h1></h1>
+
+<div id="getCodiceBarre">
+  <label for="getCodiceBarre"
+    >Get BarCode</label
+  >
+  <input
+    type="text"
+    id="getCodiceBarreIdLotto"
+    placeholder="Batch Id"
+  />
+<button type="submit" onclick="getCodiceBarre()">Get</button>
+<span id="resultCodiceBarre" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+</html>

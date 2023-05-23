@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinTraWine - Imbottigliatore</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="../contract_addresses.js"></script>
+    <script src="../Js/Imbottigliatore.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+      }
+
+      button[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .output {
+        background-color: #d3d3d3;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+     <div class="container">
+       <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
+      <h1>BinTraWine - Imbottigliatore</h1>
+
+      <div id="addAuthorizedForm">
+        <label for="addAuthorized">Add Authorized</label>
+        <input type="text" id="distributoreContractAddress" placeholder="Address" />
+        <button type="submit" onclick="addAuthorized()">Add</button>
+      </div>
+
+    <!--  <form id="removeAuthorizedForm">
+        <label for="removeAuthorized">Remove Authorized</label>
+        <input type="text" id="removeAuthorized" placeholder="Address" />
+        <button type="submit">Remove</button>
+      </form> -->
+
+      <div id="setSolfitiForm">
+        <label for="setSolfiti">
+          Inserimento Presenza Solfiti</label>
+        <input
+          type="text"
+          id="setSolfitiIdLotto"
+          readonly
+        />
+        <input
+          type="text"
+          id="setSolfiti"
+          placeholder="Presenza Solfiti"
+        />
+        <button type="submit" onclick="setSolfiti()">Submit</button>
+      </div>
+
+      <div id="setAllergeniForm">
+        <label for="setAllergeni">
+          Inserimento Presenza Allergeni</label
+        >
+        <input
+          type="text"
+          id="setAllergeniIdLotto"
+          readonly
+        />
+        <input type="text"
+        id="setAllergeni"
+        placeholder="Presenza Allergeni"/>
+        <button type="submit" onclick="setAllergeni()">Submit</button>
+      </div>
+
+      <div id="setLocalitaUveForm">
+        <label for="setLocalitaUve">
+          Inserimento Localita Uve</label
+        >
+        <input
+          type="text"
+          id="setLocalitaUveIdLotto"
+          readonly
+        />
+        <input type="text"
+        id="setLocalitaUve"
+        placeholder="localitaUve"/>
+        <button type="submit" onclick="setLocalitaUve()">Submit</button>
+      </div>
+
+      <div id="setCodiceBarreForm">
+        <label for="setCodiceBarre">
+          Inserimento Codice a Barre</label
+        >
+        <input
+          type="text"
+          id="setCodiceBarreIdLotto"
+          readonly
+        />
+        <input type="text"
+        id="setCodiceBarre"
+        placeholder="Codice a Barre"/>
+        <button type="submit" onclick="setCodiceBarre()">Submit</button>
+      </div>
+
+    <div id="getSolfiti">
+      <label for="getSolfiti"
+        >Get Presenza Solfiti</label
+      >
+      <input
+        type="text"
+        id="getSolfitiIdLotto"
+        placeholder="Id Lotto"
+      />
+    <button type="submit" onclick="getSolfiti()">Get</button>
+    <span id="resultSolfiti" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+  </div>
+
+  <div id="getAllergeni">
+    <label for="getAllergeni"
+      >Get Presenza Allergeni</label
+    >
+    <input
+      type="text"
+      id="getAllergeniIdLotto"
+      placeholder="Id Lotto"
+    />
+  <button type="submit" onclick="getAllergeni()">Get</button>
+  <span id="resultAllergeni" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getLocalitaUve4.0">
+  <label for="getLocalitaUve"
+    >Get Località Uve</label
+  >
+  <input
+    type="text"
+    id="getLocalitaUveIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getLocalitaUve()">Get</button>
+<span id="resultLocalitaUve" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getCodiceBarre">
+  <label for="getCodiceBarre"
+    >Get Codice a Barre</label
+  >
+  <input
+    type="text"
+    id="getCodiceBarreIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getCodiceBarre()">Get</button>
+<span id="resultCodiceBarre" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div id="getDatiSensoriImbottigliatore">
+  <label for="getDatiSensoriImbottigliatore"
+    >Get Dati Sensori Imbottigliatore</label
+  >
+  <input
+    type="text"
+    id="getDatiSensoriImbottigliatoreIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getDatiSensoriImbottigliatore()">Get</button>
+<span id="resultDatiSensoriImbottigliatore" style="position:absolute; margin-left:30px; margin-top:10px; white-space: pre-line;"></span>
+</div>
+
+<div>
+  <label style="font-size:24px;">Dati Produttore:</label>
+</div>
+<h1></h1>
+
+<div id="getListaProdottiVinificazione">
+  <label for="getListaProdottiVinificazione"
+    >Get Lista Prodotti Vinificazione</label
+  >
+  <input
+    type="text"
+    id="getListaProdottiVinificazioneIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getListaProdottiVinificazione()">Get</button>
+<span id="resultListaProdottiVinificazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+
+<div>
+  <label style="font-size:24px;">Dati Viticoltore:</label>
+</div>
+<h1></h1>
+
+<div id="getDestinazioneUva">
+  <label for="getDestinazioneUva"
+    >Get Destinazione Uva</label
+  >
+  <input
+    type="text"
+    id="getDestinazioneUvaIdLotto"
+    placeholder="Id Lotto"
+  />
+<button type="submit" onclick="getDestinazioneUva()">Get</button>
+<span id="resultDestinazioneUva" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
+</div>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Wine Information</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="../contract_addresses.js"></script>
+    <script src="../Js/Customer.js"></script>
+
+    <style>
+       body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+      }
+      .container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }
+      .image {
+        flex: 1;
+      }
+      .info {
+        flex: 2;
+        padding-left: 20px;
+      }
+      .info ul {
+        list-style: none;
+        padding: 0;
+      }
+      .info li {
+        margin-bottom: 10px;
+      }
+      .info h2 {
+        margin-top: 0;
+      }
+      img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
+    <div class="container">
+      <div class="image">
+        <img src="https://www.caprigliano.com/wp-content/uploads/2020/06/poggesco-3.png" alt="Bottle of wine" style="max-width: 500px;">
+      </div>
+      <div class="info">
+        <h2>Wine Information</h2>
+        <ul>
+          <li id="certificazioneUva"> </li>
+          <li id="dataRaccolta"> </li>
+          <li id="datiForniture"> </li>
+          <li id="destinazioneUva"></li>
+          <li id="prodottiVinificazione"></li>
+          <li id="solfiti"></li>
+          <li id="allergeni"></li>
+          <li id="localitaUve"></li>
+          <li id="gradazioneAlcolica"></li>
+          <li id="temperaturaTrasporto"></li>
+          <li id="validazione"></li>
+          <li id="certificazione"></li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
