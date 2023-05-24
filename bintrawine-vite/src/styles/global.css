@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../assets/fonts/rubik-latin-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Rubik-Medium';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../assets/fonts/rubik-latin-500.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Rubik-Bold';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../assets/fonts/rubik-latin-700.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Source Code Pro';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../assets/fonts/source-code-pro-latin-500.woff2') format('woff2');
+}
