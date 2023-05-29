@@ -3,6 +3,24 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      gridTemplateAreas: {
+        'layout': [
+          'header header',
+          'nav main',
+          'nav footer',
+        ],
+      },
+      gridTemplateColumns: {
+        'layout': '14rem 1fr',
+      },
+      gridTemplateRows: {
+        'layout': '6rem 1fr 8rem',
+      },
+      height: {
+        "screen": "100dvh",
+        "screen-small": "100svh",
+        "screen-large": "100lvh"
+      },
       colors: {
         'bg-default': '#FCFCFD',
         nord0: { base: '#2F3541', light: '', dark: '' },
@@ -30,5 +48,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@savvywombat/tailwindcss-grid-areas')
+  ]
 };

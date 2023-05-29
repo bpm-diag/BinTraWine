@@ -1,8 +1,6 @@
 const Home = () => {
   return (
-    <div className="place-items-center">
-
-    </div>
+    <div className="place-items-center"></div>
   );
 };
 
