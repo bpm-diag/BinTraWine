@@ -112,6 +112,7 @@ contract Viticoltore {
 
        for(uint i=0; i<_addresses.length; i++){ //ciclo necessario a definire gli address forniti in input come "trusted"
             if(_addresses[i] != address(0)){ //entra in azione solo de gli address forniti sono diversi dall'address nullo (0x0000000000000...)
+                allowedAddressesVendite[idVenditaSerial][msg.sender] = true; //TEST
                 allowedAddressesVendite[idVenditaSerial][_addresses[i]] = true; //salva gli address inseriti e li definisce "trusted" attraverso il parametro booleano "true"
             }
         } 

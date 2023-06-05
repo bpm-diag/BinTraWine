@@ -1,9 +1,9 @@
 
-  var AgronomoContractAddr = "0x60ED79B615Ec9aFD4250c94D67bCf8b67D07Dca1";
-  var ViticoltoreContractAddr = "0x825266F9d224db92fF25e2a0F90Da227a9C41bb1";
-  var ProduttoreContractAddr = "0xffBE41D09Cf146889512B96f38c677144f936F12";
-  var ImbottigliatoreContractAddr = "0xC3E5a3f8Cb0AD0736520A0066295733D70d92ba8";
-  var DistributoreContractAddr = "0xd72bd6897Ada03e02694e3ef3fA74566D63aFb6d";
-  var RivenditoreContractAddr = "0x60516F9b57AdFD0681B54682082faA53E37eEeF7";
-  var EnteCertificatoreContractAddr = "0x69e87592267B258EbcEa2414533d188A995DA417";
-  var CustomerContractAddr = "0x648f04D05F0D43e6DEfF4d0636f3962e8E829c6a";
+  var AgronomoContractAddr = "0xF466d22B46BA893df917413191e958F1B1f87981";
+  var ViticoltoreContractAddr = "0x3D5860D457227ad8BBbF4C8F92EE479cFDd1C158";
+  var ProduttoreContractAddr = "0xa750938303B37366dd9E3ef7d1Ec3791f86FF266";
+  var ImbottigliatoreContractAddr = "0x8978dd4e03Cf0880462D2c5fc43fd8b632846C50";
+  var DistributoreContractAddr = "0x5edB6018cE9d2E2936A0eAbCeAf36ba71d75c35a";
+  var RivenditoreContractAddr = "0x657603ca2f06C74089A3438285CD4E0615d39d00";
+  var EnteCertificatoreContractAddr = "0x0FFa0d01919C02176F3D9CcD38e41fe935B4D20f";
+  var CustomerContractAddr = "0x56273789d237bA70a96f202A578E226FbbF40282";
