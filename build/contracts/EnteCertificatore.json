@@ -20621,12 +20621,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0x0FFa0d01919C02176F3D9CcD38e41fe935B4D20f",
-      "transactionHash": "0xf429e642713e9cbb99e0d8cc6d362b410b2cbd10158e4b7221cb63e2759e7c4e"
+      "address": "0x69e87592267B258EbcEa2414533d188A995DA417",
+      "transactionHash": "0xcb0d8a1af7f1bb4686aeaff5d0a96911b57e32a89b63c46ba3307fd648418872"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-01T14:13:10.308Z",
+  "updatedAt": "2023-06-06T10:27:02.700Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

@@ -14601,12 +14601,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0xa750938303B37366dd9E3ef7d1Ec3791f86FF266",
-      "transactionHash": "0x589477366850d050f2196f984bbb95eb3f78f765ba3caa5784764a94c410531e"
+      "address": "0xffBE41D09Cf146889512B96f38c677144f936F12",
+      "transactionHash": "0x61d665ad35246ed41c8545735673bf53724d743b9a4ec3b898af415757fc61ce"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-01T14:13:10.262Z",
+  "updatedAt": "2023-06-06T10:27:02.611Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",
