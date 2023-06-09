@@ -28,14 +28,17 @@ The smart contracts which are going to be deployed are:
 - EnteCertificatore.sol (Certifying Authority)
 - Customer.sol (Consumer)
 
-you can find them here: 
+Each Smart Contract represents a defined actor of the supply chain. 
+
+You can find the contracts here: https://github.com/bpm-diag/BinTraWine/tree/main/contracts
+
 **The project is istantiated as a Truffle project, such that the deployment and the connection to the Quorum network is managed by truffle itself. You can find the network configuration in the "truffle-config.js" file.**
 Here we will show how to deploy the smart contracts using Truffle (Still, you can use other deployment solutions if it's needed).
 Using a command line, launch the command: ```truffle migrate --f 2 --to 2```
 Once all the contracts are deployed, you are ready to interact with the demo.
 
 ### Interaction
-in the Html folder https://github.com/bpm-diag/BinTraWine/tree/main/Html you can find an html page for each actor of the supply chain:
+In the Html folder https://github.com/bpm-diag/BinTraWine/tree/main/Html you can find an Html page for each actor of the supply chain:
 - indexAgronomo.html = Agronomist
 - indexViticoltore.html = Grape Grower
 - indexProduttore.html = Wine Producer
