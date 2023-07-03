@@ -8,12 +8,14 @@ const abi = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_agronomoContractAddress",
+				"name": "_address",
 				"type": "address"
 			}
 		],
+		"name": "addAuthorized",
+		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "constructor"
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -23,10 +25,136 @@ const abi = [
 				"type": "address"
 			}
 		],
-		"name": "addAuthorized",
+		"name": "removeAuthorized",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_dataRaccolta",
+				"type": "string"
+			}
+		],
+		"name": "setDataRaccolta",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_datiForniture",
+				"type": "string"
+			}
+		],
+		"name": "setDatiForniture",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_destinazioneUva",
+				"type": "string"
+			}
+		],
+		"name": "setDestinazioneUva",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_idTerreno",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quantitaUvaRaccolta",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_tipologiaUva",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_umidita",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_temperatura",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_quantitaFertilizzanti",
+				"type": "string"
+			}
+		],
+		"name": "setSensoriViticoltore",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_nomeProdotto",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_prezzoVendita",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quantita",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_nomeCliente",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_dataVendita",
+				"type": "string"
+			},
+			{
+				"internalType": "address[]",
+				"name": "_addresses",
+				"type": "address[]"
+			}
+		],
+		"name": "setVendita",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_agronomoContractAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"inputs": [
@@ -96,9 +224,9 @@ const abi = [
 		"name": "getDatiSensoriViticoltore",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "",
-				"type": "string"
+				"type": "uint256"
 			},
 			{
 				"internalType": "string",
@@ -145,9 +273,9 @@ const abi = [
 				"type": "string"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "",
-				"type": "string"
+				"type": "uint256"
 			},
 			{
 				"internalType": "string",
@@ -224,6 +352,32 @@ const abi = [
 	{
 		"inputs": [],
 		"name": "getIdVenditaSerial",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMappingTerreniLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMappingVenditeLength",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -324,131 +478,39 @@ const abi = [
 		"type": "function"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "queryDataUvaRaccolta",
+		"outputs": [
 			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
-		"name": "removeAuthorized",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "queryNomiClientiQuantita",
+		"outputs": [
 			{
-				"internalType": "string",
-				"name": "_dataRaccolta",
-				"type": "string"
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
-		"name": "setDataRaccolta",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_datiForniture",
-				"type": "string"
-			}
-		],
-		"name": "setDatiForniture",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_destinazioneUva",
-				"type": "string"
-			}
-		],
-		"name": "setDestinazioneUva",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_idTerreno",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_quantitaUvaRaccolta",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_tipologiaUva",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_umidita",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_temperatura",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_quantitaFertilizzanti",
-				"type": "string"
-			}
-		],
-		"name": "setSensoriViticoltore",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_nomeProdotto",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_prezzoVendita",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_quantita",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_nomeCliente",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_dataVendita",
-				"type": "string"
-			},
-			{
-				"internalType": "address[]",
-				"name": "_addresses",
-				"type": "address[]"
-			}
-		],
-		"name": "setVendita",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ];
@@ -777,7 +839,8 @@ privateFor: privateFor, })
     console.log(result);
     // Display the result on the web page
 		document.getElementById("resultDatiVendita").innerHTML = "Data: " + "\nNome Prodotto: " + result[0] +
-		"\nPrezzo Vendita: " + result[1] + "\nQuantità: " + result[2] + "\nNome Cliente: " + result[3] + "\nData Vendita: " + result[4];
+		"\nPrezzo Vendita: " + result[1] + "\nQuantità: " + result[2] + "\nNome Cliente: " + result[3] + "\nData Vendita: " + result[4]; 
+    
   })
   .catch(function(error) {
     console.error(error);

@@ -14509,12 +14509,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0xd72bd6897Ada03e02694e3ef3fA74566D63aFb6d",
-      "transactionHash": "0xeb686cbf8ed07f41e6e3cb3a6b6673d6133d01fda62f499576c9dfd8fe0a75bd"
+      "address": "0x670EAB3755265CD878e6A77C410A2d8378F5AdD3",
+      "transactionHash": "0x8d4c4f0f187cb8911bba2f25c72c7bf2db4024587ca51e9ecacb91bac02689bf"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-06T10:27:02.655Z",
+  "updatedAt": "2023-06-25T15:06:34.413Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import "./Viticoltore.sol";
-import "./Customer.sol";
 
 contract Produttore {
 
@@ -11,13 +10,11 @@ contract Produttore {
     mapping(address => bool) public authorized;
 
     Viticoltore viticoltoreContract;
-    Customer customerContract;
-
-    constructor(address _viticoltoreContractAddress/*, address _customerContractAddress*/)  {
+    
+    constructor(address _viticoltoreContractAddress)  {
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         viticoltoreContract = Viticoltore(_viticoltoreContractAddress);
-        //customerContract = Customer(_customerContractAddress);
         viticoltoreContract.addAuthorized(address(this));
     }
 

@@ -11129,12 +11129,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0x130BacfEeFF3C8757DC10F03E8722d13fC429fCc",
-      "transactionHash": "0x4920845af45af11d023b2147602eb2af2e425140e1c65bd2b6d9fceae33cde24"
+      "address": "0x9AbFd3650295AC9bc021507F02c1E232256607E6",
+      "transactionHash": "0x571eac49fb2493eccc262f68281b8c6760956dd4c301f61e28a6af181abe1c43"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-06T10:27:02.730Z",
+  "updatedAt": "2023-06-25T15:06:34.449Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

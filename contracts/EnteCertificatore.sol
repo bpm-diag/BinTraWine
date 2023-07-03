@@ -7,7 +7,7 @@ import "./Produttore.sol";
 import "./Imbottigliatore.sol";
 import "./Distributore.sol";
 import "./Rivenditore.sol";
-import "./Customer.sol";
+
 
 contract EnteCertificatore {
 
@@ -16,7 +16,7 @@ contract EnteCertificatore {
     mapping(address => bool) public authorized;
 
     constructor(address agronomoContractAddr, address viticoltoreContractAddr, address produttoreContractAddr, address imbottigliatoreContractAddr,
-    address distributoreContractAddr, address rivenditoreContractAddr/*, address customerContractAddr*/)  {
+    address distributoreContractAddr, address rivenditoreContractAddr)  {
 
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
@@ -27,7 +27,7 @@ contract EnteCertificatore {
         imbottigliatoreContract = Imbottigliatore(imbottigliatoreContractAddr);
         distributoreContract = Distributore(distributoreContractAddr);
         rivenditoreContract = Rivenditore(rivenditoreContractAddr);
-        //customerContract = Customer(customerContractAddr);
+        
         agronomoContract.addAuthorized(address(this));
         viticoltoreContract.addAuthorized(address(this));
         produttoreContract.addAuthorized(address(this));
@@ -43,7 +43,7 @@ contract EnteCertificatore {
     Imbottigliatore imbottigliatoreContract;
     Distributore distributoreContract;
     Rivenditore rivenditoreContract;
-    Customer customerContract;
+    
 
     struct DatiEnteCertificatore {
     //dati manuali

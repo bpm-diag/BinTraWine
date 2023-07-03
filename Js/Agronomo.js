@@ -1,236 +1,242 @@
 // Connect to Quorum node
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:22006"));
-
 //const web3 = new Web3(window.ethereum);
 
 const abi = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "addAuthorized",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "authorized",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_idTerreno",
-				"type": "uint256"
-			}
-		],
-		"name": "getAnalisiQualitaProdotto",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_idTerreno",
-				"type": "uint256"
-			}
-		],
-		"name": "getCertificazioneUvaAppezzamento",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_idTerreno",
-				"type": "uint256"
-			}
-		],
-		"name": "getDatiSensoriAgronomo",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getIdAnalisiQualitaSerial",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getIdCertificazioneUvaAppezzamentoSerial",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "removeAuthorized",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_analisiQualitaProdotto",
-				"type": "string"
-			}
-		],
-		"name": "setAnalisiQualitaProdotto",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_certificazioneUvaAppezzamento",
-				"type": "string"
-			}
-		],
-		"name": "setCertificazioneUvaAppezzamento",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_idTerreno",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_superficie",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_umiditaTerreno",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_temperaturaTerreno",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_pioggia",
-				"type": "string"
-			}
-		],
-		"name": "setSensoriAgronomo",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-];
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "authorized",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "addAuthorized",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "removeAuthorized",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_analisiQualitaProdotto",
+          "type": "string"
+        }
+      ],
+      "name": "setAnalisiQualitaProdotto",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_certificazioneUvaAppezzamento",
+          "type": "string"
+        }
+      ],
+      "name": "setCertificazioneUvaAppezzamento",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_idTerreno",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_superficie",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_umiditaTerreno",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_temperaturaTerreno",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_pioggia",
+          "type": "string"
+        }
+      ],
+      "name": "setSensoriAgronomo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getIdAnalisiQualitaSerial",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getIdCertificazioneUvaAppezzamentoSerial",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_idTerreno",
+          "type": "uint256"
+        }
+      ],
+      "name": "getAnalisiQualitaProdotto",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_idTerreno",
+          "type": "uint256"
+        }
+      ],
+      "name": "getCertificazioneUvaAppezzamento",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_idTerreno",
+          "type": "uint256"
+        }
+      ],
+      "name": "getDatiSensoriAgronomo",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ];
 
 //testing
 
 //fine testing
 
-//const contracAddress = "0x60ED79B615Ec9aFD4250c94D67bCf8b67D07Dca1";
+//const contracAddress = "0x081961E8161753A1D94715ec763A7A12fDbE6b41";
 
 //fetch from JSON
 
@@ -379,13 +385,13 @@ function getAnalisiQualitaProdotto() {
   // Call the getData function of the smart contract
 	web3.eth.getAccounts()
 		 .then(function(accounts) {
-			 const currentAddress = accounts[0];
+			 const currentAddress = accounts[0]; 
 	contract.methods.getAnalisiQualitaProdotto(idTerrenoAnalisiQualitaProdotto).call({ from: currentAddress,
  	privateFor: privateFor, })
   .then(function(result) {
-    console.log(result);
+	console.log(result);
     // Display the result on the web page
-    document.getElementById("resultAnalisiQualitaProdotto").innerHTML = "Data: " + result;
+	document.getElementById("resultAnalisiQualitaProdotto").innerHTML = "Data: " + result;
   })
   .catch(function(error) {
     console.error(error);
@@ -393,7 +399,7 @@ function getAnalisiQualitaProdotto() {
 })
  .catch(function(error) {
 	 console.error(error);
- });
+ }); 
 }
 
 function getCertificazioneUvaAppezzamento() {

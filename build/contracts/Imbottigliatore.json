@@ -12530,12 +12530,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0xC3E5a3f8Cb0AD0736520A0066295733D70d92ba8",
-      "transactionHash": "0xf89ebcff662f18b5a26530ed792f5e78eb30f16e8c69489ea9de20e6c6476bf1"
+      "address": "0x441CdE996babDD8C8460550808B7D9aFc87938E5",
+      "transactionHash": "0x11da8e02464635058e4572b9cb92381ddee0a5681f3f60d6c55bb724275d41de"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-06T10:27:02.634Z",
+  "updatedAt": "2023-06-25T15:06:34.402Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

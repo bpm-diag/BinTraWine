@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./Produttore.sol";
 import "./Viticoltore.sol";
-import "./Customer.sol";
+
 
 contract Imbottigliatore {
 
@@ -13,14 +13,13 @@ contract Imbottigliatore {
 
     Produttore produttoreContract;
     Viticoltore viticoltoreContract;
-    Customer customerContract;
+    
 
-    constructor(address _produttoreContractAddress, address _viticoltoreContractAddress/*, address _customerContractAddress*/)  {
+    constructor(address _produttoreContractAddress, address _viticoltoreContractAddress)  {
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         produttoreContract = Produttore(_produttoreContractAddress);
         viticoltoreContract = Viticoltore(_viticoltoreContractAddress);
-        //customerContract = Customer(_customerContractAddress);
         produttoreContract.addAuthorized(address(this));
         viticoltoreContract.addAuthorized(address(this));
     }

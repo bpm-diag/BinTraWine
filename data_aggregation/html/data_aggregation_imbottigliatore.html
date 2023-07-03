@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SimpleStorage UI</title>
+  <!-- Include the Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@3.0.0-rc.5/dist/web3.min.js"></script>
+  <script src="https://unpkg.com/chart.js@4.2.0/dist/chart.umd.js"></script>
+  <script src="..//data_aggregation_imbottigliatore.js"></script>
+  <!-- script src="https://cdn.jsdelivr.net/npm/chart.js"></script -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: #fff;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    #chart {
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <h1>Data Aggregation UI</h1>
+
+      <!-- Add a button to generate the chart -->
+      <button class="btn" onclick = generateChartQuantitaRicevuta()>Generate Chart Vino Ricevuto</button>
+
+      <button class="btn" onclick = generateChartVinoImbottigliato()>Generate Chart Vino Imbottigliato</button>
+
+      <!-- Add a canvas element to display the chart -->
+      <canvas id="chart" width="400" height="400"></canvas>
+
+      <!-- Add a div element to display the result of the getData function -->
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <!-- Include the app.js script -->
+  
+</body>
+
+</html>

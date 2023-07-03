@@ -9079,12 +9079,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0x60ED79B615Ec9aFD4250c94D67bCf8b67D07Dca1",
-      "transactionHash": "0x2e9be329bb5b3c98513a5a3bcaf4e0eefe084a7c6a37edab508e51b6887d9965"
+      "address": "0xD3b50380E6aA2fb163fC3EC1DE80365691ebf1Dc",
+      "transactionHash": "0xeabb59d167627e667d40f6a6ed7cbdad69a1783a0fc589340aa9358171220f98"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-06T10:27:02.556Z",
+  "updatedAt": "2023-06-25T15:06:34.359Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

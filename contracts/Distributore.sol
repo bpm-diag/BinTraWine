@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./Imbottigliatore.sol";
-import "./Customer.sol";
+
 
 contract Distributore {
 
@@ -11,13 +11,12 @@ contract Distributore {
     mapping(address => bool) public authorized;
 
     Imbottigliatore imbottigliatoreContract;
-    Customer customerContract;
+    
 
-    constructor(address _imbottigliatoreContractAddress/*, address _customerContractAddress*/)  {
+    constructor(address _imbottigliatoreContractAddress)  {
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         imbottigliatoreContract = Imbottigliatore(_imbottigliatoreContractAddress);
-        //customerContract = Customer(_customerContractAddress);
         imbottigliatoreContract.addAuthorized(address(this));
     }
 

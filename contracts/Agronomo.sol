@@ -1,22 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./Customer.sol";
-
 contract Agronomo {
 
     //dati per autorizzazioni alle chiamate delle funzioni
     address public owner;
     mapping(address => bool) public authorized;
 
-    Customer customerContract;
-    //Viticoltore viticoltoreContract;
-
-    constructor()  {
+   constructor()  {
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         //authorized[address(this)] = true;
-        //customerContract = Customer(_customerContractAddress);
     }
 
     //dividere le istanze per terreni
