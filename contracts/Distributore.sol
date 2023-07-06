@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./Imbottigliatore.sol";
-import "./Customer.sol";
+
 
 contract Distributore {
 
@@ -11,13 +11,12 @@ contract Distributore {
     mapping(address => bool) public authorized;
 
     Imbottigliatore imbottigliatoreContract;
-    Customer customerContract;
+    
 
-    constructor(address _imbottigliatoreContractAddress/*, address _customerContractAddress*/)  {
+    constructor(address _imbottigliatoreContractAddress)  {
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         imbottigliatoreContract = Imbottigliatore(_imbottigliatoreContractAddress);
-        //customerContract = Customer(_customerContractAddress);
         imbottigliatoreContract.addAuthorized(address(this));
     }
 
@@ -77,6 +76,7 @@ contract Distributore {
 
          for(uint i=0; i<_addresses.length; i++){ //ciclo necessario a definire gli address forniti in input come "trusted"
             if(_addresses[i] != address(0)){ //entra in azione solo de gli address forniti sono diversi dall'address nullo (0x0000000000000...)
+                allowedAddressesVendite[idVenditaSerial][msg.sender] = true; //TEST
                 allowedAddressesVendite[idVenditaSerial][_addresses[i]] = true; //salva gli address inseriti e li definisce "trusted" attraverso il parametro booleano "true"
             }
         }

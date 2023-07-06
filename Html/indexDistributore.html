@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BinTraWine - Distributore</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@3.0.0-rc.5/dist/web3.min.js"></script>
     <script src="../contract_addresses.js"></script>
     <script src="../Js/Distributore.js"></script>
     <style>
@@ -83,7 +83,11 @@
   <body>
      <div class="container">
        <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
-      <h1>BinTraWine - Distributor</h1>
+      <h1>BinTraWine - Distributore</h1>
+
+      <div style="margin-bottom:30px;">
+        <a href="../data_aggregation/html/data_aggregation_distributore.html">Data Aggregation Platform </a>
+        </div>
 
       <div id="addAuthorizedForm">
         <label for="addAuthorized">Add Authorized</label>
@@ -99,7 +103,7 @@
 
       <div id="setDestinazioneForm">
         <label for="setDestinazione">
-          Insert Delivery Destination</label>
+          Inserisci Destinazione di consegna</label>
         <input
           type="text"
           id="setDestinazioneIdLotto"
@@ -108,14 +112,14 @@
         <input
           type="text"
           id="setDestinazione"
-          placeholder="Destination"
+          placeholder="Destinazione di consegna"
         />
         <button type="submit" onclick="setDestinazione()">Submit</button>
       </div>
 
       <div id="setDatiVenditaForm">
         <label for="setDatiVendita">
-         Insert Sale Data</label
+         Inserisci Dati di Vendita</label
         >
         <input
           type="text"
@@ -124,46 +128,46 @@
         />
         <input type="text"
         id="prezzoVendita"
-        placeholder="Price"/>
+        placeholder="Prezzo"/>
         <input type="text"
         id="nomeProdottoVendita"
-        placeholder="Product Name"/>
+        placeholder="Nome Prodotto"/>
         <input type="text"
         id="quantitaVendita"
-        placeholder="Amount"/>
+        placeholder="Quantità"/>
         <input type="text"
         id="nomeClienteVendita"
-        placeholder="Customer Name"/>
+        placeholder="Nome Cliente"/>
         <input type="text"
         id="dataVendita"
-        placeholder="Date"/>
+        placeholder="Data"/>
         <input type="text"
         id="addressesVendite"
-        placeholder="Seller and Customer addresses"/>
+        placeholder="addresses"/>
         <button type="submit" onclick="setDatiVendita()">Submit</button>
       </div>
 
     <div id="getDestinazione">
       <label for="getDestinazione"
-        >Get Delivery Destination</label
+        >Get Destinazione di consegna</label
       >
       <input
         type="text"
         id="getDestinazioneIdLotto"
-        placeholder="Batch Id"
+        placeholder="Id Lotto"
       />
     <button type="submit" onclick="getDestinazione()">Get</button>
     <span id="resultDestinazione" style="position:absolute; margin-left:30px; margin-top:10px;"></span>
   </div>
 
-  <div id="getPrezzoVendita">
+  <div id="getPrezzoVendita"  style="margin-bottom: 80px;">
     <label for="getPrezzoVendita"
-      >Get Sale Data</label
+      >Get Dati di Vendita</label
     >
     <input
       type="text"
       id="getDatiVenditaIdLotto"
-      placeholder="Batch Id"
+      placeholder="Id Lotto"
     />
   <button type="submit" onclick="getDatiVendita()">Get</button>
   <span id="resultDatiVendita" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
@@ -171,30 +175,30 @@
 
 <div id="getDatiSensoriDistributore">
   <label for="getDatiSensoriDistributore"
-    >Get Distributor Sensors Data</label
+    >Get Dati Sensori Distributore</label
   >
   <input
     type="text"
     id="getDatiSensoriDistributoreIdLotto"
-    placeholder="Batch Id"
+    placeholder="Id Lotto"
   />
 <button type="submit" onclick="getDatiSensoriDistributore()">Get</button>
 <span id="resultDatiSensoriDistributore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
 </div>
 
 <div>
-  <label style="font-size:24px;">Bottler Data:</label>
+  <label style="font-size:24px;">Dati Imbottigliatore:</label>
 </div>
 <h1></h1>
 
 <div id="getCodiceBarre">
   <label for="getCodiceBarre"
-    >Get BarCode</label
+    >Get Codice a Barre</label
   >
   <input
     type="text"
     id="getCodiceBarreIdLotto"
-    placeholder="Batch Id"
+    placeholder="Id Lotto"
   />
 <button type="submit" onclick="getCodiceBarre()">Get</button>
 <span id="resultCodiceBarre" style="position:absolute; margin-left:30px; margin-top:10px;"></span>

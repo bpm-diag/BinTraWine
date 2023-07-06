@@ -578,7 +578,8 @@ const privateFor = ["BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=", "QfeDAys9MPD
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("certificazioneUva");
-        certificazioneUvaShow.innerHTML = "Certificazione Uva dell'Appezzamento: " + result;
+        //certificazioneUvaShow.innerHTML = "Certificazione Uva dell'Appezzamento: " + result;
+        certificazioneUvaShow.innerHTML = "Plot Grapes Certification: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -598,7 +599,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("dataRaccolta");
-        certificazioneUvaShow.innerHTML = "Data di raccolta dell'uva: " + result;
+        //certificazioneUvaShow.innerHTML = "Data di raccolta dell'uva: " + result;
+        certificazioneUvaShow.innerHTML = "Grapes Harvesting Date: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -617,7 +619,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("datiForniture");
-        certificazioneUvaShow.innerHTML = "Forniture utilizzate in coltivazione: " + result;
+        //certificazioneUvaShow.innerHTML = "Forniture utilizzate in coltivazione: " + result;
+        certificazioneUvaShow.innerHTML = "Used Supplies During Cultivation: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -636,7 +639,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("destinazioneUva");
-        certificazioneUvaShow.innerHTML = "Destinazione d'uso dell'uva: " + result;
+        //certificazioneUvaShow.innerHTML = "Destinazione d'uso dell'uva: " + result;
+        certificazioneUvaShow.innerHTML = "Grapes Intended Use: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -656,7 +660,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("prodottiVinificazione");
-        certificazioneUvaShow.innerHTML = "Prodotti utilizzati in fase di Vinificazione: " + result;
+        //certificazioneUvaShow.innerHTML = "Prodotti utilizzati in fase di Vinificazione: " + result;
+        certificazioneUvaShow.innerHTML = "Winemaking Products: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -676,7 +681,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("solfiti");
-        certificazioneUvaShow.innerHTML = "Presenza di solfiti: " + result;
+        //certificazioneUvaShow.innerHTML = "Presenza di solfiti: " + result;
+        certificazioneUvaShow.innerHTML = "Sulfites Presence: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -695,7 +701,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("allergeni");
-        certificazioneUvaShow.innerHTML = "Lista allergeni: " + result;
+        //certificazioneUvaShow.innerHTML = "Lista allergeni: " + result;
+        certificazioneUvaShow.innerHTML = "Allergenes List: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -714,7 +721,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("localitaUve");
-        certificazioneUvaShow.innerHTML = "Località di provenienza delle uve: " + result;
+        //certificazioneUvaShow.innerHTML = "Località di provenienza delle uve: " + result;
+        certificazioneUvaShow.innerHTML = "Grapes Provenance: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -733,7 +741,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("gradazioneAlcolica");
-        certificazioneUvaShow.innerHTML = "Gradazione alcolica: " + result;
+        //certificazioneUvaShow.innerHTML = "Gradazione alcolica: " + result;
+        certificazioneUvaShow.innerHTML = "Alcohol Content: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -744,7 +753,7 @@ web3.eth.getAccounts()
       console.error(error);
     });
 
-    web3.eth.getAccounts()
+  /*  web3.eth.getAccounts()
     .then(function(accounts) {
       const currentAddress = accounts[0];
       contract.methods.getAllergeni(1).call({ from: currentAddress,
@@ -761,7 +770,7 @@ web3.eth.getAccounts()
     })
     .catch(function(error) {
       console.error(error);
-    });
+    }); */
 
 //da Distributore
 web3.eth.getAccounts()
@@ -772,7 +781,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("temperaturaTrasporto");
-        certificazioneUvaShow.innerHTML = "Temperatura durante il trasporto: " + result;
+        //certificazioneUvaShow.innerHTML = "Temperatura durante il trasporto: " + result;
+        certificazioneUvaShow.innerHTML = "Temperature During Transportation: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -792,7 +802,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("validazione");
-        certificazioneUvaShow.innerHTML = "Validazione dell'ente: " + result;
+        //certificazioneUvaShow.innerHTML = "Validazione dell'ente: " + result;
+        certificazioneUvaShow.innerHTML = "Certification Authority Validation: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {
@@ -811,7 +822,8 @@ web3.eth.getAccounts()
       .then(function(result) {
         console.log(result);
         const certificazioneUvaShow = document.getElementById("certificazione");
-        certificazioneUvaShow.innerHTML = "Certificazione dell'ente: " + result;
+        //certificazioneUvaShow.innerHTML = "Certificazione dell'ente: " + result;
+        certificazioneUvaShow.innerHTML = "Certification Authority Released Certificate: " + result;
         // Display the result on the web page
       })
       .catch(function(error) {

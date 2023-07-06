@@ -222,7 +222,7 @@ privateFor: privateFor,})
     // Display the result on the web page
 		document.getElementById("resultDatiVendita").innerHTML = "Data: " + "\nPrezzo Vendita: " + result[0] + "\nNome Prodotto: " + result[1]
 		+ "\nQuantità: " + result[2] + "\nNome Cliente: " + result[3] + "\nData Vendita: " + result[4];
-  })
+	})
   .catch(function(error) {
     console.error(error);
   });
