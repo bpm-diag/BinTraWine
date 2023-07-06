@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import logo from '@/assets/images/BinTraWine.png';
-import styles from './header.module.css';
 
 type HeaderProps = {
   /**
