@@ -90,7 +90,7 @@ const SignIn = () => {
                                 />
                             ))
                         }
-                        <Button className='w-1/3 self-center' type="submit">Sign In</Button>
+                        <Button disabled className='w-1/3 self-center' type="submit">Sign In</Button>
                     </form>
                 </Form>
                 <p className='text-center text-xl'>Don't you have an account? <Link href="/auth/sign-up" className='hover:underline font-bold'>Sign up</Link></p>
