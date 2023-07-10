@@ -6,7 +6,6 @@ export const userRouter = createTRPCRouter({
     create: publicProcedure
         .input(UserCreateArgsSchema)
         .mutation(async ({ input, ctx }) => {
-
             const hasedPassword = await bcrypt.hash(input.data.hashedPassword, 10);
             input.data.hashedPassword = hasedPassword;
 

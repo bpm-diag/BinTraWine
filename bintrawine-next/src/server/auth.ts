@@ -20,12 +20,14 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: number;
+      surname: string;
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
   interface User {
     id: number;
+    surname: string;
     //   // ...other properties
     //   // role: UserRole;
   }
@@ -53,12 +55,14 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => {
       if (user) {
         token.id = user.id;
+        token.surname = user.surname;
       }
       return token;
     },
     session({ session, token }) {
       if (token) {
         session.user.id = token.id as number;
+        session.user.surname = token.surname as string;
       }
       return session;
     },

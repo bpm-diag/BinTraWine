@@ -10,15 +10,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
-//import { User } from '~/prisma/generated/zod';
 import { z } from 'zod';
 import { api } from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FieldType } from '@/types/common';
 import { useRouter } from 'next/router';
 
 type FieldType = {
-    name: "name" | "email" | "password" | "confirmPassword";
+    name: "name" | "surname" | "email" | "password" | "confirmPassword";
     type: "text" | "email" | "password";
     label: string;
     message: string;
@@ -31,13 +29,15 @@ const SignUpPage = () => {
 
     const fields: FieldType[] = [
         { name: 'name', type: 'text', label: 'Name', message: 'Digit your name' },
+        { name: 'surname', type: 'text', label: 'Surname', message: 'Digit your surname' },
         { name: 'email', type: 'email', label: 'Email', message: 'Digit your email' },
         { name: 'password', type: 'password', label: 'Password', message: 'Digit your password' },
         { name: 'confirmPassword', type: 'password', label: 'Confirm Password', message: 'Digit your again' }
     ];
 
     const userSchemaForm = z.object({
-        name: z.string().min(3, { message: "name is required and must have at least 3 characters" }).max(255),
+        name: z.string().min(1, { message: "name is required and must have at least 3 characters" }).max(255),
+        surname: z.string().min(1, { message: "name is required and must have at least 3 characters" }).max(255),
         email: z.string().email({ message: "email is required and must be a valid email" }),
         password: z.string().min(1, { message: "Password must be atleast 1 characters" }).max(255),
         confirmPassword: z.string().min(1, { message: "Confirm Password is required" }).max(255)
@@ -54,11 +54,10 @@ const SignUpPage = () => {
     });
 
     const onSubmit = (data: UserSchemaForm) => {
-        console.log(data);
-
         createUser.mutate({
             data: {
                 name: data.name,
+                surname: data.surname,
                 email: data.email,
                 hashedPassword: data.password
             }
@@ -95,7 +94,7 @@ const SignUpPage = () => {
                                 />
                             ))
                         }
-                        <Button className='w-1/3 self-center' type="submit">Sign Up</Button>
+                        <Button className='w-1/3 h-10 self-center' type="submit">Sign Up</Button>
                     </form>
                 </Form>
             </div>

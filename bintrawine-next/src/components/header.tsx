@@ -1,18 +1,22 @@
-import Link from 'next/link'
 import Image from 'next/image';
-
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
 import { Button } from './ui/button';
+import Account from './account';
+import Tag from './tag';
+import Counter from './counter';
+import { MdArrowDropDown } from 'react-icons/md'
 
 const Header = () => {
 
     const { data: session, status } = useSession();
+    const [selected, setSelected] = useState<boolean>(false);
 
     return (
-        <header className="grid-in-header bg-nord15-light w-full flex h-full z-3 px-4">
-            <div className="flex w-full my-0 mx-auto px-0 py-1.5 flex-row items-center gap-5">
-                <Link href="/" className={`text-inherit rounded-0.25em padding-0.15em-0.5em flex items-center justify-center text-base`}>
+        <header className="grid-in-header bg-nord15-light w-full flex flex-row h-full z-3 p-2">
+            <div className='flex-1 flex flex-row justify-between h-10 gap-5 items-center'>
+                <div className='flex flex-row justify-center items-center'>
                     <Image
                         className="h-10 w-10 mr-4 rounded-xl"
                         width={40}
@@ -20,23 +24,28 @@ const Header = () => {
                         src="/images/logo.png"
                         alt="BinTraWine fish logo"
                     />
-                    <span className="font-bold text-2xl">BinTraWine</span>
-                </Link>
-
+                    <span className="font-primary text-14">BinTraWine</span>
+                </div>
+                <div className='w-0.5 h-3/4 bg-disabled' />
                 <div className='flex flex-row gap-4'>
-                    <p>Insights</p>
-                    <p>Prodotti</p>
-                    <p>Blockchain status</p>
+                    <Button variant="link">Insights</Button>
+                    <Button variant="link">Prodotti</Button>
+                    <Button variant="link">Blockchain status</Button>
                 </div>
 
+            </div>
+            <div className='flex-1 h-10 flex justify-end items-center'>
                 {status == 'authenticated' &&
                     <div className="flex gap-4">
-                        <span className="text-xl">{session?.user.name}</span>
-                        <Button onClick={async () => await signOut()}>Sign Out</Button>
+                        <Account onClick={async () => await signOut()}>
+                            <Image className='rounded-full' src="/images/logo.png" alt="Picture of the author" width={30} height={30} />
+                            {session?.user.name} {session?.user.surname}
+                            <MdArrowDropDown size='24' />
+                        </Account>
                     </div>
                 }
             </div>
-        </header>
+        </header >
     );
 }
 

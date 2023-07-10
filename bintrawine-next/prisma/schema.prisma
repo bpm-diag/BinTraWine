@@ -55,6 +55,7 @@ model Session {
 model User {
     id             Int       @id @default(autoincrement())
     name           String
+    surname        String
     email          String    @unique
     hashedPassword String
     accounts       Account[]

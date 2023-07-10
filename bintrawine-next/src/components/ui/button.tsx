@@ -12,7 +12,7 @@ const buttonVariants = cva(
         link: "disabled:text-disabled disabled:bg-white active:text-primary bg-white text-primary_light"
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "px-4 py-2",
       },
     },
     defaultVariants: {
