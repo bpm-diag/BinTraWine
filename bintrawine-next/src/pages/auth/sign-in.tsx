@@ -80,6 +80,7 @@ const SignIn = () => {
                                             <FormLabel className='text-xl'>{fielditem.label}</FormLabel>
                                             <FormControl>
                                                 <Input type={fielditem.type} placeholder={fielditem.label} {...field} />
+
                                             </FormControl>
                                             <FormDescription>
                                                 {fielditem.message}

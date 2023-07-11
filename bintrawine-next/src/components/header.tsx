@@ -4,8 +4,6 @@ import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
 import { Button } from './ui/button';
 import Account from './account';
-import Tag from './tag';
-import Counter from './counter';
 import { MdArrowDropDown } from 'react-icons/md'
 
 const Header = () => {
@@ -15,7 +13,7 @@ const Header = () => {
 
     return (
         <header className="grid-in-header bg-nord15-light w-full flex flex-row h-full z-3 p-2">
-            <div className='flex-1 flex flex-row justify-between h-10 gap-5 items-center'>
+            <div className='flex-1 flex flex-row h-10 gap-5 items-center'>
                 <div className='flex flex-row justify-center items-center'>
                     <Image
                         className="h-10 w-10 mr-4 rounded-xl"
@@ -28,9 +26,8 @@ const Header = () => {
                 </div>
                 <div className='w-0.5 h-3/4 bg-disabled' />
                 <div className='flex flex-row gap-4'>
-                    <Button variant="link">Insights</Button>
-                    <Button variant="link">Prodotti</Button>
-                    <Button variant="link">Blockchain status</Button>
+                    <Button className='px-0' variant="link">Insights</Button>
+                    <Button className='px-0' variant="link">Prodotti</Button>
                 </div>
 
             </div>
