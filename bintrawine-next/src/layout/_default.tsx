@@ -8,9 +8,9 @@ const Layout = ({ children }: Props) => {
 
     return (
         <>
-            <div>
+            <div className='grid grid-areas-layout grid-cols-layout grid-rows-layout'>
                 <Header />
-                <div className="min-h-screen bg-gray-10">{children}</div>
+                <div className="mt-16 grid-in-main min-h-screen">{children}</div>
             </div>
         </>
     );

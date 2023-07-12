@@ -5,6 +5,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { cn } from "@/utils"
 
 export type ActorItemType = {
     title: string,
@@ -19,7 +20,7 @@ const ActorItem = React.forwardRef<HTMLDivElement, ActorItemProps>(
     ({ className, actorItem }, ref) => {
 
         return (
-            <Accordion type="single" collapsible>
+            <Accordion type="single" className={cn(className)} collapsible>
                 <AccordionItem value="item-1">
                     <AccordionTrigger className="py-1 px-4 bg-white">
                         <p className='font-primary text-16 font-normal text-left'>{actorItem.title}</p>

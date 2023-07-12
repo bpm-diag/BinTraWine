@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/utils"
 
 const counterVariants = cva(
-    "hover:cursor-pointer bg-surface rounded-full p-1 flex flex-row justify-center items-center gap-1 font-primary text-14 font-normal break-normal",
+    "hover:cursor-pointer bg-transparent rounded-full p-1 flex flex-row justify-center items-center gap-2 font-primary text-14 font-normal break-normal",
     {
         variants: {
             variant: {
@@ -33,7 +33,6 @@ const Account = React.forwardRef<HTMLDivElement, AccountProps>(
                 className={`${cn(counterVariants({ variant, size, className }))}`}
                 {...props}
             >
-
             </div>
         )
     })

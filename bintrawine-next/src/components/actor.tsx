@@ -18,7 +18,7 @@ const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
     ({ className, data }, ref) => {
 
         return (
-            <div className="w-64 flex flex-col gap-4 p-2 bg-surface">
+            <div className="flex flex-col gap-4 p-2 bg-surface">
                 <div className="flex flex-col gap-1">
                     <div className="flex flex-row justify-between items-center">
                         <p className="font-primary text-20 font-normal text-primary">Agronomo</p>

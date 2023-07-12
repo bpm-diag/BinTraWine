@@ -1,95 +1,7 @@
 import Head from "next/head";
-import Actor, { ActorData } from "@/components/actor";
+import ActorDescription from "@/components/actorDescription";
 
 export default function LandingPage() {
-
-  const data: ActorData = {
-    name: 'Agronomo',
-    lastUpdate: 'Ultimo aggiornamento: 12/12/2021',
-    actorItemData: [
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      },
-      {
-        title: 'Analisi qualità prodotto',
-        data: [
-          { name: 'Superficie', value: '2000 mq' },
-          { name: 'Umidità', value: '43%' },
-          { name: 'Temperatura', value: '22°' },
-          { name: 'Pioggia', value: '3mm' }
-        ]
-      }
-    ]
-  }
 
   return (
     <>
@@ -99,9 +11,8 @@ export default function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Actor data={data} />
+        <ActorDescription className="w-60" actorDescription={{ title: "Analisi qualità prodotto", data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam quis aliquam faucibus, nisl quam ultricies odio, nec ultricies nisl nunc eu nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam quis aliquam faucibus, nisl quam ultricies odio, nec ultricies nisl nunc eu nunc. " }} />
       </main>
-
     </>
   );
 }

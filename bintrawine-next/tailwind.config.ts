@@ -5,6 +5,19 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      gridTemplateAreas: {
+        'layout': [
+          'header',
+          'main',
+          'main',
+        ],
+      },
+      gridTemplateColumns: {
+        'layout': '1fr',
+      },
+      gridTemplateRows: {
+        'layout': '4rem 1fr',
+      },
       colors: {
         primary: "#09100F",
         primary_light: "#0F3835",
