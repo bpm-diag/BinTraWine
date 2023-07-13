@@ -10,7 +10,7 @@ const Layout = ({ children }: Props) => {
         <>
             <div className='grid grid-areas-layout grid-cols-layout grid-rows-layout'>
                 <Header />
-                <div className="mt-16 grid-in-main min-h-screen">{children}</div>
+                <div className="mt-44 grid-in-main min-h-screen">{children}</div>
             </div>
         </>
     );

@@ -1,5 +1,13 @@
 import Head from "next/head";
-import ActorDescription from "@/components/actorDescription";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 export default function LandingPage() {
 
@@ -11,7 +19,7 @@ export default function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <ActorDescription className="w-60" actorDescription={{ title: "Analisi qualità prodotto", data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam quis aliquam faucibus, nisl quam ultricies odio, nec ultricies nisl nunc eu nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam quis aliquam faucibus, nisl quam ultricies odio, nec ultricies nisl nunc eu nunc. " }} />
+
       </main>
     </>
   );

@@ -19,6 +19,7 @@ export default {
         'layout': '4rem 1fr',
       },
       colors: {
+        accent: "#F13B09",
         primary: "#09100F",
         primary_light: "#0F3835",
         disabled: "#09100F33",
