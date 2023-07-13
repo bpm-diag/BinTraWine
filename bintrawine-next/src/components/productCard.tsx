@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from "@/utils"
-import Tag from './tag';
+import Tag from '@/components/tag';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export interface ProductCardProps

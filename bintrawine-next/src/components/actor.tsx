@@ -1,5 +1,5 @@
 import * as React from "react"
-import DataItem from "./actorItem";
+import DataItem from "@/components/actorItem";
 import { ActorItemType } from "./actorItem";
 import { MdMoreVert } from "react-icons/md";
 
