@@ -15,7 +15,6 @@ const Navbar = (props: NavbarProps) => {
                                     {item}
                                 </p>
                             </div>
-
                         )
                     })
                 }
