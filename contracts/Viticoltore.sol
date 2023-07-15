@@ -31,6 +31,7 @@ contract Viticoltore {
 
     //dati funzioni simulatore
     string quantitaUvaRaccolta;
+    //uint256 quantitaUvaRaccolta;
     string tipologiaUva;
     string umidita;
     string temperatura;
@@ -42,6 +43,7 @@ contract Viticoltore {
         string prezzoVendita;
         string nomeProdotto;
         string quantita;
+        //uint256 quantita;
         string dataVendita;
         string nomeCliente;
     }
@@ -49,6 +51,7 @@ contract Viticoltore {
     mapping(uint256 => DatiViticoltore) terreni;
     mapping(uint256 => datiVendita) vendite;
     mapping(uint => mapping(address => bool)) allowedAddressesVendite; //mapping per le autirizzazioni sulle get di vendita
+    mapping(string => uint256) nomiQuantita; // MAPPA DI TEST PER DATA AGGREGATION
 
     /*identificativi funzioni terreni e vendite*/
     uint256 idDataRaccoltaSerial = 1;
@@ -98,7 +101,7 @@ contract Viticoltore {
        idDestinazioneUvaSerial++;
    }
 
-   function setVendita(string memory _nomeProdotto,string memory _prezzoVendita, string memory _quantita, string memory _nomeCliente,
+   function setVendita(string memory _nomeProdotto,string memory _prezzoVendita, string memory/*uint256*/ _quantita, string memory _nomeCliente,
             string memory _dataVendita, address[] memory _addresses) public {
        require(authorized[msg.sender]);
        vendite[idVenditaSerial].nomeProdotto = _nomeProdotto;
@@ -106,6 +109,12 @@ contract Viticoltore {
        vendite[idVenditaSerial].quantita = _quantita;
        vendite[idVenditaSerial].nomeCliente = _nomeCliente;
        vendite[idVenditaSerial].dataVendita = _dataVendita;
+
+       //TEST PER DATA AGGREGATION
+       if(nomiQuantita[_nomeCliente] != 0 || nomiQuantita[_nomeCliente]==0){
+            uint256 temp = nomiQuantita[_nomeCliente] + stringToUint(_quantita);
+            nomiQuantita[_nomeCliente] = temp;
+        }
 
        for(uint i=0; i<_addresses.length; i++){ //ciclo necessario a definire gli address forniti in input come "trusted"
             if(_addresses[i] != address(0)){ //entra in azione solo de gli address forniti sono diversi dall'address nullo (0x0000000000000...)
@@ -119,15 +128,181 @@ contract Viticoltore {
    }
 
     //funzione automatiche
+    //uint256[] app; //TEST DATA AGGREGATION
+    uint256 idRaccolta=1;
+    mapping(string => uint256) dateQuantita;
     function setSensoriViticoltore(uint256 _idTerreno, string memory _quantitaUvaRaccolta, string memory _tipologiaUva, string memory _umidita, string memory _temperatura, string memory _quantitaFertilizzanti) public {
 
+      /*  if(terreni[_idTerreno].quantitaUvaRaccolta == 0) {
+        app.push( _quantitaUvaRaccolta); //TEST DATA AGGREGATION
+        } else {
+            app.push(terreni[_idTerreno].quantitaUvaRaccolta + _quantitaUvaRaccolta);
+        } */
+    
         terreni[_idTerreno].quantitaUvaRaccolta = _quantitaUvaRaccolta;
         terreni[_idTerreno].tipologiaUva = _tipologiaUva;
         terreni[_idTerreno].umidita = _umidita;
         terreni[_idTerreno].temperatura = _temperatura;
         terreni[_idTerreno].quantitaFertilizzanti = _quantitaFertilizzanti;
 
+        //TEST PER DATA AGGREGATION
+        
+       if(dateQuantita[getDataRaccolta(idRaccolta)] != 0 || dateQuantita[getDataRaccolta(idRaccolta)]==0){
+            uint256 temp = dateQuantita[getDataRaccolta(idRaccolta)] + stringToUint(_quantitaUvaRaccolta);
+            dateQuantita[getDataRaccolta(idRaccolta)] = temp;
+            idRaccolta++;
+        }
+
     }
+
+    /* query e funzioni di supporto per data analysis*/
+    function getMappingTerreniLength() public view returns (uint256) {
+    uint256 count = 0;
+    for (uint256 i = 1; i < type(uint256).max; i++) {
+        if (bytes(terreni[i].dataRaccolta).length == 0) {
+            break;
+        }
+        count++;
+    }
+    return count;
+    }
+
+     function stringToUint(string memory s) internal pure returns (uint256) {
+    bytes memory b = bytes(s);
+    uint256 result = 0;
+    for (uint256 i = 0; i < b.length; i++) {
+        uint256 c = uint256(uint8(b[i]));
+        if (c >= 48 && c <= 57) {
+            result = result * 10 + (c - 48);
+        }
+    }
+    return result;
+    }
+
+    function uintToString(uint256 value) internal pure returns (string memory) {
+    if (value == 0) {
+        return "0";
+    }
+    uint256 temp = value;
+    uint256 digits;
+    while (temp != 0) {
+        digits++;
+        temp /= 10;
+    }
+    bytes memory buffer = new bytes(digits);
+    while (value != 0) {
+        digits--;
+        buffer[digits] = bytes1(uint8(48 + value % 10));
+        value /= 10;
+    }
+    return string(buffer);
+    }
+
+    //string[] app;
+    function queryDataUvaRaccolta() public view returns (string[] memory, uint256[] memory/*string[] memory*/) {
+        
+        uint256 length = getMappingTerreniLength();
+        string[] memory resultData = new string[](length);
+        uint256[] memory resultQuantitaRaccolta = new uint256[](length);
+        //string[] memory app = new string[](length);
+
+      /*  for (uint256 i = 1; i <= length; i++) {
+            resultData[i-1] = terreni[i].dataRaccolta;
+            resultQuantitaRaccolta[i-1] = app[i-1];//terreni[i].quantitaUvaRaccolta;
+            //app[i] = terreni[i].quantitaUvaRaccolta;
+        } */
+
+        string[] memory usedDate = new string[](length);
+        uint256 uniqueCount = 0; // Counter for unique names
+
+        for (uint256 i = 1; i <= length; i++) {
+            string memory data = terreni[i].dataRaccolta;
+            bool isUsed = false;
+
+        // Check if the name has already been used
+        for (uint256 j = 0; j < uniqueCount; j++) {
+            if (keccak256(abi.encodePacked(usedDate[j])) == keccak256(abi.encodePacked(data))) {
+                isUsed = true;
+                break;
+            }
+        }
+
+        if (!isUsed) {
+            usedDate[uniqueCount] = data;
+            resultData[uniqueCount] = data;
+            resultQuantitaRaccolta[uniqueCount] = dateQuantita[data];
+            uniqueCount++;
+        }
+    }
+
+    // Resize the arrays to remove unused slots
+    assembly {
+        mstore(resultData, uniqueCount)
+        mstore(resultQuantitaRaccolta, uniqueCount)
+    }
+
+        
+
+            return (resultData, /*app*/resultQuantitaRaccolta);
+    } 
+
+    function getMappingVenditeLength() public view returns (uint256) {
+        
+        uint256 count = 0;
+        for (uint256 i = 1; i < type(uint256).max; i++) {
+            if (bytes(vendite[i].prezzoVendita).length == 0) {
+                break;
+            }
+            count++;
+        }
+            return count;
+    }
+
+    function queryNomiClientiQuantita() public view returns (string[] memory, uint256[] memory) {
+        
+        uint256 length = getMappingVenditeLength();
+        string[] memory resultNomi = new string[](length);
+        uint256[] memory resultQuantita = new uint256[](length);
+
+      /*  for (uint256 i = 1; i <= length; i++) {
+            resultNomi[i-1] = vendite[i].nomeCliente;
+            resultQuantita[i-1] = vendite[i].quantita;
+        }
+
+        return (resultNomi, resultQuantita);*/
+        string[] memory usedNomi = new string[](length);
+        uint256 uniqueCount = 0; // Counter for unique names
+
+        for (uint256 i = 1; i <= length; i++) {
+            string memory nomeCliente = vendite[i].nomeCliente;
+            bool isUsed = false;
+
+        // Check if the name has already been used
+        for (uint256 j = 0; j < uniqueCount; j++) {
+            if (keccak256(abi.encodePacked(usedNomi[j])) == keccak256(abi.encodePacked(nomeCliente))) {
+                isUsed = true;
+                break;
+            }
+        }
+
+        if (!isUsed) {
+            usedNomi[uniqueCount] = nomeCliente;
+            resultNomi[uniqueCount] = nomeCliente;
+            resultQuantita[uniqueCount] = nomiQuantita[nomeCliente];
+            uniqueCount++;
+        }
+    }
+
+    // Resize the arrays to remove unused slots
+    assembly {
+        mstore(resultNomi, uniqueCount)
+        mstore(resultQuantita, uniqueCount)
+    }
+
+        return (resultNomi, resultQuantita);
+    } 
+//
+
 
     //funzioni di get
     function getIdDataRaccoltaSerial() public view returns(uint256){
@@ -165,7 +340,7 @@ contract Viticoltore {
         return terreni[_idTerreno].destinazioneUva;
     }
 
-    function getDatiVendita(uint256 _idVendita) public view returns(string memory, string memory, string memory, string memory, string memory) {
+    function getDatiVendita(uint256 _idVendita) public view returns(string memory, string memory, /*uint256*/string memory, string memory, string memory) {
         require(authorized[msg.sender]);
         
         if (allowedAddressesVendite[_idVendita][msg.sender] == true) { //"msg.sender" rappresenta l'address di chi sta chiamando il metodo.

@@ -2,12 +2,12 @@
 <html>
 
 <head>
-  <title>Data Aggregation - Produttore</title>
+  <title>Data Aggregation - Rivenditore</title>
   <!-- Include the Chart.js library -->
   <script src="https://cdn.jsdelivr.net/npm/web3@3.0.0-rc.5/dist/web3.min.js"></script>
   <script src="https://unpkg.com/chart.js@4.2.0/dist/chart.umd.js"></script>
   <script src="../../contract_addresses.js"></script>
-  <script src="..//data_aggregation_produttore.js"></script>
+  <script src="..//data_aggregation_rivenditore.js"></script>
   <!-- script src="https://cdn.jsdelivr.net/npm/chart.js"></script -->
   <style>
     body {
@@ -64,12 +64,9 @@
 <body>
   <div class="container">
     <div>
-      <h1>Data Aggregation - Produttore</h1>
+      <h1>Data Aggregation - Rivenditore</h1>
 
-      <!-- Add a button to generate the chart -->
-      <button class="btn" onclick = generateChartVinoOttenuto()>Generate Chart Vino Ottenuto</button>
-
-      <button class="btn" onclick = generateChartVinoRivendicato()>Generate Chart Vino Rivendicato</button>
+      <button class="btn" onclick = generateChartTipologiaQuantita()>Generate Chart Tipologia Quantita</button>
 
       <!-- Add a canvas element to display the chart -->
       <canvas id="chart" width="400" height="400"></canvas>

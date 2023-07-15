@@ -11,6 +11,14 @@ import "./Rivenditore.sol";
 
 contract SimulatoreSensori {
 
+    Agronomo agronomoContract;
+    Viticoltore viticoltoreContract;
+    Produttore produttoreContract;
+    Imbottigliatore imbottigliatoreContract;
+    //EnteCertificatore EnteCertificatoreContract;
+    Distributore distributoreContract;
+    Rivenditore rivenditoreContract;
+    
     constructor(address agronomoContractAddr, address viticoltoreContractAddr, address produttoreContractAddr, address imbottigliatoreContractAddr,
     address distributoreContractAddr, address rivenditoreContractAddr)  {
 
@@ -21,14 +29,6 @@ contract SimulatoreSensori {
         distributoreContract = Distributore(distributoreContractAddr);
         rivenditoreContract = Rivenditore(rivenditoreContractAddr);
     }
-
-    Agronomo agronomoContract;
-    Viticoltore viticoltoreContract;
-    Produttore produttoreContract;
-    Imbottigliatore imbottigliatoreContract;
-    //EnteCertificatore EnteCertificatoreContract;
-    Distributore distributoreContract;
-    Rivenditore rivenditoreContract;
 
     function setSensoriAgronomo(uint256 _idTerreno, string memory _superficie, string memory _umiditaTerreno, string memory _temperaturaTerreno, string memory _pioggia) public {
 
