@@ -41,35 +41,6 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                         <MdNotificationsNone size='24' />
                     </div>
                 </div>
-                <div className="flex flex-row gap-4 px-8 py-3 h-14 items-center bg-white">
-                    <Button className='bg-accent'>
-                        <p className='text-14 font-normal font-primary truncate'>Nuovo Prodotto</p>
-                        <MdAdd size='24' />
-                    </Button>
-                    <Separator className='bg-primary h-2/3' orientation="vertical" />
-                    {
-                        wines.map((wine, index) => (
-                            <Button key={index}>
-                                <p className='text-14 font-normal font-primary truncate'>{wine}</p>
-                                <MdClose size='24' />
-                            </Button>
-                        ))
-                    }
-                </div>
-                <div className='flex flex-row gap-4 px-8 py-3 h-14 items-center bg-white'>
-                    {
-                        paths.map((path, index) => {
-                            return (
-                                <div className='flex flex-row gap-4'>
-                                    <p className='text-14 font-normal font-primary'>{path}</p>
-                                    {
-                                        index < paths.length - 1 && <MdChevronRight size='24' />
-                                    }
-                                </div>
-                            )
-                        })
-                    }
-                </div>
             </header >
         );
     });

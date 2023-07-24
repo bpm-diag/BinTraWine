@@ -24,8 +24,8 @@ export default {
         primary_light: "#0F3835",
         disabled: "#09100F33",
         tertiary: "#C6D6E3",
-        surface: "#EDEDED",
-        surface_dark: "#C8C9C7",
+        surface: "#FAFAFA",
+        surface_dark: "#EDEDED",
         black: "#B7CE95",
         black_dim: "#868686",
         white: "#FFFFFF",
@@ -41,6 +41,9 @@ export default {
         16: '1,3331rem',
         12: '1rem',
         14: '1,1669rem',
+      },
+      minHeight: {
+        '60': '60px',
       },
       keyframes: {
         "accordion-down": {
