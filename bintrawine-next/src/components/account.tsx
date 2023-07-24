@@ -43,7 +43,7 @@ const Account = React.forwardRef<HTMLDivElement, AccountProps>(
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col gap-0">
+                <div className="flex flex-col items-start gap-0">
                     <p>{name} {surname}</p>
                     {role && <p className="text-xs font-normal">{role}</p>}
                 </div>

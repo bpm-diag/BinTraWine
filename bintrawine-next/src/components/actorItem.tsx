@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/accordion"
 import Counter from "./counter"
 import { cn } from "@/utils"
-import { MdOpenInNew } from "react-icons/md"
 import AccordionText from "./accordionText"
 
 export type ActorItemType = {

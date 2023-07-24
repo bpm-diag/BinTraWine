@@ -4,9 +4,15 @@ import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Account from '@/components/account';
 import { Separator } from '@/components/ui/separator';
-import { MdNotificationsNone, MdAdd, MdClose, MdChevronRight } from 'react-icons/md'
+import { MdNotificationsNone, MdLogout } from 'react-icons/md'
 import Logo from '@/components/ui/logo';
 import { cn } from '@/utils';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export interface AccountProps
     extends React.HTMLAttributes<HTMLHeadElement> {
@@ -15,8 +21,6 @@ export interface AccountProps
 const Header = React.forwardRef<HTMLDivElement, AccountProps>(
     ({ className, ...props }, ref) => {
 
-        const wines = ["Tellus Chradonnay", "Tellus Chradonnay", "Tellus Chradonnay"]
-        const paths = ["Azienda", "Sezione", "Pagina", "Prodotto"]
         const { data: session, status } = useSession();
 
         return (
@@ -34,9 +38,17 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                     </div>
                     <div className='flex-1 gap-5 flex justify-end items-center'>
                         {status == 'authenticated' &&
-                            <div className="flex gap-4">
-                                <Account variant='selected' role='Distributore' name={session?.user.name} surname={session?.user.surname} onClick={async () => await signOut()} />
-                            </div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <Account variant='selected' role='Distributore' name={session?.user.name} surname={session?.user.surname} />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem className='flex flex-row justify-between items-center hover:cursor-pointer' onClick={async () => await signOut()}>
+                                        <span className='text-primary text-base font-medium'>LogOut</span>
+                                        <MdLogout size='20' />
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         }
                         <MdNotificationsNone size='24' />
                     </div>
