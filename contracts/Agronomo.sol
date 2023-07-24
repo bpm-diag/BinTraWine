@@ -99,4 +99,68 @@ contract Agronomo {
 
     }
 
+    /*funzioni e supporto per data aggregation*/
+    function getMappingTerreniLength() public view returns (uint256) {
+        uint256 count = 0;
+        for (uint256 i = 1; i < type(uint256).max; i++) {
+            if (bytes(terreni[i].temperaturaTerreno).length == 0) {
+            break;
+            }
+            count++;
+        }
+        return count;
+    }
+
+    function querySuperficiePerTerreno() public view returns(string[] memory, uint256[] memory){
+        
+        uint256 length = getMappingTerreniLength();
+        string[] memory result = new string[](length);
+        uint256[] memory resultTerreni = new uint256[](length);
+
+        for(uint256 i=1; i<=length; i++){
+            resultTerreni[i-1] = i;
+            result[i-1] = terreni[i].superficie;
+        }
+        return (result, resultTerreni);
+    }
+
+    function queryUmiditaPerTerreno() public view returns(string[] memory, uint256[] memory){
+        
+        uint256 length = getMappingTerreniLength();
+        string[] memory result = new string[](length);
+        uint256[] memory resultTerreni = new uint256[](length);
+
+        for(uint256 i=1; i<=length; i++){
+            resultTerreni[i-1] = i;
+            result[i-1] = terreni[i].umiditaTerreno;
+        }
+        return (result, resultTerreni);
+    }
+
+    function queryTemperaturaPerTerreno() public view returns(string[] memory, uint256[] memory){
+        
+        uint256 length = getMappingTerreniLength();
+        string[] memory result = new string[](length);
+        uint256[] memory resultTerreni = new uint256[](length);
+
+        for(uint256 i=1; i<=length; i++){
+            resultTerreni[i-1] = i;
+            result[i-1] = terreni[i].temperaturaTerreno;
+        }
+        return (result, resultTerreni);
+    }
+
+    function queryPioggiaPerTerreno() public view returns(string[] memory, uint256[] memory){
+        
+        uint256 length = getMappingTerreniLength();
+        string[] memory result = new string[](length);
+        uint256[] memory resultTerreni = new uint256[](length);
+
+        for(uint256 i=1; i<=length; i++){
+            resultTerreni[i-1] = i;
+            result[i-1] = terreni[i].pioggia;
+        }
+        return (result, resultTerreni);
+    }
+
 }

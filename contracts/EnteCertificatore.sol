@@ -203,7 +203,7 @@ contract EnteCertificatore {
         return distributoreContract.getDestinazione(_idLotto);
     }
 
-    function getDatiVenditaDistributore(uint256 _idLotto) public view returns(string memory, string memory, string memory, string memory, string memory) {
+    function getDatiVenditaDistributore(uint256 _idLotto) public view returns(string memory, string memory, uint256/*string memory*/, string memory, string memory) {
         return distributoreContract.getDatiVendita(_idLotto);
     }
 

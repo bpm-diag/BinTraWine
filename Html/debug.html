@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BinTraWine - Rivenditore</title>
+    <title>BinTraWine - Viticoltore</title>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@3.0.0-rc.5/dist/web3.min.js"></script>
     <script src="../contract_addresses.js"></script>
-    <script src="../Js/Rivenditore.js"></script>
+    <script src="../Js/debug.js"></script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -17,7 +17,7 @@
       .container {
         max-width: 800px;
         margin: auto;
-        padding: 80px;
+        padding: 20px;
         background-color: white;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
@@ -83,52 +83,40 @@
   <body>
      <div class="container">
        <img src="../BinTraWine.png" alt="BinTraWine_logo" width="200" height="200"/>
-      <h1>BinTraWine - Rivenditore</h1>
+      <h1>BinTraWine - Viticoltore</h1>
 
-      <div style="margin-bottom:30px;">
-        <a href="../data_aggregation/html/data_aggregation_rivenditore.html">Data Aggregation Platform </a>
-        </div>
+      <div id="setDatiSensoriViticoltoreForm">
+        <label for="setDatiSensoriViticoltore"
+          >Inserimento Vendita</label
+        >
+        <input
+          type="text"
+          id="idTerreno"
+          placeholder="id Terreno"
+        />
+        <input
+          type="text"
+          id="quantitaUvaRaccolta"
+          placeholder="quantita"
+        />
+        <input type="text"
+        id="tipologia"
+        placeholder="tipologia uva"
+        />
+        <input type="text"
+        id="umidita"
+        placeholder="umidita"
+        />
+        <input type="text"
+        id="temperatura"
+        placeholder="temperatura"
+        />
+        <input type="text"
+        id="quantitaFertilizzante"
+        placeholder="quantita fertilizzante"
+         />
+         
+      <button type="submit" onclick="setDatiSensoriViticoltore()">Submit</button>
 
-      <div id="addAuthorizedForm">
-        <label for="addAuthorized">Add Authorized</label>
-        <input type="text" id="contractAddress" placeholder="Address" />
-        <button type="submit" onclick="addAuthorized()">Add</button>
-      </div>
-
-    <!--  <form id="removeAuthorizedForm">
-        <label for="removeAuthorized">Remove Authorized</label>
-        <input type="text" id="removeAuthorized" placeholder="Address" />
-        <button type="submit">Remove</button>
-      </form> -->
-
-  <div id="getDatiSensoriRivenditore">
-  <label for="getDatiSensoriRivenditore"
-    >Get Dati Sensori Rivenditore</label
-  >
-  <input
-    type="text"
-    id="getDatiSensoriRivenditoreIdLotto"
-    placeholder="Id Lotto"
-  />
-<button type="submit" onclick="getDatiSensoriRivenditore()">Get</button>
-<span id="resultDatiSensoriRivenditore" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
-</div>
-
-<div>
-  <label style="font-size:24px;">Dati Distributore:</label>
-</div>
-<h1></h1>
-
-<div id="getDatiVendita">
-  <label for="getDatiVendita"
-    >Get Dati Vendita</label
-  >
-  <input
-    type="text"
-    id="getDatiVenditaIdLotto"
-    placeholder="Id Lotto"
-  />
-<button type="submit" onclick="getDatiVendita()">Get</button>
-<span id="resultDatiVendita" style="position:absolute; margin-left:30px; margin-top:10px; white-space:pre-line;"></span>
-</div>
+    </div>
 </html>

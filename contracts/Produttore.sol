@@ -10,12 +10,11 @@ contract Produttore {
     mapping(address => bool) public authorized;
 
     Viticoltore viticoltoreContract;
-    
-    constructor(address _viticoltoreContractAddress)  {
+
+    constructor(address _viticoltoreContractAddress) {
         owner = msg.sender;
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         viticoltoreContract = Viticoltore(_viticoltoreContractAddress);
-        viticoltoreContract.addAuthorized(address(this));
     }
 
     struct DatiProduttore {
@@ -38,9 +37,9 @@ contract Produttore {
     uint256 idQuantitaVinoOttenutoSerial = 1;
     uint256 idQuantitaVinoRivendicatoSerial = 1;
 
-    //funzioni di autorizzazione
+    //funzioni di autorizzazione 
     function addAuthorized(address _address) public {
-        //require(msg.sender == owner); Da tenere solo per testing e comodità, a lavoro definitivo va levata.
+        //require(msg.sender == owner);
         authorized[_address] = true;
     }
 
@@ -53,7 +52,6 @@ contract Produttore {
     function setProdottiVinificazione(string memory _prodottiVinificazione) public {
         require(authorized[msg.sender]);
         lotti[idProdottiVinificazioneSerial].prodottiVinificazione = _prodottiVinificazione;
-        //customerContract.setProdottiVinificazione(idProdottiVinificazioneSerial, _prodottiVinificazione);
         idProdottiVinificazioneSerial++;
     }
 
@@ -77,6 +75,46 @@ contract Produttore {
         lotti[_idLotto].idContainer = _idContainer;
         lotti[_idLotto].temperaturaContainer = _temperaturaContainer;
     }
+
+    /*funzioni e metodi di appoggio per data analysis*/
+    function getMappaLottiLength() public view returns(uint256){
+        uint256 count = 0;
+        for (uint256 i = 1; i < type(uint256).max; i++) {
+            if (bytes(lotti[i].quantitaVinoOttenuto).length == 0) {
+             break;
+            }
+                count++;
+        }
+             return count;
+    }   
+
+    function queryVinoOttenutoPerLotto() public view returns(string[] memory, uint256[] memory){
+        
+        uint256 length = getMappaLottiLength();
+        string[] memory result = new string[](length);
+        uint256[] memory resultLotti = new uint256[](length);
+
+        for(uint256 i=1; i <= length; i++){
+            resultLotti[i-1] = i;
+            result[i-1] = lotti[i].quantitaVinoOttenuto;
+        }
+        return (result, resultLotti);
+    }
+
+    function queryVinoRivendicatoPerLotto() public view returns(string[] memory, uint256[] memory){
+
+        uint256 length = getMappaLottiLength();
+        string[] memory result = new string[](length);
+        uint256[] memory resultLotti = new uint256[](length);
+
+        for(uint256 i = 1; i <= length; i++){
+            resultLotti[i-1] = i;
+            result[i-1] = lotti[i].quantitaVinoRivendicato;
+        }
+        return (result, resultLotti);
+    }
+    
+    //
 
     //funioni get
     function getIdProdottiVinificazioneSerial() public view returns(uint256) {
