@@ -3,12 +3,14 @@ import { cn } from "@/utils"
 
 export interface LogoProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    width?: number;
+    height?: number;
 }
 
 const Logo = React.forwardRef<HTMLDivElement, LogoProps>(
-    ({ className }, ref) => {
+    ({ className, width, height }, ref) => {
         return (
-            <svg className={cn(className)} width="60" height="60" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className={cn(className)} width={width ?? "60"} height={height ?? "60"} viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path className={cn(className)} d="M352 329.158C352 343.51 340.359 355.145 326 355.145C311.641 355.145 300 343.51 300 329.158C300 314.805 311.641 303.171 326 303.171C340.359 303.171 352 314.805 352 329.158Z" fill="black" />
                 <path className={cn(className)} d="M317 398.123C317 418.548 300.882 435.105 281 435.105C261.118 435.105 245 418.548 245 398.123C245 377.699 261.118 361.142 281 361.142C300.882 361.142 317 377.699 317 398.123Z" fill="black" />
                 <path className={cn(className)} d="M352 562.541C352 577.721 340.136 590.027 325.5 590.027C310.864 590.027 299 577.721 299 562.541C299 547.361 310.864 535.055 325.5 535.055C340.136 535.055 352 547.361 352 562.541Z" fill="black" />

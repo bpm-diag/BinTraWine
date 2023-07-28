@@ -57,6 +57,8 @@ model User {
     name           String
     surname        String
     email          String    @unique
+    cellar         String
+    roles          Role[]
     hashedPassword String
     accounts       Account[]
     sessions       Session[]
@@ -68,4 +70,14 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum Role {
+    AGRONOMO
+    VITICOLTORE
+    PRODUTTORE
+    IMBOTTIGLIATORE
+    DISTRIBUITORE
+    RIVENDITORE
+    ENTECERTIFICATORE
 }

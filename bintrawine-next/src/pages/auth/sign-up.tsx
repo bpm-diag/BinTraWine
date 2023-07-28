@@ -7,6 +7,8 @@ import {
     FormMessage,
     FormControl
 } from '@/components/ui/form';
+import Link from 'next/link';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
@@ -14,12 +16,36 @@ import { z } from 'zod';
 import { api } from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
+import SidebarLogin from '@/components/sidebarLogin';
+import { Role } from '@prisma/client';
 
 type FieldType = {
-    name: "name" | "surname" | "email" | "password" | "confirmPassword";
+    name: "name" | "surname" | "email" | "password" | "cantina";
     type: "text" | "email" | "password";
     label: string;
     message: string;
+    design: string;
+}
+
+const transformRole = (role: string): Role => {
+    switch (role) {
+        case "agronomo":
+            return Role.AGRONOMO;
+        case "viticoltore":
+            return Role.VITICOLTORE;
+        case "produttore":
+            return Role.PRODUTTORE;
+        case "imbottigliatore":
+            return Role.IMBOTTIGLIATORE;
+        case "distributore":
+            return Role.DISTRIBUITORE;
+        case "rivenditore":
+            return Role.RIVENDITORE;
+        case "ente_certificatore":
+            return Role.ENTECERTIFICATORE;
+        default:
+            return Role.AGRONOMO;
+    }
 }
 
 const SignUpPage = () => {
@@ -28,78 +54,199 @@ const SignUpPage = () => {
     const createUser = api.users.create.useMutation();
 
     const fields: FieldType[] = [
-        { name: 'name', type: 'text', label: 'Name', message: 'Digit your name' },
-        { name: 'surname', type: 'text', label: 'Surname', message: 'Digit your surname' },
-        { name: 'email', type: 'email', label: 'Email', message: 'Digit your email' },
-        { name: 'password', type: 'password', label: 'Password', message: 'Digit your password' },
-        { name: 'confirmPassword', type: 'password', label: 'Confirm Password', message: 'Digit your again' }
+        { name: 'name', type: 'text', label: 'Nome', message: '', design: 'row-start-1 col-start-1 col-span-1' },
+        { name: 'surname', type: 'text', label: 'Cognome', message: '', design: 'row-start-2 col-start-1 col-span-1' },
+        { name: 'email', type: 'email', label: 'Inserisci la tua e-mail', message: '', design: 'row-start-3 col-start-1 col-span-1' },
+        { name: 'password', type: 'password', label: 'Imposta una password', message: '', design: 'row-start-4 col-start-1 col-span-1' },
+        { name: 'cantina', type: 'text', label: 'Nome cantina', message: '', design: 'row-start-1 col-start-2 col-span-1' }
     ];
+    const items = [
+        {
+            id: "agronomo",
+            label: "Agronomo",
+        },
+        {
+            id: "viticoltore",
+            label: "Viticoltore",
+        },
+        {
+            id: "produttore",
+            label: "Produttore",
+        },
+        {
+            id: "imbottigliatore",
+            label: "Imbottigliatore",
+        },
+        {
+            id: "distributore",
+            label: "Distributore",
+        },
+        {
+            id: "rivenditore",
+            label: "Rivenditore",
+        },
+        {
+            id: "ente_certificatore",
+            label: "Ente Certificatore",
+        },
+    ] as const
 
     const userSchemaForm = z.object({
-        name: z.string().min(1, { message: "name is required and must have at least 3 characters" }).max(255),
-        surname: z.string().min(1, { message: "name is required and must have at least 3 characters" }).max(255),
-        email: z.string().email({ message: "email is required and must be a valid email" }),
-        password: z.string().min(1, { message: "Password must be atleast 1 characters" }).max(255),
-        confirmPassword: z.string().min(1, { message: "Confirm Password is required" }).max(255)
-    }).
-        refine(data => data.password === data.confirmPassword, {
-            path: ["confirmPassword"],
-            message: 'Password and Confirm Password must be the same',
-        });
+        name: z.string().min(1, { message: "Il nome è richiesto e deve avere almeno un carattere" }).max(255),
+        surname: z.string().min(1, { message: "Il cognome è richiesto e deve avere almeno un carattere" }).max(255),
+        email: z.string().email({ message: "La mail è richiesta e deve essere valida" }),
+        password: z.string().min(5, { message: "La password deve avere almeno 5 caratteri" }).max(255),
+        cantina: z.string().min(3, { message: "Il nome della cantina è da specificare e deve avere almeno 3 caratteri" }).max(255),
+        items: z.array(z.string()).refine((value) => value.some((item) => item), {
+            message: "You have to select at least one item"
+        }),
+        conditions: z.boolean().default(false)
+            .refine((data) => data, {
+                message: "Le condizione devono essere accettate",
+            })
+    });
 
     type UserSchemaForm = z.infer<typeof userSchemaForm>;
 
     const form = useForm<UserSchemaForm>({
-        resolver: zodResolver(userSchemaForm)
+        resolver: zodResolver(userSchemaForm),
+        defaultValues: {
+            items: ["agronomo"],
+            conditions: true,
+        },
     });
 
     const onSubmit = (data: UserSchemaForm) => {
+        let roles: Role[] = data.items.map((item) => transformRole(item));
         createUser.mutate({
             data: {
                 name: data.name,
                 surname: data.surname,
                 email: data.email,
+                cellar: data.cantina,
+                roles: roles,
                 hashedPassword: data.password
             }
         });
         router.push('/auth/sign-in');
-
     }
 
     return (
-        <div className='p-5 mt-5 flex flex-col gap-7'>
-            <h1 className='font-bold text-center text-4xl'>BinTraWine Sign Up</h1>
-            <div className='w-3/5 self-center'>
+        <div className='flex flex-row h-screen'>
+            <SidebarLogin className="flex flex-col items-start gap-14 p-16 bg-primary w-1/3" />
+            <div className='flex flex-col gap-20 p-16 w-full'>
+                <div className='flex flex-row justify-between items-start'>
+                    <div className='flex flex-col'>
+                        <h1 className='font-primary font-normal text-3xl'>Registrati</h1>
+                        <p className='font-primary font-normal text-sm'>Imposta le tue credenziali</p>
+                    </div>
+                    <div>
+                        <p className='font-primary font-normal text-base'>Hai già un account? <Link href="/auth/sign-in" className='underline hover:cursor-pointer text-accent'>Accedi</Link></p>
+                    </div>
+                </div>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-8">
-                        {
-                            fields.map((fielditem, index) => (
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='h-full'>
+                        <div className='flex flex-col justify-between h-full'>
+                            <div className="grid grid-cols-2 grid-rows-4 gap-9">
+                                {
+                                    fields.map((fielditem, index) => (
+                                        <FormField
+                                            key={index}
+                                            defaultValue=''
+                                            control={form.control}
+                                            name={fielditem.name}
+                                            render={({ field }) => (
+                                                <FormItem className={`bg row-span-1 ${fielditem.design}`}>
+                                                    <FormLabel className='text-primary font-normal font-primary text-xl'>{fielditem.label}</FormLabel>
+                                                    <FormControl>
+                                                        <Input type={fielditem.type} placeholder={fielditem.label} {...field} />
+                                                    </FormControl>
+                                                    <FormDescription>
+                                                        {fielditem.message}
+                                                    </FormDescription>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    ))
+                                }
                                 <FormField
-                                    key={index}
-                                    defaultValue=''
                                     control={form.control}
-                                    name={fielditem.name}
-                                    render={({ field }) => (
-                                        <FormItem className='bg'>
-                                            <FormLabel className='text-xl'>{fielditem.label}</FormLabel>
-                                            <FormControl>
-                                                <Input type={fielditem.type} placeholder={fielditem.label} {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                {fielditem.message}
-                                            </FormDescription>
+                                    name="items"
+                                    render={() => (
+                                        <FormItem className='row-span-3 row-start-2 col-start-2 col-span-1 flex flex-col justify-between'>
+                                            <FormLabel className="text-primary font-normal text-xl font-primary">Seleziona uno o più ruoli</FormLabel>
+                                            {items.map((item) => (
+                                                <FormField
+                                                    key={item.id}
+                                                    control={form.control}
+                                                    name="items"
+                                                    render={({ field }) => {
+                                                        return (
+                                                            <FormItem
+                                                                key={item.id}
+                                                                className="flex flex-row items-center space-x-3 space-y-0"
+                                                            >
+                                                                <FormControl>
+                                                                    <Checkbox
+                                                                        checked={field.value?.includes(item.id)}
+                                                                        onCheckedChange={(checked) => {
+                                                                            return checked
+                                                                                ? field.onChange([...field.value, item.id])
+                                                                                : field.onChange(
+                                                                                    field.value?.filter(
+                                                                                        (value) => value !== item.id
+                                                                                    )
+                                                                                )
+                                                                        }}
+                                                                    />
+                                                                </FormControl>
+                                                                <FormLabel className="font-normal text-primary font-primary text-xl">
+                                                                    {item.label}
+                                                                </FormLabel>
+                                                            </FormItem>
+                                                        )
+                                                    }}
+                                                />
+                                            ))}
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-                            ))
-                        }
-                        <Button className='w-1/3 h-10 self-center' type="submit">Sign Up</Button>
+                            </div>
+                            <div className='flex flex-row justify-between'>
+                                <FormField
+                                    control={form.control}
+                                    name="conditions"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col justify-between">
+                                            <FormLabel className='text-primary text-sm font-primary'>Privacy policy</FormLabel>
+                                            <div className='flex flex-row items-center space-x-3 space-y-0'>
+                                                <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
+                                                <div className="space-y-1 leading-none">
+                                                    <FormLabel className='font-normal text-primary font-primary text-base'>
+                                                        Ho letto e accetto la <span className='text-accent underline hover:cursor-pointer'>Privacy Policy</span>
+                                                    </FormLabel>
+                                                </div>
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button className='px-4 py-2 rounded-sm bg-accent font-primary' type="submit">Conferma</Button>
+                            </div>
+                        </div>
                     </form>
                 </Form>
             </div>
-        </div>
+        </div >
     );
 }
 
+SignUpPage.getLayout = (page) => <>{page}</>
 export default SignUpPage;
