@@ -5,6 +5,7 @@ import { cn } from "@/utils"
 
 export type ActorData = {
     name: string,
+    icon: React.ElementType,
     lastUpdate: string,
     actorItemData: ActorItemType[]
 }
@@ -20,7 +21,8 @@ const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
         return (
             <div className={cn(className, "flex flex-col gap-4 p-2 bg-surface")}>
                 <div className="flex flex-col gap-1">
-                    <div className="flex flex-row justify-between items-center">
+                    <div className="flex flex-row gap-2 items-center">
+                        <data.icon size="24" />
                         <p className="font-primary text-xl font-normal text-primary">{data.name}</p>
                     </div>
                     <div>
@@ -31,7 +33,6 @@ const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
                 <div className="flex flex-col gap-2">
                     {
                         data.actorItemData.map((item, index) => {
-                            console.log(item)
                             return (
                                 <DataItem key={index} actorItem={item} countedData={item.countedData} />
                             )

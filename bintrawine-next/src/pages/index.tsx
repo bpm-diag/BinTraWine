@@ -1,14 +1,14 @@
 import Head from "next/head";
 import Actor, { ActorData } from "@/components/actor";
-import HeaderProducts from "@/components/header/headerProducts";
-import HeaderPath from "@/components/header/headerPath";
 import PageTitle from "@/components/pageTitle";
+import { MdAgriculture } from "react-icons/md";
 
 export default function LandingPage() {
 
   const data: ActorData[] = [
     {
       name: "Agronomo",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -42,6 +42,7 @@ export default function LandingPage() {
     },
     {
       name: "Viticoltore",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -68,6 +69,7 @@ export default function LandingPage() {
     },
     {
       name: "Agronomo",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -96,6 +98,7 @@ export default function LandingPage() {
     },
     {
       name: "Viticoltore",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -117,6 +120,7 @@ export default function LandingPage() {
     },
     {
       name: "Agronomo",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -145,6 +149,7 @@ export default function LandingPage() {
     },
     {
       name: "Viticoltore",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -172,6 +177,7 @@ export default function LandingPage() {
     },
     {
       name: "Agronomo",
+      icon: MdAgriculture,
       lastUpdate: "14/06/2023, 13:48",
       actorItemData: [
         {
@@ -208,9 +214,7 @@ export default function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-surface_dark min-h-screen flex flex-col">
-        <HeaderProducts wines={["Lotto 1 / Terreno 1", "Lotto 2 / Terreno 2"]} />
-        <HeaderPath paths={["Continua", "Prodotti", "Lotto 1 / Terreno 1"]} />
-        <PageTitle title="Lotto 1 / Terreno 1" />
+        <PageTitle title="Lotto 1" />
         <div className="m-8 flex flex-row gap-4">
           {
             data.map((item, index) => {
