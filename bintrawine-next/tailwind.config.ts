@@ -28,6 +28,8 @@ export default {
         surface_dark: "#EDEDED",
         black: "#B7CE95",
         black_dim: "#868686",
+        purple: "#E0BBF6",
+        aqua: "#7FF5EC",
         white: "#FFFFFF",
         error: "#007749",
       },

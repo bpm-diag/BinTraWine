@@ -97,6 +97,11 @@ const SignIn = () => {
                                     />
                                 ))
                             }
+                            {credentialError && (
+                                <div className="self-center h-10 rounded-md bg-red-200 py-2 px-4 text-center text-red-600">
+                                    {'Password o Email errati'}
+                                </div>
+                            )}
                             <Button className='py-2 px-4 w-full h-10 rounded-sm self-center font-primary bg-accent' type="submit">
                                 Login
                             </Button>
@@ -105,11 +110,6 @@ const SignIn = () => {
                     <p className='text-center font-primary text-base'>Non hai un account? <Link href="/auth/sign-up" className='underline hover:cursor-pointer text-accent'>Registrati</Link></p>
                 </div>
             </div>
-            {credentialError && (
-                <div className="w-3/5 self-center h-10 rounded-md bg-red-200 py-2 px-4 text-center text-red-600">
-                    {'Either email or password are wrong'}
-                </div>
-            )}
         </div>
     );
 }

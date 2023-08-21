@@ -1,210 +1,9 @@
 import Head from "next/head";
 import Actor, { ActorData } from "@/components/actor";
-import PageTitle from "@/components/pageTitle";
 import { MdAgriculture } from "react-icons/md";
+import ProductCard from "@/components/productCard";
 
 export default function LandingPage() {
-
-  const data: ActorData[] = [
-    {
-      name: "Agronomo",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Dati Sensori Agronomo",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Superficie",
-              value: "2000mq"
-            },
-            {
-              name: "Umidità",
-              value: "43%"
-            },
-            {
-              name: "Temperatura",
-              value: "22°"
-            },
-            {
-              name: "Pioggia",
-              value: "3mm"
-            },
-          ]
-        },
-        {
-          title: "Dati Sensori Agronomo",
-          contentType: "textual",
-          data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisl eg. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisl eget nunc aliquam aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisl eget nunc aliquam aliquet."
-        }
-      ]
-    },
-    {
-      name: "Viticoltore",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Data Raccolta",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Data",
-              value: "31/05/2023"
-            },
-          ]
-        },
-        {
-          title: "Dati Forniture",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Fertilizzanti",
-              value: "x, y, z"
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: "Agronomo",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Dati Sensori Agronomo",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Superficie",
-              value: "2000mq"
-            },
-            {
-              name: "Umidità",
-              value: "43%"
-            },
-            {
-              name: "Temperatura",
-              value: "22°"
-            },
-            {
-              name: "Pioggia",
-              value: "3mm"
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: "Viticoltore",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Data Raccolta",
-          contentType: "value",
-          data: "31/05/2023"
-        },
-        {
-          title: "Dati Forniture",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Fertilizzanti",
-              value: "x, y, z"
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: "Agronomo",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Dati Sensori Agronomo",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Superficie",
-              value: "2000mq"
-            },
-            {
-              name: "Umidità",
-              value: "43%"
-            },
-            {
-              name: "Temperatura",
-              value: "22°"
-            },
-            {
-              name: "Pioggia",
-              value: "3mm"
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: "Viticoltore",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Data Raccolta",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Data",
-              value: "31/05/2023"
-            },
-          ]
-        },
-        {
-          title: "Dati Forniture",
-          contentType: "key-value",
-          countedData: 1,
-          data: [
-            {
-              name: "Fertilizzanti",
-              value: "x, y, z"
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: "Agronomo",
-      icon: MdAgriculture,
-      lastUpdate: "14/06/2023, 13:48",
-      actorItemData: [
-        {
-          title: "Dati Sensori Agronomo",
-          contentType: "key-value",
-          data: [
-            {
-              name: "Superficie",
-              value: "2000mq"
-            },
-            {
-              name: "Umidità",
-              value: "43%"
-            },
-            {
-              name: "Temperatura",
-              value: "22°"
-            },
-            {
-              name: "Pioggia",
-              value: "3mm"
-            },
-          ]
-        }
-      ]
-    },
-  ]
 
   return (
     <>
@@ -214,15 +13,18 @@ export default function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="bg-surface_dark min-h-screen flex flex-col">
-        <PageTitle title="Lotto 1" />
-        <div className="m-8 flex flex-row gap-4">
-          {
-            data.map((item, index) => {
-              return (
-                <Actor className="w-60 self-start" key={index} data={item} />
-              )
-            })
-          }
+        <div className="bg-white py-2 px-8 flex flex-row gap-4 items-center">
+          <h1 className="font-primary font-semibold text-2xl">Catalogo (221)</h1>
+        </div>
+        <div className="p-4 grid grid-cols-4 grid-rows-2 gap-4">
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
+          <ProductCard idLotto="1" idTerreno="1" name="terreno" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} tags={["tag1", "tag2"]} />
         </div>
       </main>
     </>
