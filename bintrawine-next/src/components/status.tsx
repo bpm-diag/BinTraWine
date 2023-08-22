@@ -10,7 +10,7 @@ const Status = React.forwardRef<HTMLDivElement, StatusItemProps>(
     ({ className, completed }, ref) => {
 
         return (
-            <div className={cn(className, "p-1", completed ? "bg-aqua" : "bg-purple")}>
+            <div className={cn(className, "p-1 rounded-sm", completed ? "bg-aqua" : "bg-purple")}>
                 <p className="text-primary font-primary font-normal text-sm">{completed ? "COMPLETATO" : "IN CORSO"}</p>
             </div>
         )

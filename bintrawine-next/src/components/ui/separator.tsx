@@ -3,9 +3,7 @@ import * as SeparatorPrimitive from "@radix-ui/react-separator"
 
 import { cn } from "@/utils"
 
-export interface SeparatorPropsCustom extends SeparatorPrimitive.SeparatorProps {
-
-}
+export interface SeparatorPropsCustom extends SeparatorPrimitive.SeparatorProps { }
 
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,

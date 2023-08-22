@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Account from '@/components/account';
 import { Separator } from '@/components/ui/separator';
-import { MdNotificationsNone, MdLogout } from 'react-icons/md'
+import { MdLogout, MdAdd } from 'react-icons/md'
 import Logo from '@/components/ui/logo';
 import { cn } from '@/utils';
 import {
@@ -31,10 +31,10 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                         <Separator className='h-2/3' orientation="vertical" />
                         <span className="font-primary text-18">Nome Cantina</span>
                         <Separator className='h-2/3' orientation="vertical" />
-                        <div className='flex flex-row gap-4'>
-                            <Button className='px-0 text-14 text-white bg-transparent' variant="link">Insights</Button>
-                            <Button className='px-0 text-14 text-white bg-transparent' variant="link">Prodotti</Button>
-                        </div>
+                        <Button className='bg-accent' variant="text">
+                            Nuovo
+                            <MdAdd size='20' />
+                        </Button>
                     </div>
                     <div className='flex-1 gap-5 flex justify-end items-center'>
                         {status == 'authenticated' &&
@@ -50,7 +50,6 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         }
-                        <MdNotificationsNone size='24' />
                     </div>
                 </div>
             </header >
