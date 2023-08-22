@@ -3,6 +3,7 @@ import Catalog from "../components/tabContents/catalog";
 import { MdClose, MdOutlineHome } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React, { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 export interface TabProps {
   triggerKey: string;
@@ -27,11 +28,12 @@ export default function LandingPage() {
       </Head>
       <main className="bg-surface_dark min-h-screen">
         <Tabs className="flex flex-col" defaultValue="catalogo">
-          <TabsList className="px-8">
+          <TabsList>
             <TabsTrigger className="bg-primary" value="catalogo">
               <MdOutlineHome size={24} />
               <p className="font-primary">Catalogo</p>
             </TabsTrigger>
+            <Separator orientation="vertical" className="h-8 bg-black_dim" />
             {
               tabs.map((tab, index) => (
                 <TabsTrigger key={index} className="bg-primary_light text-white" value={tab.triggerKey}>

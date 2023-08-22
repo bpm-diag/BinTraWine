@@ -3,7 +3,6 @@ import { TabProps } from "../../pages";
 import React from 'react';
 import { Input } from "@/components/ui/input";
 import Paginator from "@/components/paginator";
-import { MdAgriculture } from "react-icons/md";
 import { cn } from "@/utils";
 
 export interface CatalogProps
