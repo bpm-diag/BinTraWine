@@ -9,7 +9,6 @@ export default {
         'layout': [
           'header',
           'main',
-          'main',
         ],
       },
       gridTemplateColumns: {
@@ -20,6 +19,7 @@ export default {
       },
       colors: {
         accent: "#F13B09",
+        accent_light: "#F77636",
         primary: "#09100F",
         primary_light: "#0F3835",
         disabled: "#09100F33",

@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MdKeyboardArrowDown, MdClose } from 'react-icons/md'
 
 const counterVariants = cva(
-    "hover:cursor-pointer bg-transparent rounded-full p-1 flex flex-row justify-center items-center gap-2 font-primary text-14 font-normal break-normal",
+    "bg-transparent rounded-full p-1 flex flex-row items-center gap-2 font-primary text-14 font-normal break-normal",
     {
         variants: {
             variant: {
@@ -29,11 +29,12 @@ export interface AccountProps
     name?: string | null;
     surname?: string;
     role?: string;
+    icon?: boolean;
     close?: boolean;
 }
 
 const Account = React.forwardRef<HTMLDivElement, AccountProps>(
-    ({ className, variant, size, name, surname, role, close = false, ...props }, ref) => {
+    ({ className, variant, size, name, surname, role, icon = true, close = false, ...props }, ref) => {
         return (
             <div
                 className={`${cn(counterVariants({ variant, size, className }))}`}
@@ -44,13 +45,14 @@ const Account = React.forwardRef<HTMLDivElement, AccountProps>(
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col items-start gap-0">
-                    <p>{name} {surname}</p>
+                    <p className="text-sm font-primary font-normal">{name} {surname}</p>
                     {role && <p className="text-xs font-normal">{role}</p>}
                 </div>
-                {close ?
-                    <MdClose size='24' />
+                {icon ? close ?
+                    <MdClose className="hover:cursor-pointer" size='24' />
                     :
-                    <MdKeyboardArrowDown size='24' />
+                    <MdKeyboardArrowDown className="hover:cursor-pointer" size='24' />
+                    : <></>
                 }
             </div>
         )

@@ -6,7 +6,9 @@ import Account from '@/components/account';
 import { Separator } from '@/components/ui/separator';
 import { MdLogout, MdAdd } from 'react-icons/md'
 import Logo from '@/components/ui/logo';
+import { TabProps } from "@/pages";
 import { cn } from '@/utils';
+import NewChain from '../tabContents/newChain';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,22 +18,27 @@ import {
 
 export interface AccountProps
     extends React.HTMLAttributes<HTMLHeadElement> {
+    setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
 const Header = React.forwardRef<HTMLDivElement, AccountProps>(
-    ({ className, ...props }, ref) => {
+    ({ className, setTabs, ...props }, ref) => {
 
         const { data: session, status } = useSession();
 
+        const newTab = () => {
+            setTabs(oldState => [...oldState, { triggerKey: 'lotto_9', triggerName: 'Lotto 9', content: NewChain }])
+        }
+
         return (
-            <header className={cn(className, "z-3 fixed grid-in-header w-full flex flex-col")}>
-                <div className="flex flex-row h-14 py-2 px-8 bg-primary text-white ">
+            <header className={cn(className, "grid-in-header w-full flex flex-col")}>
+                <div className="flex flex-row px-8 bg-primary text-white ">
                     <div className='flex-1 flex flex-row gap-5 items-center'>
                         <Logo className='fill-white' />
                         <Separator className='h-2/3' orientation="vertical" />
                         <span className="font-primary text-18">Nome Cantina</span>
                         <Separator className='h-2/3' orientation="vertical" />
-                        <Button className='bg-accent' variant="text">
+                        <Button className='bg-accent' variant="text" onClick={() => newTab()}>
                             Nuovo
                             <MdAdd size='20' />
                         </Button>
@@ -40,7 +47,7 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                         {status == 'authenticated' &&
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
-                                    <Account variant='selected' role='Distributore' name={session?.user.name} surname={session?.user.surname} />
+                                    <Account className='hover:cursor-pointer' variant='selected' role='Distributore' name={session?.user.name} surname={session?.user.surname} />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <DropdownMenuItem className='flex flex-row justify-between items-center hover:cursor-pointer' onClick={async () => await signOut()}>

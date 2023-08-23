@@ -102,7 +102,7 @@ const SignIn = () => {
                                     {'Password o Email errati'}
                                 </div>
                             )}
-                            <Button className='py-2 px-4 w-full h-10 rounded-sm self-center font-primary bg-accent' type="submit">
+                            <Button className='justify-center items-center py-2 px-4 w-full h-10 rounded-sm self-center font-primary bg-accent' type="submit">
                                 Login
                             </Button>
                         </form>

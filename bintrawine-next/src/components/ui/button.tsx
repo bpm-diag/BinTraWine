@@ -9,7 +9,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         text: "active:bg-primary active:text-white hover:bg-primary_light",
-        link: "disabled:text-disabled disabled:bg-white active:text-primary bg-white text-primary_light"
+        link: "disabled:text-disabled disabled:bg-white active:text-primary bg-white text-primary_light",
+        compilation: "px-4 border-2 border-white text-primary justify-start bg-white font-primary font-normal text-xl w-full hover:bg-opacity-10 hover:bg-accent hover:border-accent",
       },
       size: {
         default: "px-4 py-2",
@@ -34,7 +35,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={`${cn(buttonVariants({ variant, size, className }))} flex justify-center items-center gap-5`}
+        className={`${cn(buttonVariants({ variant, size, className }))} flex gap-5`}
         ref={ref}
         {...props}
       />

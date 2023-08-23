@@ -238,7 +238,7 @@ const SignUpPage = () => {
                                         </FormItem>
                                     )}
                                 />
-                                <Button className='px-4 py-2 rounded-sm bg-accent font-primary' type="submit">Conferma</Button>
+                                <Button className='justify-center items-center px-4 py-2 rounded-sm bg-accent font-primary' type="submit">Conferma</Button>
                             </div>
                         </div>
                     </form>
