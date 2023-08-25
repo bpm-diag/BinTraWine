@@ -9,10 +9,10 @@ export interface ChainProps
 }
 
 const Chain = React.forwardRef<HTMLDivElement, ChainProps>(
-    ({ className, chainType, completed = false }, ref) => {
+    ({ className, chainType, completed = false, ...props }, ref) => {
 
         return (
-            <div className={cn("flex flex-col p-7 hover:cursor-pointer hover:bg-surface_dark", className)}>
+            <div className={cn("flex flex-col p-7 hover:cursor-pointer hover:bg-surface_dark focus:bg-surface_dark", className)} {...props}>
                 <p className="text-primary font-primary font-normal text-xl">{chainType}</p>
                 <div className="flex flex-row gap-1 items-center">
                     {completed ? <MdDone size={24} /> : <MdHourglassEmpty size={24} />}

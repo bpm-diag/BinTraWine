@@ -19,7 +19,7 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                     <h1 className="font-primary font-semibold text-2xl">Catalogo (221)</h1>
                 </div>
                 <div className="flex justify-center items-center">
-                    <Input className="w-1/3 rounded-none text-sm" searchIcon placeholder="Cerca per Lotto o Terreno" />
+                    <Input className="w-1/3 rounded-none text-sm" placeholder="Cerca per Lotto o Terreno" />
                 </div>
                 <div className="p-4 grid grid-cols-4 grid-rows-2 gap-4">
                     <ProductCard setTabs={setTabs} idLotto="lotto_1" name="Lotto 1" status="COMPLETATO" lastUpdate="14/06/2023, 13:48" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} />

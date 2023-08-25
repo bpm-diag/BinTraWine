@@ -45,7 +45,6 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                     <div className='flex flex-row'>
                         {
                             avatars.map((avatar, index) => {
-                                console.log(index);
                                 return (
                                     <Avatar key={index} className={'-mr-4 last:mr-0'}>
                                         <AvatarImage src={avatar} />
