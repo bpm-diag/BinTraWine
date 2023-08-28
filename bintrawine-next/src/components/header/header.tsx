@@ -36,7 +36,7 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                     <div className='flex-1 flex flex-row gap-5 items-center'>
                         <Logo className='fill-white' />
                         <Separator className='h-2/3' orientation="vertical" />
-                        <span className="font-primary text-18">Nome Cantina</span>
+                        <span className="font-primary text-18">{session?.user.cellar}</span>
                         <Separator className='h-2/3' orientation="vertical" />
                         <Button className='bg-accent' variant="text" onClick={() => newTab()}>
                             Nuovo
@@ -47,7 +47,7 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                         {status == 'authenticated' &&
                             <DropdownMenu>
                                 <DropdownMenuTrigger>
-                                    <Account className='hover:cursor-pointer' variant='selected' role='Distributore' name={session?.user.name} surname={session?.user.surname} />
+                                    <Account className='hover:cursor-pointer' variant='selected' role={(session.user.roles.length > 1) ? `${session.user.roles.length} Ruoli` : `${session.user.roles[0]?.toString()[0]?.toUpperCase()}${session.user.roles[0]?.slice(1).toLowerCase()}`} name={session?.user.name} surname={session?.user.surname} />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <DropdownMenuItem className='flex flex-row justify-between items-center hover:cursor-pointer' onClick={async () => await signOut()}>

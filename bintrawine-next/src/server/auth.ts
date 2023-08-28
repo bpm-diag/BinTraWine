@@ -9,6 +9,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
 import bcrypt from 'bcrypt';
+import { Role } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -21,6 +22,8 @@ declare module "next-auth" {
     user: {
       id: number;
       surname: string;
+      cellar: string;
+      roles: Role[];
       // role: UserRole;
     } & DefaultSession["user"];
   }
@@ -28,6 +31,8 @@ declare module "next-auth" {
   interface User {
     id: number;
     surname: string;
+    cellar: string;
+    roles: Role[];
     //   // ...other properties
     //   // role: UserRole;
   }
@@ -56,6 +61,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.surname = user.surname;
+        token.cellar = user.cellar;
+        token.roles = user.roles;
       }
       return token;
     },
@@ -63,6 +70,8 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.id as number;
         session.user.surname = token.surname as string;
+        session.user.cellar = token.cellar as string;
+        session.user.roles = token.roles as Role[];
       }
       return session;
     },
@@ -97,6 +106,8 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isCorrectPassword) return null;
+
+        console.log(user)
 
         return user;
       },
