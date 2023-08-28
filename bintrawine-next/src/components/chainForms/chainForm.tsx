@@ -1,13 +1,14 @@
 import React from "react";
+import { cn } from "@/utils"
 import Chain from "@/components/chain";
 import AgronomoForm from "@/components/chainForms/dataAcquisition/agronomoForm";
 import PeopleForm from "@/components/chainForms/peopleForm";
 import ViticoltoreForm from "@/components/chainForms/dataAcquisition/viticoltoreForm";
 import ProduttoreForm from "@/components/chainForms/dataAcquisition/produttoreForm";
-import ImbottigliatoreForm from "./dataAcquisition/imbottiglitoreForm";
-import DistributoreForm from "./dataAcquisition/distributoreForm";
-import RivenditoreForm from "./dataAcquisition/rivenditoreForm";
-import EnteCertificatoreForm from "./dataAcquisition/enteCertificatoreForm";
+import ImbottigliatoreForm from "@/components/chainForms/dataAcquisition/imbottiglitoreForm";
+import DistributoreForm from "@/components/chainForms/dataAcquisition/distributoreForm";
+import RivenditoreForm from "@/components/chainForms/dataAcquisition/rivenditoreForm";
+import EnteCertificatoreForm from "@/components/chainForms/dataAcquisition/enteCertificatoreForm";
 
 export interface ChainFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -35,7 +36,7 @@ const ChainForm = React.forwardRef<HTMLDivElement, ChainFormProps>(
         ]);
 
         return (
-            <div className="bg-surface col-span-3 rounded-sm grid grid-cols-5">
+            <div className={cn("bg-surface col-span-3 rounded-sm grid grid-cols-5", className)}>
                 {/* Lista Filiera */}
                 <div className="bg-surface col-span-1">
                     <Chain onClick={() => setSelectedChain(formSelection.get("agronomo") as FormSelection)} chainType="Agronomo" completed />

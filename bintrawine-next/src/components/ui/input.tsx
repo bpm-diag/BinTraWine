@@ -1,6 +1,5 @@
 import * as React from "react"
 import { cn } from "@/utils"
-import { MdSearch } from "react-icons/md"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
