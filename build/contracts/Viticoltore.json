@@ -28559,12 +28559,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0xf43CC534486EB2C856b3578359fFB990747bfd16",
-      "transactionHash": "0x46365a82f05215eff7ac955e47c22f85646ffeb8e46c0a66d9d00109a5aa6c27"
+      "address": "0x825266F9d224db92fF25e2a0F90Da227a9C41bb1",
+      "transactionHash": "0x64193ec54a28f0436411ab6743f5775439fa58a68f062a491879331b61a82e48"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-07-15T15:39:49.038Z",
+  "updatedAt": "2023-08-29T10:52:24.257Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

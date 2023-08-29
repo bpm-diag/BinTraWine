@@ -18804,12 +18804,12 @@
     "10": {
       "events": {},
       "links": {},
-      "address": "0xC26Cd14919D05024D3E95Fa021Ce99F77338A772",
-      "transactionHash": "0xf75e4dd54d0f16d6032c9eab19404840f0c5bbb801e1e58dbb80e49df9cb4cfc"
+      "address": "0xffBE41D09Cf146889512B96f38c677144f936F12",
+      "transactionHash": "0x28bc29937077ae950331b2ee198f540604201f23fa7c591a3bebfec5743d901a"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-07-15T15:39:49.069Z",
+  "updatedAt": "2023-08-29T10:52:24.309Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",
