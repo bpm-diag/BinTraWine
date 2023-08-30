@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { api } from '@/utils/api';
 
 export interface AgronomoFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,6 +27,9 @@ type FieldAgronomoType = {
 
 const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
     ({ className }, ref) => {
+
+        const sendAgronomoData = api.agronomo.send.useMutation();
+        const getTerreni = api.agronomo.getAnalisiQualitàProdotto.useQuery();
 
         const fields: FieldAgronomoType[] = [
             { name: 'analisiQualitàProdotto', label: 'Analisi Qualità Prodotto' },
@@ -47,7 +51,7 @@ const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
         });
 
         const onSubmit = (data: AgronomoSchemaForm) => {
-            console.log(data);
+            sendAgronomoData.mutate(data);
         }
 
         return (
