@@ -31,7 +31,7 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
         }
 
         return (
-            <header className={cn(className, "grid-in-header w-full flex flex-col")}>
+            <header className={cn(className, "grid-in-header w-full flex flex-col")} {...props}>
                 <div className="flex flex-row px-8 bg-primary text-white ">
                     <div className='flex-1 flex flex-row gap-5 items-center'>
                         <Logo className='fill-white' />

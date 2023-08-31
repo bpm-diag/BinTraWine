@@ -3,8 +3,9 @@ import Header from '@/components/header/header';
 import Catalog from "../components/tabContents/catalog";
 import { MdClose, MdOutlineHome } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { string } from "zod";
 
 export interface TabProps {
   triggerKey: string;
@@ -15,10 +16,22 @@ export interface TabProps {
 export default function LandingPage() {
 
   const [tabs, setTabs] = useState<TabProps[]>([]);
+  const [currentTab, setCurrentTab] = useState<string>("catalogo");
 
   const deleteTab = (index: number) => {
     setTabs(oldState => oldState.filter((_, i) => i !== index));
   }
+
+  const handleDeletion = (e: React.MouseEvent<SVGElement, MouseEvent>, index: number) => {
+    e.stopPropagation()
+    e.preventDefault()
+    deleteTab(index)
+  }
+
+  useEffect(() => {
+    const isTabPresent = tabs.some(tab => tab.triggerKey === currentTab)
+    if (!isTabPresent) setCurrentTab("catalogo")
+  }, [tabs])
 
   return (
     <>
@@ -28,19 +41,19 @@ export default function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="grid grid-areas-layout grid-cols-layout grid-rows-layout bg-surface_dark min-h-screen">
-        <Header setTabs={setTabs} className='grid-in-header' />
-        <Tabs className="grid-in-main flex flex-col" defaultValue="catalogo">
+        <Header onClick={() => console.log(currentTab)} setTabs={setTabs} className='grid-in-header' />
+        <Tabs className="grid-in-main flex flex-col" value={currentTab}>
           <TabsList>
-            <TabsTrigger className="bg-primary" value="catalogo">
+            <TabsTrigger onClick={() => setCurrentTab("catalogo")} className="bg-primary" value="catalogo">
               <MdOutlineHome size={24} />
               <p className="font-primary">Catalogo</p>
             </TabsTrigger>
             <Separator orientation="vertical" className="h-8 bg-black_dim" />
             {
               tabs.map((tab, index) => (
-                <TabsTrigger key={index} className="bg-primary_light text-white" value={tab.triggerKey}>
+                <TabsTrigger onClick={() => { setCurrentTab(tab.triggerKey) }} key={index} className="bg-primary_light text-white" value={tab.triggerKey}>
                   <p className="font-primary">{tab.triggerName}</p>
-                  <MdClose className="hover:text-primary" onClick={() => deleteTab(index)} size={24} />
+                  <MdClose className="hover:text-primary" onClick={(e) => handleDeletion(e, index)} size={24} />
                 </TabsTrigger>
               ))
             }
