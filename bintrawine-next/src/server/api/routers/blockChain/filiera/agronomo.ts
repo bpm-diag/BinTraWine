@@ -1,9 +1,9 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { AgronomoAbi } from '@/server/api/routers/abis';
-import { AgronomoSchema } from '@/types/chainTypes';
-import { contracts } from '@/server/api/routers/contracts';
+import { AgronomoAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { AgronomoSchema, AgronomoSchemaForm } from '@/types/chainTypes';
+import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -43,21 +43,47 @@ export const agronomoRouter = createTRPCRouter({
 				})
 		}),
 
-	getData: publicProcedure
+	getManualData: publicProcedure
 		.input(z.number())
 		.query(async ({ input, ctx }) => {
-			return await web3.eth.getAccounts()
+			return web3.eth.getAccounts()
 				.then(async (accounts) => {
 					const [currentAddress, ...other] = accounts;
+					console.log("FILIERA AGRONOMO")
 					const analisiQualitàProdotto = await contract.methods.getAnalisiQualitaProdotto(input).call({ from: currentAddress, privateFor: privateFor }) as string
 					const certificazioneUvaAppezzamento = await contract.methods.getCertificazioneUvaAppezzamento(input).call({ from: currentAddress, privateFor: privateFor }) as string
-					return {
+
+					console.log(analisiQualitàProdotto)
+					console.log(certificazioneUvaAppezzamento)
+
+					const retrievedData: AgronomoSchemaForm = {
 						analisiQualitàProdotto: analisiQualitàProdotto,
 						certificazioneUvaAppezzamento: certificazioneUvaAppezzamento
 					};
+
+					return retrievedData
 				})
 				.catch((error) => {
 					console.error("ERROR", error);
 				})
 		})
 });
+
+export const getManualAgronomoData = (input: number): Promise<void | AgronomoSchemaForm> => {
+	return web3.eth.getAccounts()
+		.then(async (accounts) => {
+			const [currentAddress, ...other] = accounts;
+			const analisiQualitàProdotto = await contract.methods.getAnalisiQualitaProdotto(input).call({ from: currentAddress, privateFor: privateFor }) as string
+			const certificazioneUvaAppezzamento = await contract.methods.getCertificazioneUvaAppezzamento(input).call({ from: currentAddress, privateFor: privateFor }) as string
+
+			const retrievedData: AgronomoSchemaForm = {
+				analisiQualitàProdotto: analisiQualitàProdotto,
+				certificazioneUvaAppezzamento: certificazioneUvaAppezzamento
+			};
+
+			return retrievedData
+		})
+		.catch((error) => {
+			console.error("ERROR", error);
+		})
+}

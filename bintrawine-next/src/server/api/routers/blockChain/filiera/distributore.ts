@@ -1,9 +1,9 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { DistributoreSchema } from '@/types/chainTypes';
-import { DistributoreAbi } from '@/server/api/routers/abis';
-import { contracts } from '@/server/api/routers/contracts';
+import { DistributoreSchema, DistributoreSchemaForm } from '@/types/chainTypes';
+import { DistributoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -43,13 +43,46 @@ export const distributoreRouter = createTRPCRouter({
                     const destinazione = await contract.methods.getDestinazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
                     const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
 
-                    return {
-                        destinazione: destinazione,
-                        datiVendita: datiVendita
+                    const [prezzoVendita, nomeProdotto, quantita, nomeCliente, dataVendita] = datiVendita
+                    const retrievedData: DistributoreSchemaForm = {
+                        destinazioneDiConsegna: destinazione,
+                        nomeProdotto: nomeProdotto!,
+                        prezzo: prezzoVendita!,
+                        quantitaVendita: quantita!,
+                        nomeClienteVendita: nomeCliente!,
+                        dataVendita: dataVendita!,
+                        addresses: "addresses"
                     }
+
+                    return retrievedData
                 })
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
         })
 });
+
+export const getManualDistributoreData = (input: number): Promise<void | DistributoreSchemaForm> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const destinazione = await contract.methods.getDestinazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
+
+            const [prezzoVendita, nomeProdotto, quantita, nomeCliente, dataVendita] = datiVendita
+            const retrievedData: DistributoreSchemaForm = {
+                destinazioneDiConsegna: destinazione,
+                nomeProdotto: nomeProdotto!,
+                prezzo: prezzoVendita!,
+                quantitaVendita: quantita!,
+                nomeClienteVendita: nomeCliente!,
+                dataVendita: dataVendita!,
+                addresses: "addresses"
+            }
+
+            return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}

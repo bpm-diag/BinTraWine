@@ -1,8 +1,8 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { RivenditoreAbi } from '@/server/api/routers/abis';
-import { contracts } from '@/server/api/routers/contracts';
+import { RivenditoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -13,7 +13,7 @@ const privateFor = ["BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=", "QfeDAys9MPD
     "UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=", "ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="];
 
 export const rivenditoreRouter = createTRPCRouter({
-    getData: publicProcedure
+    getSensoriData: publicProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
             return web3.eth.getAccounts()

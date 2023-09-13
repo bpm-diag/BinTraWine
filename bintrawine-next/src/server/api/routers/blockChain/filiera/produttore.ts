@@ -1,9 +1,9 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { ProduttoreSchema } from '@/types/chainTypes';
-import { ProduttoreAbi } from '@/server/api/routers/abis';
-import { contracts } from '@/server/api/routers/contracts';
+import { ProduttoreSchema, ProduttoreSchemaForm } from '@/types/chainTypes';
+import { ProduttoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -46,14 +46,37 @@ export const produttoreRouter = createTRPCRouter({
                     const quantitaVinoOttenuto = await contract.methods.getQuantitaVinoOttenuto(input).call({ from: currentAddress, privateFor: privateFor }) as string
                     const quantitaVinoRivendicato = await contract.methods.getQuantitaVinoRivendicato(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-                    return {
+                    const retrievedData: ProduttoreSchemaForm = {
                         prodottiVinificazione: prodottiVinificazione,
-                        quantitaVino: quantitaVinoOttenuto,
+                        quantitaVinoOttenuto: quantitaVinoOttenuto,
                         quantitaVinoRivendicato: quantitaVinoRivendicato
                     }
+
+                    return retrievedData
                 })
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
         })
 });
+
+export const getManualProduttoreData = (input: number): Promise<void | ProduttoreSchemaForm> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const prodottiVinificazione = await contract.methods.getProdottiVinificazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const quantitaVinoOttenuto = await contract.methods.getQuantitaVinoOttenuto(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const quantitaVinoRivendicato = await contract.methods.getQuantitaVinoRivendicato(input).call({ from: currentAddress, privateFor: privateFor }) as string
+
+            const retrievedData: ProduttoreSchemaForm = {
+                prodottiVinificazione: prodottiVinificazione,
+                quantitaVinoOttenuto: quantitaVinoOttenuto,
+                quantitaVinoRivendicato: quantitaVinoRivendicato
+            }
+
+            return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}

@@ -117,3 +117,14 @@ export const EnteCertificatoreSchema = z.object({
     }),
 });
 export type EnteCertificatoreSchemaForm = z.infer<typeof EnteCertificatoreSchema>;
+
+// SENSORI SCHEMA
+
+// RIVENDITORE SENSORI SCHEMA
+
+export const RivenditoreSensoriSchema = z.object({
+    sensoriRivenditore: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+});
+export type RivenditoreSensoriSchemaForm = z.infer<typeof RivenditoreSensoriSchema>;

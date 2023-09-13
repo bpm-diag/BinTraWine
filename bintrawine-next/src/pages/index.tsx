@@ -20,6 +20,7 @@ export interface TabProps {
 export default function LandingPage() {
 
   const getTerreni = api.agronomo.getNumberOfChains.useQuery();
+  const getLotto = api.blockChainRouter.getManualData.useQuery(1)
 
   const [tabs, setTabs] = useState<TabProps[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("catalogo");

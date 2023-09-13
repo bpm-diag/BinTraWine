@@ -1,9 +1,9 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { EnteCertificatoreSchema } from '@/types/chainTypes';
-import { EnteCertificatoreAbi } from '@/server/api/routers/abis';
-import { contracts } from '@/server/api/routers/contracts';
+import { EnteCertificatoreSchema, EnteCertificatoreSchemaForm } from '@/types/chainTypes';
+import { EnteCertificatoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -44,13 +44,35 @@ export const enteCertificatoreRouter = createTRPCRouter({
                     const validazione = await contract.methods.getValidazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
                     const certificazione = await contract.methods.getCertificazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-                    return {
+                    const retrievedData: EnteCertificatoreSchemaForm = {
                         validazione: validazione,
-                        certificazione: certificazione,
+                        certificazione: certificazione
                     }
+
+                    return retrievedData
                 })
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
         })
 });
+
+export const getManualEnteCertificatoreData = (input: number): Promise<void | EnteCertificatoreSchemaForm> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const validazione = await contract.methods.getValidazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const certificazione = await contract.methods.getCertificazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
+
+            const retrievedData: EnteCertificatoreSchemaForm = {
+                validazione: validazione,
+                certificazione: certificazione
+            }
+
+            return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}

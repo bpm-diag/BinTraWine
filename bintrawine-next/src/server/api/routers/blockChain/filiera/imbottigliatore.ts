@@ -1,9 +1,9 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { ImbottigliatoreSchema } from '@/types/chainTypes';
-import { ImbottigliatoreAbi } from '@/server/api/routers/abis';
-import { contracts } from '@/server/api/routers/contracts';
+import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm } from '@/types/chainTypes';
+import { ImbottigliatoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -45,20 +45,46 @@ export const imbottigliatoreRouter = createTRPCRouter({
                 .then(async (accounts) => {
                     const [currentAddress, ...other] = accounts;
 
-                    const presenzaSolfiti = await contract.methods.getSolfiti(input).call({ from: currentAddress, privateFor: privateFor })
-                    const presenzaAllergeni = await contract.methods.getAllergeni(input).call({ from: currentAddress, privateFor: privateFor })
-                    const localitaUve = await contract.methods.getlocalitaUve(input).call({ from: currentAddress, privateFor: privateFor })
-                    const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor })
+                    const presenzaSolfiti = await contract.methods.getSolfiti(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                    const presenzaAllergeni = await contract.methods.getAllergeni(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                    const localitaUve = await contract.methods.getlocalitaUve(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                    const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-                    return {
+                    const retrievedData: ImbottigliatoreSchemaForm = {
                         presenzaSolfiti: presenzaSolfiti,
                         presenzaAllergeni: presenzaAllergeni,
                         localitaUve: localitaUve,
-                        codiceABarre: codiceABarre
+                        codiceAbarre: codiceABarre
                     }
+
+                    return retrievedData
                 })
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
         })
 });
+
+export const getManualImbottigliatoreData = (input: number): Promise<void | ImbottigliatoreSchemaForm> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const presenzaSolfiti = await contract.methods.getSolfiti(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const presenzaAllergeni = await contract.methods.getAllergeni(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const localitaUve = await contract.methods.getlocalitaUve(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
+
+            const retrievedData: ImbottigliatoreSchemaForm = {
+                presenzaSolfiti: presenzaSolfiti,
+                presenzaAllergeni: presenzaAllergeni,
+                localitaUve: localitaUve,
+                codiceAbarre: codiceABarre
+            }
+
+            return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
