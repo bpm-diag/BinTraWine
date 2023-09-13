@@ -3,17 +3,23 @@ import Header from '@/components/header/header';
 import Catalog from "../components/tabContents/catalog";
 import { MdClose, MdOutlineHome } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import { string } from "zod";
+import { api } from "@/utils/api";
+import NewChain from "@/components/tabContents/newChain";
+import ProductionChain from "@/components/tabContents/productionChain";
+import Loader from "@/components/loading";
+
 
 export interface TabProps {
   triggerKey: string;
   triggerName: string;
-  content: React.ElementType;
-}
+  status: "IN CORSO" | "COMPLETATO",
+};
 
 export default function LandingPage() {
+
+  const getTerreni = api.agronomo.getNumberOfChains.useQuery();
 
   const [tabs, setTabs] = useState<TabProps[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("catalogo");
@@ -41,7 +47,7 @@ export default function LandingPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="grid grid-areas-layout grid-cols-layout grid-rows-layout bg-surface_dark min-h-screen">
-        <Header onClick={() => console.log(currentTab)} setTabs={setTabs} className='grid-in-header' />
+        <Header setTabs={setTabs} className='grid-in-header' />
         <Tabs className="grid-in-main flex flex-col" value={currentTab}>
           <TabsList>
             <TabsTrigger onClick={() => setCurrentTab("catalogo")} className="bg-primary" value="catalogo">
@@ -58,13 +64,17 @@ export default function LandingPage() {
               ))
             }
           </TabsList>
-          <TabsContent value="catalogo">
-            <Catalog setTabs={setTabs} />
+          <TabsContent className="flex justify-center items-center" value="catalogo">
+            {
+              getTerreni.isLoading ? <Loader /> : getTerreni.isError ? <p className="text-base font-primary font-normal">Errore nel caricamento, provare a ricaricare la pagina</p> : <Catalog setTabs={setTabs} number_of_chains={getTerreni.data!} />
+            }
           </TabsContent>
           {
             tabs.map((tab, index) => (
               <TabsContent key={index} value={tab.triggerKey}>
-                <tab.content />
+                {
+                  tab.status === "IN CORSO" ? <NewChain idLotto={tab.triggerKey} /> : <ProductionChain idLotto={tab.triggerKey} />
+                }
               </TabsContent>
             ))
           }

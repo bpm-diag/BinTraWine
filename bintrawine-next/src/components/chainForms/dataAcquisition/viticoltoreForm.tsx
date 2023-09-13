@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { ViticoltoreSchema, ViticoltoreSchemaForm } from "@/types/chainTypes";
 
 export interface ViticoltoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -47,39 +48,8 @@ const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
             { name: 'addresses', label: 'Addresses' },
         ];
 
-        const viticoltoreSchema = z.object({
-            dataRaccolta: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            datiForniture: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            destinazioneUva: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            nomeProdotto: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            prezzo: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            nomeClienteVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            dataVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            addresses: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ViticoltoreSchemaForm = z.infer<typeof viticoltoreSchema>;
-
         const form = useForm<ViticoltoreSchemaForm>({
-            resolver: zodResolver(viticoltoreSchema)
+            resolver: zodResolver(ViticoltoreSchema)
         });
 
         const onSubmit = (data: ViticoltoreSchemaForm) => {

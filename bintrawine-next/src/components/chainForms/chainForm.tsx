@@ -11,6 +11,7 @@ import RivenditoreForm from "@/components/chainForms/dataAcquisition/rivenditore
 import EnteCertificatoreForm from "@/components/chainForms/dataAcquisition/enteCertificatoreForm";
 import { useSession } from 'next-auth/react';
 import { Role } from "@prisma/client";
+import ShowData from "@/components/chainForms/showData";
 
 export interface ChainFormProps
     extends React.HTMLAttributes<HTMLDivElement> {

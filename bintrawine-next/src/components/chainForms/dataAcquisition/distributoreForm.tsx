@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
+import { DistributoreSchema, DistributoreSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +21,7 @@ export interface ViticoltoreFormProps
 
 type FieldDistributoreType = {
     name: "destinazioneDiConsegna" |
+    "nomeProdotto" |
     "prezzo" |
     "quantitaVendita" |
     "nomeClienteVendita" |
@@ -34,6 +35,7 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
 
         const fields: FieldDistributoreType[] = [
             { name: 'destinazioneDiConsegna', label: 'Destinazione di Consegna' },
+            { name: 'nomeProdotto', label: 'Nome Prodotto' },
             { name: 'prezzo', label: 'Prezzo' },
             { name: 'quantitaVendita', label: 'Quantità Vendita' },
             { name: 'nomeClienteVendita', label: 'Nome Cliente Vendita' },
@@ -41,33 +43,11 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
             { name: 'addresses', label: 'Addresses' },
         ];
 
-        const distributoreSchema = z.object({
-            destinazioneDiConsegna: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            prezzo: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            nomeClienteVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            dataVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            addresses: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ViticoltoreSchemaForm = z.infer<typeof distributoreSchema>;
-
-        const form = useForm<ViticoltoreSchemaForm>({
-            resolver: zodResolver(distributoreSchema)
+        const form = useForm<DistributoreSchemaForm>({
+            resolver: zodResolver(DistributoreSchema)
         });
 
-        const onSubmit = (data: ViticoltoreSchemaForm) => {
+        const onSubmit = (data: DistributoreSchemaForm) => {
             console.log(data);
         }
 

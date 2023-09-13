@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
+import { AgronomoSchema, AgronomoSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
@@ -29,25 +29,14 @@ const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
     ({ className }, ref) => {
 
         const sendAgronomoData = api.agronomo.send.useMutation();
-        const getTerreni = api.agronomo.getAnalisiQualitàProdotto.useQuery();
 
         const fields: FieldAgronomoType[] = [
             { name: 'analisiQualitàProdotto', label: 'Analisi Qualità Prodotto' },
             { name: 'certificazioneUvaAppezzamento', label: 'Certificazione Uva Appezzamento' }
         ];
 
-        const agronomoSchema = z.object({
-            analisiQualitàProdotto: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            certificazioneUvaAppezzamento: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type AgronomoSchemaForm = z.infer<typeof agronomoSchema>;
-
         const form = useForm<AgronomoSchemaForm>({
-            resolver: zodResolver(agronomoSchema)
+            resolver: zodResolver(AgronomoSchema)
         });
 
         const onSubmit = (data: AgronomoSchemaForm) => {

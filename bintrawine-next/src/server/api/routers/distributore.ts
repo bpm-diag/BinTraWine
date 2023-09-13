@@ -1,0 +1,55 @@
+import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
+import { z } from 'zod';
+import Web3 from 'web3';
+import { DistributoreSchema } from '@/types/chainTypes';
+import { DistributoreAbi } from '@/server/api/routers/abis';
+import { contracts } from '@/server/api/routers/contracts';
+
+const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
+
+const contract = new web3.eth.Contract(DistributoreAbi, contracts.distributore);
+
+const privateFor = ["BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=", "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=",
+    "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=", "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=", "R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=",
+    "UfNSeSGySeKg11DVNEnqrUtxYRVor4+CvluI8tVv62Y=", "ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="];
+
+export const distributoreRouter = createTRPCRouter({
+    send: publicProcedure
+        .input(DistributoreSchema)
+        .mutation(async ({ input, ctx }) => {
+            return await web3.eth.getAccounts()
+                .then(async (accounts) => {
+                    const [currentAddress, ...other] = accounts;
+                    // send imbottigliatore data
+                    const destinazione = await contract.methods.setDestinazione(input.destinazioneDiConsegna).send({ from: currentAddress, privateFor: privateFor })
+                    const datiVendita = await contract.methods.setDatiVendita(input.prezzo, input.nomeProdotto, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, input.addresses).send({ from: currentAddress, privateFor: privateFor })
+
+                    return {
+                        destinazione: destinazione,
+                        datiVendita: datiVendita
+                    }
+                })
+                .catch((error) => {
+                    console.error("ERROR", error);
+                })
+        }),
+
+    getData: publicProcedure
+        .input(z.number())
+        .query(async ({ input, ctx }) => {
+            return web3.eth.getAccounts()
+                .then(async (accounts) => {
+                    const [currentAddress, ...other] = accounts;
+                    const destinazione = await contract.methods.getDestinazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                    const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
+
+                    return {
+                        destinazione: destinazione,
+                        datiVendita: datiVendita
+                    }
+                })
+                .catch((error) => {
+                    console.error("ERROR", error);
+                })
+        })
+});

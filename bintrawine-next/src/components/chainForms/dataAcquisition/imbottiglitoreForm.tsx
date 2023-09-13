@@ -10,10 +10,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm } from "@/types/chainTypes";
 
 export interface ImbottigliatoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,24 +34,8 @@ const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreForm
             { name: 'codiceAbarre', label: 'Codice a Barre' }
         ];
 
-        const agronomoSchema = z.object({
-            presenzaSolfiti: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            presenzaAllergeni: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            localitaUve: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            codiceAbarre: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ImbottigliatoreSchemaForm = z.infer<typeof agronomoSchema>;
-
         const form = useForm<ImbottigliatoreSchemaForm>({
-            resolver: zodResolver(agronomoSchema)
+            resolver: zodResolver(ImbottigliatoreSchema)
         });
 
         const onSubmit = (data: ImbottigliatoreSchemaForm) => {

@@ -27,7 +27,7 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
         const { data: session, status } = useSession();
 
         const newTab = () => {
-            setTabs(oldState => [...oldState, { triggerKey: 'lotto_9', triggerName: 'Lotto 9', content: NewChain }])
+            setTabs(oldState => [...oldState, { triggerKey: `9`, triggerName: `Lotto 9`, status: 'IN CORSO' }])
         }
 
         return (

@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
+import { ProduttoreSchema, ProduttoreSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
@@ -33,21 +33,8 @@ const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
             { name: 'quantitaVinoRivendicato', label: 'Quantità Vino Rivendicato' }
         ];
 
-        const agronomoSchema = z.object({
-            prodottiVinificazione: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVinoOttenuto: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVinoRivendicato: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ProduttoreSchemaForm = z.infer<typeof agronomoSchema>;
-
         const form = useForm<ProduttoreSchemaForm>({
-            resolver: zodResolver(agronomoSchema)
+            resolver: zodResolver(ProduttoreSchema)
         });
 
         const onSubmit = (data: ProduttoreSchemaForm) => {

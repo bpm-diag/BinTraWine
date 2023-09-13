@@ -4,7 +4,6 @@ import Status from './status';
 import { MdOutlineBubbleChart } from 'react-icons/md';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { TabProps } from '@/pages';
-import ProductionChain from './tabContents/productionChain';
 
 export interface ProductCardProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,7 +19,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     ({ className, idLotto, name, status, avatars, lastUpdate, setTabs }, ref) => {
 
         return (
-            <div onClick={() => setTabs(oldState => [...oldState, { triggerKey: idLotto, triggerName: name, content: ProductionChain }])} className={cn(
+            <div onClick={() => setTabs(oldState => [...oldState, { triggerKey: idLotto, triggerName: name, status: status }])} className={cn(
                 "flex flex-col p-8 gap-3 bg-surface rounded-sm hover:bg-surface_dark hover:cursor-pointer",
                 className
             )}>

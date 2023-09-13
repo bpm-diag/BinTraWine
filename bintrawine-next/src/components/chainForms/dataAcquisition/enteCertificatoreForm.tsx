@@ -10,10 +10,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { EnteCertificatoreSchema, EnteCertificatoreSchemaForm } from "@/types/chainTypes";
 
 export interface AgronomoFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -32,18 +32,8 @@ const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps
             { name: 'certificazione', label: 'Certificazione' }
         ];
 
-        const enteCertificatoreSchema = z.object({
-            validazione: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            certificazione: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type EnteCertificatoreSchemaForm = z.infer<typeof enteCertificatoreSchema>;
-
         const form = useForm<EnteCertificatoreSchemaForm>({
-            resolver: zodResolver(enteCertificatoreSchema)
+            resolver: zodResolver(EnteCertificatoreSchema)
         });
 
         const onSubmit = (data: EnteCertificatoreSchemaForm) => {
