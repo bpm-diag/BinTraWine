@@ -53,8 +53,8 @@ const checkAgronomoData = (agronomoData: (void | AgronomoSchemaForm)): [Agronomo
 
 const checkViticoltoreData = (viticoltoreData: (void | ViticoltoreSchemaForm)): [ViticoltoreSchemaForm | undefined, boolean] => {
     if (!viticoltoreData) return [undefined, false]
-    const { dataRaccolta, datiForniture, destinazioneUva, nomeProdotto, prezzo, quantitaVendita, nomeClienteVendita, dataVendita, addresses } = viticoltoreData
-    if (dataRaccolta && datiForniture && destinazioneUva && nomeProdotto && prezzo && quantitaVendita && nomeClienteVendita && dataVendita && addresses) return [viticoltoreData, true]
+    const { dataRaccolta, datiForniture, destinazioneUva, nomeProdotto, prezzo, quantitaVendita, nomeClienteVendita, dataVendita } = viticoltoreData
+    if (dataRaccolta && datiForniture && destinazioneUva && nomeProdotto && prezzo && quantitaVendita && nomeClienteVendita && dataVendita) return [viticoltoreData, true]
     return [undefined, false]
 }
 
@@ -74,8 +74,8 @@ const checkImbottigliatoreData = (imbottigliatoreData: (void | ImbottigliatoreSc
 
 const checkDistributoreData = (distributoreData: (void | DistributoreSchemaForm)): [DistributoreSchemaForm | undefined, boolean] => {
     if (!distributoreData) return [undefined, false]
-    const { nomeProdotto, prezzo, quantitaVendita, nomeClienteVendita, dataVendita, addresses, destinazioneDiConsegna } = distributoreData
-    if (nomeProdotto && prezzo && quantitaVendita && nomeClienteVendita && dataVendita && addresses && destinazioneDiConsegna) return [distributoreData, true]
+    const { nomeProdotto, prezzo, quantitaVendita, nomeClienteVendita, dataVendita, destinazioneDiConsegna } = distributoreData
+    if (nomeProdotto && prezzo && quantitaVendita && nomeClienteVendita && dataVendita && destinazioneDiConsegna) return [distributoreData, true]
     return [undefined, false]
 }
 
@@ -90,6 +90,8 @@ export const blockChainRouter = createTRPCRouter({
     getManualData: publicProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
+
+            console.log("INPUT", input)
 
             // get and check data
             const [agronomoManualData, agronomoCompleted] = checkAgronomoData(await getManualAgronomoData(input))
@@ -128,7 +130,7 @@ export const blockChainRouter = createTRPCRouter({
                 },
             }
 
-            console.log("FILIERA:", filieraData)
+            console.log(filieraData)
             return filieraData
         })
 })

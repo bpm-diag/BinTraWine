@@ -15,6 +15,8 @@ import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
 import { ViticoltoreSchema, ViticoltoreSchemaForm } from "@/types/chainTypes";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface ViticoltoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -28,13 +30,14 @@ type FieldViticoltoreType = {
     "prezzo" |
     "quantitaVendita" |
     "nomeClienteVendita" |
-    "dataVendita" |
-    "addresses";
+    "dataVendita";
     label: string;
 }
 
 const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
     ({ className }, ref) => {
+
+        const sendViticoltoreData = api.viticoltore.send.useMutation();
 
         const fields: FieldViticoltoreType[] = [
             { name: 'dataRaccolta', label: 'Data Raccolta' },
@@ -44,8 +47,7 @@ const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
             { name: 'prezzo', label: 'Prezzo' },
             { name: 'quantitaVendita', label: 'Quantità Vendita' },
             { name: 'nomeClienteVendita', label: 'Nome Cliente Vendita' },
-            { name: 'dataVendita', label: 'Data Vendita' },
-            { name: 'addresses', label: 'Addresses' },
+            { name: 'dataVendita', label: 'Data Vendita' }
         ];
 
         const form = useForm<ViticoltoreSchemaForm>({
@@ -53,11 +55,14 @@ const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
         });
 
         const onSubmit = (data: ViticoltoreSchemaForm) => {
-            console.log(data);
+            sendViticoltoreData.mutate(data);
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendViticoltoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

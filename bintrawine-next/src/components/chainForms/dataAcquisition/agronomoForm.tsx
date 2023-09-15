@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
 import { api } from '@/utils/api';
+import Loader from "@/components/loading";
 
 export interface AgronomoFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -43,8 +44,13 @@ const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
             sendAgronomoData.mutate(data);
         }
 
+        console.log("IS SUCCESS", sendAgronomoData.isSuccess)
+
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendAgronomoData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

@@ -41,31 +41,6 @@ export const agronomoRouter = createTRPCRouter({
 				.catch((error) => {
 					console.error("ERROR", error);
 				})
-		}),
-
-	getManualData: publicProcedure
-		.input(z.number())
-		.query(async ({ input, ctx }) => {
-			return web3.eth.getAccounts()
-				.then(async (accounts) => {
-					const [currentAddress, ...other] = accounts;
-					console.log("FILIERA AGRONOMO")
-					const analisiQualitàProdotto = await contract.methods.getAnalisiQualitaProdotto(input).call({ from: currentAddress, privateFor: privateFor }) as string
-					const certificazioneUvaAppezzamento = await contract.methods.getCertificazioneUvaAppezzamento(input).call({ from: currentAddress, privateFor: privateFor }) as string
-
-					console.log(analisiQualitàProdotto)
-					console.log(certificazioneUvaAppezzamento)
-
-					const retrievedData: AgronomoSchemaForm = {
-						analisiQualitàProdotto: analisiQualitàProdotto,
-						certificazioneUvaAppezzamento: certificazioneUvaAppezzamento
-					};
-
-					return retrievedData
-				})
-				.catch((error) => {
-					console.error("ERROR", error);
-				})
 		})
 });
 

@@ -24,7 +24,7 @@ export const viticoltoreRouter = createTRPCRouter({
                     const dataRaccolta = await contract.methods.setDataRaccolta(input.dataRaccolta).send({ from: currentAddress, privateFor: privateFor })
                     const datiForniture = await contract.methods.setDatiForniture(input.datiForniture).send({ from: currentAddress, privateFor: privateFor })
                     const destinazioneUva = await contract.methods.setDestinazioneUva(input.destinazioneUva).send({ from: currentAddress, privateFor: privateFor })
-                    const datiVendita = await contract.methods.setVendita(input.nomeProdotto, input.prezzo, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, input.addresses).send({ from: currentAddress, privateFor: privateFor })
+                    const datiVendita = await contract.methods.setVendita(input.nomeProdotto, input.prezzo, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, [currentAddress]).send({ from: currentAddress, privateFor: privateFor })
 
                     return {
                         dataRaccolta: dataRaccolta,
@@ -32,37 +32,6 @@ export const viticoltoreRouter = createTRPCRouter({
                         destinazioneUva: destinazioneUva,
                         datiVendita: datiVendita
                     }
-                })
-                .catch((error) => {
-                    console.error("ERROR", error);
-                })
-        }),
-
-    getData: publicProcedure
-        .input(z.number())
-        .query(async ({ input, ctx }) => {
-            return web3.eth.getAccounts()
-                .then(async (accounts) => {
-                    const [currentAddress, ...other] = accounts;
-                    const dataRaccolta = await contract.methods.getDataRaccolta(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const datiForniture = await contract.methods.getDatiForniture(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const destinazioneUva = await contract.methods.getDestinazioneUva(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
-
-                    const [nomeProdotto, prezzoVendita, quantita, nomeCliente, dataVendita] = datiVendita
-                    const retrievedData: ViticoltoreSchemaForm = {
-                        dataRaccolta: dataRaccolta,
-                        datiForniture: datiForniture,
-                        destinazioneUva: destinazioneUva,
-                        nomeProdotto: nomeProdotto!,
-                        prezzo: prezzoVendita!,
-                        quantitaVendita: quantita!,
-                        nomeClienteVendita: nomeCliente!,
-                        dataVendita: dataVendita!,
-                        addresses: "addresses"
-                    }
-
-                    return retrievedData
                 })
                 .catch((error) => {
                     console.error("ERROR", error);
@@ -77,19 +46,23 @@ export const getManualViticoltoreData = (input: number): Promise<void | Viticolt
             const dataRaccolta = await contract.methods.getDataRaccolta(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const datiForniture = await contract.methods.getDatiForniture(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const destinazioneUva = await contract.methods.getDestinazioneUva(input).call({ from: currentAddress, privateFor: privateFor }) as string
-            const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
+            const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
 
-            const [nomeProdotto, prezzoVendita, quantita, nomeCliente, dataVendita] = datiVendita
+            const nomeProdotto = datiVendita['0'] as string
+            const prezzoVendita = datiVendita['1'] as string
+            const quantitaVendita = datiVendita['2'] as string
+            const nomeCliente = datiVendita['3'] as string
+            const dataVendita = datiVendita['4'] as string
+
             const retrievedData: ViticoltoreSchemaForm = {
                 dataRaccolta: dataRaccolta,
                 datiForniture: datiForniture,
                 destinazioneUva: destinazioneUva,
-                nomeProdotto: nomeProdotto!,
-                prezzo: prezzoVendita!,
-                quantitaVendita: quantita!,
-                nomeClienteVendita: nomeCliente!,
-                dataVendita: dataVendita!,
-                addresses: "addresses"
+                nomeProdotto: nomeProdotto,
+                prezzo: prezzoVendita,
+                quantitaVendita: quantitaVendita,
+                nomeClienteVendita: nomeCliente,
+                dataVendita: dataVendita
             }
 
             return retrievedData

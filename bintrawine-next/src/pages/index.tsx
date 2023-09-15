@@ -20,7 +20,6 @@ export interface TabProps {
 export default function LandingPage() {
 
   const getTerreni = api.agronomo.getNumberOfChains.useQuery();
-  const getLotto = api.blockChainRouter.getManualData.useQuery(1)
 
   const [tabs, setTabs] = useState<TabProps[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("catalogo");
@@ -67,7 +66,10 @@ export default function LandingPage() {
           </TabsList>
           <TabsContent className="flex justify-center items-center" value="catalogo">
             {
-              getTerreni.isLoading ? <Loader /> : getTerreni.isError ? <p className="text-base font-primary font-normal">Errore nel caricamento, provare a ricaricare la pagina</p> : <Catalog setTabs={setTabs} number_of_chains={getTerreni.data!} />
+              getTerreni.isLoading ?
+                <Loader /> : getTerreni.isError ?
+                  <p className="text-base font-primary font-normal">Errore nel caricamento, provare a ricaricare la pagina</p> :
+                  <Catalog setTabs={setTabs} number_of_chains={getTerreni.data!} />
             }
           </TabsContent>
           {

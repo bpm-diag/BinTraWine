@@ -22,42 +22,14 @@ export const distributoreRouter = createTRPCRouter({
                     const [currentAddress, ...other] = accounts;
                     // send imbottigliatore data
                     const destinazione = await contract.methods.setDestinazione(input.destinazioneDiConsegna).send({ from: currentAddress, privateFor: privateFor })
-                    const datiVendita = await contract.methods.setDatiVendita(input.prezzo, input.nomeProdotto, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, input.addresses).send({ from: currentAddress, privateFor: privateFor })
-
+                    const datiVendita = await contract.methods.setDatiVendita(input.prezzo, input.nomeProdotto, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, [currentAddress]).send({ from: currentAddress, privateFor: privateFor })
                     return {
                         destinazione: destinazione,
                         datiVendita: datiVendita
                     }
                 })
                 .catch((error) => {
-                    console.error("ERROR", error);
-                })
-        }),
-
-    getData: publicProcedure
-        .input(z.number())
-        .query(async ({ input, ctx }) => {
-            return web3.eth.getAccounts()
-                .then(async (accounts) => {
-                    const [currentAddress, ...other] = accounts;
-                    const destinazione = await contract.methods.getDestinazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
-
-                    const [prezzoVendita, nomeProdotto, quantita, nomeCliente, dataVendita] = datiVendita
-                    const retrievedData: DistributoreSchemaForm = {
-                        destinazioneDiConsegna: destinazione,
-                        nomeProdotto: nomeProdotto!,
-                        prezzo: prezzoVendita!,
-                        quantitaVendita: quantita!,
-                        nomeClienteVendita: nomeCliente!,
-                        dataVendita: dataVendita!,
-                        addresses: "addresses"
-                    }
-
-                    return retrievedData
-                })
-                .catch((error) => {
-                    console.error("ERROR", error);
+                    console.error("ERROR SEND DISTRIB", error);
                 })
         })
 });
@@ -67,22 +39,26 @@ export const getManualDistributoreData = (input: number): Promise<void | Distrib
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
             const destinazione = await contract.methods.getDestinazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
-            const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor }) as string[]
+            const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
+            const prezzoVendita = datiVendita['0'] as string
+            const nomeProdotto = datiVendita['1'] as string
+            const quantita = datiVendita['2'] as string
+            const nomeCliente = datiVendita['3'] as string
+            const dataVendita = datiVendita['4'] as string
 
-            const [prezzoVendita, nomeProdotto, quantita, nomeCliente, dataVendita] = datiVendita
             const retrievedData: DistributoreSchemaForm = {
                 destinazioneDiConsegna: destinazione,
-                nomeProdotto: nomeProdotto!,
-                prezzo: prezzoVendita!,
-                quantitaVendita: quantita!,
-                nomeClienteVendita: nomeCliente!,
-                dataVendita: dataVendita!,
-                addresses: "addresses"
+                nomeProdotto: nomeProdotto,
+                prezzo: prezzoVendita,
+                quantitaVendita: quantita,
+                nomeClienteVendita: nomeCliente,
+                dataVendita: dataVendita
             }
 
+            console.log("RETURN", retrievedData)
             return retrievedData
         })
         .catch((error) => {
-            console.error("ERROR", error);
+            console.error("ERROR GET DISTRIB", error);
         })
 }

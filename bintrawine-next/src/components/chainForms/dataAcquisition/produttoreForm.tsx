@@ -14,6 +14,8 @@ import { ProduttoreSchema, ProduttoreSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface ProduttoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,6 +29,8 @@ type FieldProduttoreType = {
 const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
     ({ className }, ref) => {
 
+        const sendProduttoreData = api.produttore.send.useMutation();
+
         const fields: FieldProduttoreType[] = [
             { name: 'prodottiVinificazione', label: 'Prodotti Vinificazione' },
             { name: 'quantitaVinoOttenuto', label: 'Quantità Vino Ottenuto' },
@@ -38,11 +42,14 @@ const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
         });
 
         const onSubmit = (data: ProduttoreSchemaForm) => {
-            console.log(data);
+            sendProduttoreData.mutate(data)
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendProduttoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

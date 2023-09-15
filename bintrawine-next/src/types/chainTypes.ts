@@ -39,10 +39,7 @@ export const ViticoltoreSchema = z.object({
     }),
     dataVendita: z.string().min(1, {
         message: "Dato obbligatorio",
-    }),
-    addresses: z.string().min(1, {
-        message: "Dato obbligatorio",
-    }),
+    })
 });
 export type ViticoltoreSchemaForm = z.infer<typeof ViticoltoreSchema>;
 
@@ -99,10 +96,7 @@ export const DistributoreSchema = z.object({
     }),
     dataVendita: z.string().min(1, {
         message: "Dato obbligatorio",
-    }),
-    addresses: z.string().min(1, {
-        message: "Dato obbligatorio",
-    }),
+    })
 });
 export type DistributoreSchemaForm = z.infer<typeof DistributoreSchema>;
 

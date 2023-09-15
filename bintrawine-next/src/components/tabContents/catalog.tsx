@@ -4,6 +4,8 @@ import React from 'react';
 import { Input } from "@/components/ui/input";
 import Paginator from "@/components/paginator";
 import { cn } from "@/utils";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface CatalogProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,11 +13,37 @@ export interface CatalogProps
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
+const checkIdLotto = (number_of_chains: number): number => {
+    if (number_of_chains === 1) return number_of_chains
+    return number_of_chains - 1
+}
+
+const getNumberOfLotti = (chainNumber: number, latestCompleted: boolean): number => {
+    if (latestCompleted) return chainNumber - 1
+    if (chainNumber === 1) return 1
+    return chainNumber
+}
+
+const getCompleted = (chainNumber: number, currentNumber: number, latestCompleted: boolean): boolean => {
+    console.log(chainNumber, currentNumber, latestCompleted)
+    if (currentNumber === (chainNumber - 1)) {
+        if (latestCompleted) {
+            return true
+        } else {
+            return false
+        }
+    }
+    return true
+}
+
 const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
     ({ className, number_of_chains, setTabs }, ref) => {
 
+        console.log("LOTTO TO CHECK", checkIdLotto(number_of_chains))
+        const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_chains))
+
         return (
-            <div className={cn("flex flex-col gap-14", className)}>
+            <div className={cn("flex flex-col gap-14 w-full", className)}>
                 <div className="bg-white py-2 px-8 flex flex-row gap-4 items-center border-b-2 border-b-black_dim">
                     <h1 className="font-primary font-semibold text-2xl">Catalogo (221)</h1>
                 </div>
@@ -24,9 +52,13 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                 </div>
                 <div className="p-4 grid grid-cols-4 grid-rows-2 gap-4">
                     {
-                        Array.apply(0, Array(number_of_chains)).map(function (x, i) {
-                            return <ProductCard key={i} setTabs={setTabs} idLotto={`${x}`} name={`Lotto ${x}`} status={i === (number_of_chains - 1) ? "IN CORSO" : "COMPLETATO"} lastUpdate="14/06/2023, 13:48" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} />;
-                        })
+                        getLatestLotto.isLoading ?
+                            <Loader /> :
+                            getLatestLotto.isError ?
+                                <p>Error on fetching data</p> :
+                                Array.from(Array(getNumberOfLotti(Number(number_of_chains), getLatestLotto.data.completed))).map(function (_, i) {
+                                    return <ProductCard key={i + 1} setTabs={setTabs} idLotto={`${i + 1}`} name={`Lotto ${i + 1}`} status={getCompleted(Number(number_of_chains), Number(i + 1), getLatestLotto.data.completed) ? "COMPLETATO" : "IN CORSO"} lastUpdate="14/06/2023, 13:48" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} />;
+                                })
                     }
                 </div>
                 <div className="flex justify-center items-center">

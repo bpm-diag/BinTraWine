@@ -14,6 +14,8 @@ import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
 import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm } from "@/types/chainTypes";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface ImbottigliatoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,6 +29,8 @@ type FieldProduttoreType = {
 const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreFormProps>(
     ({ className }, ref) => {
 
+        const sendImbottigliatoreData = api.imbottigliatore.send.useMutation();
+
         const fields: FieldProduttoreType[] = [
             { name: 'presenzaSolfiti', label: 'Presenza Solfiti' },
             { name: 'presenzaAllergeni', label: 'Presenza Allergeni' },
@@ -39,11 +43,14 @@ const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreForm
         });
 
         const onSubmit = (data: ImbottigliatoreSchemaForm) => {
-            console.log(data);
+            sendImbottigliatoreData.mutate(data)
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendImbottigliatoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>
