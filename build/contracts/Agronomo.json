@@ -15234,11 +15234,11 @@
       "events": {},
       "links": {},
       "address": "0x60ED79B615Ec9aFD4250c94D67bCf8b67D07Dca1",
-      "transactionHash": "0x2614e73432137e85c686af994aac35fcf329236666b4269c82f35857032acaf8"
+      "transactionHash": "0x450f547130eb0a8f138f385cea1f9d55c0d4527cd60e1fadd053755037dbd2fb"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-08-29T10:52:24.206Z",
+  "updatedAt": "2023-09-07T14:05:54.650Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

@@ -11124,11 +11124,11 @@
       "events": {},
       "links": {},
       "address": "0x130BacfEeFF3C8757DC10F03E8722d13fC429fCc",
-      "transactionHash": "0x1d475575986f5134a4f01f95d9cf30734550592ebf4a8be9e191ebe98d40e7c2"
+      "transactionHash": "0x2faa5bcfb8c316ab16c8244191352c1e6a9643e618f61171cf14745f1f6086c5"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-08-29T10:52:24.476Z",
+  "updatedAt": "2023-09-07T14:05:55.009Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

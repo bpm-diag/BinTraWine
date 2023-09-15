@@ -20545,11 +20545,11 @@
       "events": {},
       "links": {},
       "address": "0x60516F9b57AdFD0681B54682082faA53E37eEeF7",
-      "transactionHash": "0x7565bc568208ed5fed6cf6cc8094d0d4af0125ea7c4ec6f0ebd95e52ee02ce88"
+      "transactionHash": "0x146b8e34eb744c216f7b5db07319bf50784d432a6c09df8950086cf7cf599d4b"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-08-29T10:52:24.407Z",
+  "updatedAt": "2023-09-07T14:05:54.952Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

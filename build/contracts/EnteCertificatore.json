@@ -22009,11 +22009,11 @@
       "events": {},
       "links": {},
       "address": "0x69e87592267B258EbcEa2414533d188A995DA417",
-      "transactionHash": "0x93b92247e224c16f9f68c7c08b0739f1924bfaecf6375119edbf81ad86cff42c"
+      "transactionHash": "0x3b03225591dab15074e7fc20ca9b8d917fa9fb2c54fcdcea74b20ff429353e1f"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-08-29T10:52:24.443Z",
+  "updatedAt": "2023-09-07T14:05:54.982Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",

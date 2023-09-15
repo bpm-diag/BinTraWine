@@ -28560,11 +28560,11 @@
       "events": {},
       "links": {},
       "address": "0x825266F9d224db92fF25e2a0F90Da227a9C41bb1",
-      "transactionHash": "0x64193ec54a28f0436411ab6743f5775439fa58a68f062a491879331b61a82e48"
+      "transactionHash": "0x86d6e6dac6842e6700cc4899b28149a5c18ec7d5d2fbe04cf472331c5c98c2b1"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-08-29T10:52:24.257Z",
+  "updatedAt": "2023-09-07T14:05:54.725Z",
   "networkType": "quorum",
   "devdoc": {
     "kind": "dev",
