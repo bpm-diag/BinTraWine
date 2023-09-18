@@ -122,3 +122,31 @@ export const RivenditoreSensoriSchema = z.object({
     }),
 });
 export type RivenditoreSensoriSchemaForm = z.infer<typeof RivenditoreSensoriSchema>;
+
+export type FilieraChain = {
+    completed: boolean,
+    agronomo: {
+        data: AgronomoSchemaForm | undefined,
+        completed: boolean
+    },
+    viticoltore: {
+        data: ViticoltoreSchemaForm | undefined,
+        completed: boolean
+    },
+    produttore: {
+        data: ProduttoreSchemaForm | undefined,
+        completed: boolean
+    },
+    imbottigliatore: {
+        data: ImbottigliatoreSchemaForm | undefined,
+        completed: boolean
+    },
+    distributore: {
+        data: DistributoreSchemaForm | undefined,
+        completed: boolean
+    },
+    enteCertificatore: {
+        data: EnteCertificatoreSchemaForm | undefined,
+        completed: boolean
+    }
+}

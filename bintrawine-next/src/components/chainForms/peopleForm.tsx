@@ -55,8 +55,6 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                     <div>
                         <Button variant="compilation">Inserzione manuale</Button>
                         <Button variant="compilation">Raccolta Automatica</Button>
-                        <Button variant="compilation">Dati Produttore</Button>
-                        <Button variant="compilation">Dati Agronomo</Button>
                     </div>
                 </div>
             </div>

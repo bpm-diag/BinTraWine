@@ -6,6 +6,7 @@ import Paginator from "@/components/paginator";
 import { cn } from "@/utils";
 import { api } from "@/utils/api";
 import Loader from "@/components/loading";
+import { getNumberOfLotti, getCompleted, checkIdLotto } from "@/utils/utilsFunctions";
 
 export interface CatalogProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -13,33 +14,9 @@ export interface CatalogProps
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
-const checkIdLotto = (number_of_chains: number): number => {
-    if (number_of_chains === 1) return number_of_chains
-    return number_of_chains - 1
-}
-
-const getNumberOfLotti = (chainNumber: number, latestCompleted: boolean): number => {
-    if (latestCompleted) return chainNumber - 1
-    if (chainNumber === 1) return 1
-    return chainNumber
-}
-
-const getCompleted = (chainNumber: number, currentNumber: number, latestCompleted: boolean): boolean => {
-    console.log(chainNumber, currentNumber, latestCompleted)
-    if (currentNumber === (chainNumber - 1)) {
-        if (latestCompleted) {
-            return true
-        } else {
-            return false
-        }
-    }
-    return true
-}
-
 const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
     ({ className, number_of_chains, setTabs }, ref) => {
 
-        console.log("LOTTO TO CHECK", checkIdLotto(number_of_chains))
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_chains))
 
         return (
@@ -56,7 +33,7 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                             <Loader /> :
                             getLatestLotto.isError ?
                                 <p>Error on fetching data</p> :
-                                Array.from(Array(getNumberOfLotti(Number(number_of_chains), getLatestLotto.data.completed))).map(function (_, i) {
+                                Array.from(Array(getNumberOfLotti(Number(number_of_chains)))).map(function (_, i) {
                                     return <ProductCard key={i + 1} setTabs={setTabs} idLotto={`${i + 1}`} name={`Lotto ${i + 1}`} status={getCompleted(Number(number_of_chains), Number(i + 1), getLatestLotto.data.completed) ? "COMPLETATO" : "IN CORSO"} lastUpdate="14/06/2023, 13:48" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} />;
                                 })
                     }

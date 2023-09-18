@@ -55,7 +55,6 @@ export const getManualDistributoreData = (input: number): Promise<void | Distrib
                 dataVendita: dataVendita
             }
 
-            console.log("RETURN", retrievedData)
             return retrievedData
         })
         .catch((error) => {

@@ -44,8 +44,6 @@ const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
             sendAgronomoData.mutate(data);
         }
 
-        console.log("IS SUCCESS", sendAgronomoData.isSuccess)
-
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
                 {

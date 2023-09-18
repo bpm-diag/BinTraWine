@@ -107,8 +107,6 @@ export const authOptions: NextAuthOptions = {
 
         if (!isCorrectPassword) return null;
 
-        console.log(user)
-
         return user;
       },
     })

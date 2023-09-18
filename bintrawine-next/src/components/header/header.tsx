@@ -8,26 +8,30 @@ import { MdLogout, MdAdd } from 'react-icons/md'
 import Logo from '@/components/ui/logo';
 import { TabProps } from "@/pages";
 import { cn } from '@/utils';
-import NewChain from '../tabContents/newChain';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { api } from '@/utils/api';
+import { checkIdLotto } from "@/utils/utilsFunctions";
 
-export interface AccountProps
+export interface HeaderProps
     extends React.HTMLAttributes<HTMLHeadElement> {
+    number_of_lotti: number
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
-const Header = React.forwardRef<HTMLDivElement, AccountProps>(
-    ({ className, setTabs, ...props }, ref) => {
+const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
+    ({ className, number_of_lotti, setTabs, ...props }, ref) => {
+
+        const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_lotti))
 
         const { data: session, status } = useSession();
 
         const newTab = () => {
-            setTabs(oldState => [...oldState, { triggerKey: `9`, triggerName: `Lotto 9`, status: 'IN CORSO' }])
+            setTabs(oldState => [...oldState, { triggerKey: `${number_of_lotti}`, triggerName: `Lotto ${number_of_lotti}`, status: 'IN CORSO' }])
         }
 
         return (
@@ -38,10 +42,18 @@ const Header = React.forwardRef<HTMLDivElement, AccountProps>(
                         <Separator className='h-2/3' orientation="vertical" />
                         <span className="font-primary text-18">{session?.user.cellar}</span>
                         <Separator className='h-2/3' orientation="vertical" />
-                        <Button className='bg-accent' variant="text" onClick={() => newTab()}>
-                            Nuovo
-                            <MdAdd size='20' />
-                        </Button>
+                        {getLatestLotto.isFetched && getLatestLotto.data!.completed &&
+                            <Button className='bg-accent' variant="text" onClick={() => newTab()}>
+                                Nuovo
+                                <MdAdd size='20' />
+                            </Button>
+                        }
+                        {getLatestLotto.isFetched && !getLatestLotto.data!.completed &&
+                            <Button disabled className='bg-transparent cursor-not-allowed' variant="text" onClick={() => newTab()}>
+                                Nuovo
+                                <MdAdd size='20' />
+                            </Button>
+                        }
                     </div>
                     <div className='flex-1 gap-5 flex justify-end items-center'>
                         {status == 'authenticated' &&

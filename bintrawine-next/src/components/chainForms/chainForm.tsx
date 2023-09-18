@@ -11,7 +11,8 @@ import RivenditoreForm from "@/components/chainForms/dataAcquisition/rivenditore
 import EnteCertificatoreForm from "@/components/chainForms/dataAcquisition/enteCertificatoreForm";
 import { useSession } from 'next-auth/react';
 import { Role } from "@prisma/client";
-import { FilieraChain } from "@/server/api/routers/blockChain/blockChain";
+import { FilieraChain } from "@/types/chainTypes";
+import { getCompletedByString, getDataToShow } from "@/utils/utilsFunctions";
 import ShowData from "@/components/chainForms/showData";
 
 export interface ChainFormProps
@@ -57,7 +58,8 @@ const ChainForm = React.forwardRef<HTMLDivElement, ChainFormProps>(
                 <PeopleForm chainType={selectedChain.name} />
                 {/* Form Dettaglio Catena */}
                 <div className="col-span-2 flex flex-col">
-                    <selectedChain.chainForm />
+                    {getCompletedByString(selectedChain.id, filieraChain) && <ShowData title={selectedChain.name} data={getDataToShow(selectedChain.id, filieraChain)} />}
+                    {!getCompletedByString(selectedChain.id, filieraChain) && <selectedChain.chainForm />}
                 </div>
             </div>
         )

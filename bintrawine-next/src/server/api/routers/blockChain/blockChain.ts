@@ -7,7 +7,8 @@ import {
     ProduttoreSchemaForm,
     ImbottigliatoreSchemaForm,
     DistributoreSchemaForm,
-    EnteCertificatoreSchemaForm
+    EnteCertificatoreSchemaForm,
+    FilieraChain
 } from '@/types/chainTypes';
 import { getManualAgronomoData } from '@/server/api/routers/blockChain/filiera/agronomo'
 import { getManualViticoltoreData } from '@/server/api/routers/blockChain/filiera/viticoltore'
@@ -15,34 +16,6 @@ import { getManualProduttoreData } from '@/server/api/routers/blockChain/filiera
 import { getManualImbottigliatoreData } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
 import { getManualDistributoreData } from '@/server/api/routers/blockChain/filiera/distributore'
 import { getManualEnteCertificatoreData } from '@/server/api/routers/blockChain/filiera/enteCertificatore'
-
-export type FilieraChain = {
-    completed: boolean,
-    agronomo: {
-        data: AgronomoSchemaForm | undefined,
-        completed: boolean
-    },
-    viticoltore: {
-        data: ViticoltoreSchemaForm | undefined,
-        completed: boolean
-    },
-    produttore: {
-        data: ProduttoreSchemaForm | undefined,
-        completed: boolean
-    },
-    imbottigliatore: {
-        data: ImbottigliatoreSchemaForm | undefined,
-        completed: boolean
-    },
-    distributore: {
-        data: DistributoreSchemaForm | undefined,
-        completed: boolean
-    },
-    enteCertificatore: {
-        data: EnteCertificatoreSchemaForm | undefined,
-        completed: boolean
-    }
-}
 
 const checkAgronomoData = (agronomoData: (void | AgronomoSchemaForm)): [AgronomoSchemaForm | undefined, boolean] => {
     if (!agronomoData) return [undefined, false]
@@ -130,7 +103,6 @@ export const blockChainRouter = createTRPCRouter({
                 },
             }
 
-            console.log(filieraData)
             return filieraData
         })
 })
