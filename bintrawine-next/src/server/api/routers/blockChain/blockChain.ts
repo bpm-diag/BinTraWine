@@ -8,14 +8,14 @@ import {
     ImbottigliatoreSchemaForm,
     DistributoreSchemaForm,
     EnteCertificatoreSchemaForm,
-    FilieraChain
+    FilieraChain,
 } from '@/types/chainTypes';
-import { getManualAgronomoData } from '@/server/api/routers/blockChain/filiera/agronomo'
-import { getManualViticoltoreData } from '@/server/api/routers/blockChain/filiera/viticoltore'
-import { getManualProduttoreData } from '@/server/api/routers/blockChain/filiera/produttore'
-import { getManualImbottigliatoreData } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
-import { getManualDistributoreData } from '@/server/api/routers/blockChain/filiera/distributore'
-import { getManualEnteCertificatoreData } from '@/server/api/routers/blockChain/filiera/enteCertificatore'
+import { getManualAgronomoData, getAgronomoIDLotto } from '@/server/api/routers/blockChain/filiera/agronomo'
+import { getManualViticoltoreData, getViticoltoreIDLotto } from '@/server/api/routers/blockChain/filiera/viticoltore'
+import { getManualProduttoreData, getProduttoreIDLotto } from '@/server/api/routers/blockChain/filiera/produttore'
+import { getManualImbottigliatoreData, getImbottigliatoreIDLotto } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
+import { getManualDistributoreData, getDistributoreIDLotto } from '@/server/api/routers/blockChain/filiera/distributore'
+import { getManualEnteCertificatoreData, getEnteCertificatoreIDLotto } from '@/server/api/routers/blockChain/filiera/enteCertificatore'
 
 const checkAgronomoData = (agronomoData: (void | AgronomoSchemaForm)): [AgronomoSchemaForm | undefined, boolean] => {
     if (!agronomoData) return [undefined, false]
@@ -64,8 +64,6 @@ export const blockChainRouter = createTRPCRouter({
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
-            console.log("INPUT", input)
-
             // get and check data
             const [agronomoManualData, agronomoCompleted] = checkAgronomoData(await getManualAgronomoData(input))
             const [viticoltoreManualData, viticoltoreCompleted] = checkViticoltoreData(await getManualViticoltoreData(input))
@@ -104,5 +102,24 @@ export const blockChainRouter = createTRPCRouter({
             }
 
             return filieraData
+        }),
+
+    getLatestIDLotto: publicProcedure
+        .query(async ({ ctx }) => {
+
+            const agronomoIDLotto = await getAgronomoIDLotto()
+            const viticoltoreIDLotto = await getViticoltoreIDLotto()
+            const distributoreIDLotto = await getDistributoreIDLotto()
+            const imbottigliatoreIDLotto = await getImbottigliatoreIDLotto()
+            const produttoreIDLotto = await getProduttoreIDLotto()
+            const enteCertificatoreIDLotto = await getEnteCertificatoreIDLotto()
+
+            console.log(agronomoIDLotto, viticoltoreIDLotto, distributoreIDLotto, imbottigliatoreIDLotto, produttoreIDLotto, enteCertificatoreIDLotto)
+
+            if (agronomoIDLotto && viticoltoreIDLotto && distributoreIDLotto && imbottigliatoreIDLotto && produttoreIDLotto && enteCertificatoreIDLotto) {
+                return Math.max(agronomoIDLotto, viticoltoreIDLotto, distributoreIDLotto, imbottigliatoreIDLotto, produttoreIDLotto, enteCertificatoreIDLotto)
+            }
+
+            return 1
         })
 })

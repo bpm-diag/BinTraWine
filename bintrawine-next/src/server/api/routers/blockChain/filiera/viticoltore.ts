@@ -71,3 +71,15 @@ export const getManualViticoltoreData = (input: number): Promise<void | Viticolt
             console.error("ERROR", error);
         })
 }
+
+export const getViticoltoreIDLotto = (): Promise<void | number> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getIdDataRaccoltaSerial().call({ from: currentAddress, privateFor: privateFor }) as number
+            return data;
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}

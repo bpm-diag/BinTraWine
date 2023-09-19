@@ -8,7 +8,6 @@ import { api } from "@/utils/api";
 import Loader from "@/components/loading";
 import { getNumberOfLotti, getCompleted, checkIdLotto } from "@/utils/utilsFunctions";
 import { useState } from "react";
-import { MdAssignmentReturned } from "react-icons/md";
 
 export interface CatalogProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -25,6 +24,9 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
 
         const [currentPage, setCurrentPage] = useState<number>(1);
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_chains))
+        if (getLatestLotto.isFetched) {
+            console.log(checkIdLotto(number_of_chains), getLatestLotto.data)
+        }
 
         return (
             <div className={cn("flex flex-col gap-10 w-full", className)}>

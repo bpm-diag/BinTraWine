@@ -33,6 +33,7 @@ const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps
         const sendEnteCertificatoreData = api.enteCertificatore.send.useMutation({
             onSuccess() {
                 utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
             }
         });
 

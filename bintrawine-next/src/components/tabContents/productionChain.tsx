@@ -1,5 +1,5 @@
 import Actor, { ActorData } from "@/components/actor";
-import { MdAgriculture } from "react-icons/md";
+import { MdOutlineAgriculture, MdOutlineLocalShipping, MdOutlineWineBar, MdProductionQuantityLimits, MdOutlineLocalFlorist, MdOutlineSell, MdOutlineSafetyCheck } from "react-icons/md";
 import React from 'react';
 import { api } from "@/utils/api";
 import Loader from "@/components/loading";
@@ -34,7 +34,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
         const data: ActorData[] = [
             {
                 name: "Agronomo",
-                icon: MdAgriculture,
+                icon: MdOutlineAgriculture,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
@@ -73,7 +73,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             },
             {
                 name: "Viticoltore",
-                icon: MdAgriculture,
+                icon: MdOutlineLocalFlorist,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
@@ -121,7 +121,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             },
             {
                 name: "Produttore",
-                icon: MdAgriculture,
+                icon: MdProductionQuantityLimits,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
@@ -165,7 +165,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             },
             {
                 name: "Imbottigliatore",
-                icon: MdAgriculture,
+                icon: MdOutlineWineBar,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
@@ -202,7 +202,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             },
             {
                 name: "Distributore",
-                icon: MdAgriculture,
+                icon: MdOutlineLocalShipping,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
@@ -262,7 +262,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             },
             {
                 name: "Rivenditore",
-                icon: MdAgriculture,
+                icon: MdOutlineSell,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
@@ -290,7 +290,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             },
             {
                 name: "Ente Certificatore",
-                icon: MdAgriculture,
+                icon: MdOutlineSafetyCheck,
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {

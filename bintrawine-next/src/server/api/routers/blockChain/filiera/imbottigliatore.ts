@@ -36,32 +36,6 @@ export const imbottigliatoreRouter = createTRPCRouter({
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
-        }),
-
-    getData: publicProcedure
-        .input(z.number())
-        .query(async ({ input, ctx }) => {
-            return web3.eth.getAccounts()
-                .then(async (accounts) => {
-                    const [currentAddress, ...other] = accounts;
-
-                    const presenzaSolfiti = await contract.methods.getSolfiti(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const presenzaAllergeni = await contract.methods.getAllergeni(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const localitaUve = await contract.methods.getlocalitaUve(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
-
-                    const retrievedData: ImbottigliatoreSchemaForm = {
-                        presenzaSolfiti: presenzaSolfiti,
-                        presenzaAllergeni: presenzaAllergeni,
-                        localitaUve: localitaUve,
-                        codiceAbarre: codiceABarre
-                    }
-
-                    return retrievedData
-                })
-                .catch((error) => {
-                    console.error("ERROR", error);
-                })
         })
 });
 
@@ -83,6 +57,18 @@ export const getManualImbottigliatoreData = (input: number): Promise<void | Imbo
             }
 
             return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getImbottigliatoreIDLotto = (): Promise<void | number> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getIdSolfitiSerial().call({ from: currentAddress, privateFor: privateFor }) as number
+            return data;
         })
         .catch((error) => {
             console.error("ERROR", error);

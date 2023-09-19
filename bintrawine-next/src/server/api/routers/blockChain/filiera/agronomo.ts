@@ -62,3 +62,15 @@ export const getManualAgronomoData = (input: number): Promise<void | AgronomoSch
 			console.error("ERROR", error);
 		})
 }
+
+export const getAgronomoIDLotto = (): Promise<void | number> => {
+	return web3.eth.getAccounts()
+		.then(async (accounts) => {
+			const [currentAddress, ...other] = accounts;
+			const data = await contract.methods.getIdAnalisiQualitaSerial().call({ from: currentAddress, privateFor: privateFor }) as number
+			return data;
+		})
+		.catch((error) => {
+			console.error("ERROR", error);
+		})
+}

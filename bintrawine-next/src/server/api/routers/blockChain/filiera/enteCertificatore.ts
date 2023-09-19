@@ -32,28 +32,6 @@ export const enteCertificatoreRouter = createTRPCRouter({
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
-        }),
-
-    getData: publicProcedure
-        .input(z.number())
-        .query(async ({ input, ctx }) => {
-            return web3.eth.getAccounts()
-                .then(async (accounts) => {
-                    const [currentAddress, ...other] = accounts;
-
-                    const validazione = await contract.methods.getValidazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const certificazione = await contract.methods.getCertificazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
-
-                    const retrievedData: EnteCertificatoreSchemaForm = {
-                        validazione: validazione,
-                        certificazione: certificazione
-                    }
-
-                    return retrievedData
-                })
-                .catch((error) => {
-                    console.error("ERROR", error);
-                })
         })
 });
 
@@ -71,6 +49,18 @@ export const getManualEnteCertificatoreData = (input: number): Promise<void | En
             }
 
             return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getEnteCertificatoreIDLotto = (): Promise<void | number> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getIdValidazioneSerial().call({ from: currentAddress, privateFor: privateFor }) as number
+            return data;
         })
         .catch((error) => {
             console.error("ERROR", error);

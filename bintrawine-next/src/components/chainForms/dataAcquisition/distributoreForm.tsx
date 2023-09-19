@@ -38,6 +38,7 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
         const sendDistributoreData = api.distributore.send.useMutation({
             onSuccess() {
                 utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
             }
         })
 

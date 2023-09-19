@@ -61,3 +61,15 @@ export const getManualDistributoreData = (input: number): Promise<void | Distrib
             console.error("ERROR GET DISTRIB", error);
         })
 }
+
+export const getDistributoreIDLotto = (): Promise<void | number> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getIdDestinazioneSerial().call({ from: currentAddress, privateFor: privateFor }) as number
+            return data;
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}

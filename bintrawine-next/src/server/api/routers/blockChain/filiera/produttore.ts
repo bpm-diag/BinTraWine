@@ -34,29 +34,6 @@ export const produttoreRouter = createTRPCRouter({
                 .catch((error) => {
                     console.error("ERROR", error);
                 })
-        }),
-
-    getData: publicProcedure
-        .input(z.number())
-        .query(async ({ input, ctx }) => {
-            return web3.eth.getAccounts()
-                .then(async (accounts) => {
-                    const [currentAddress, ...other] = accounts;
-                    const prodottiVinificazione = await contract.methods.getProdottiVinificazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const quantitaVinoOttenuto = await contract.methods.getQuantitaVinoOttenuto(input).call({ from: currentAddress, privateFor: privateFor }) as string
-                    const quantitaVinoRivendicato = await contract.methods.getQuantitaVinoRivendicato(input).call({ from: currentAddress, privateFor: privateFor }) as string
-
-                    const retrievedData: ProduttoreSchemaForm = {
-                        prodottiVinificazione: prodottiVinificazione,
-                        quantitaVinoOttenuto: quantitaVinoOttenuto,
-                        quantitaVinoRivendicato: quantitaVinoRivendicato
-                    }
-
-                    return retrievedData
-                })
-                .catch((error) => {
-                    console.error("ERROR", error);
-                })
         })
 });
 
@@ -75,6 +52,18 @@ export const getManualProduttoreData = (input: number): Promise<void | Produttor
             }
 
             return retrievedData
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getProduttoreIDLotto = (): Promise<void | number> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getIdProdottiVinificazioneSerial().call({ from: currentAddress, privateFor: privateFor }) as number
+            return data;
         })
         .catch((error) => {
             console.error("ERROR", error);

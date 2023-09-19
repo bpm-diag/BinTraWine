@@ -33,6 +33,7 @@ const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreForm
         const sendImbottigliatoreData = api.imbottigliatore.send.useMutation({
             onSuccess() {
                 utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
             }
         });
 

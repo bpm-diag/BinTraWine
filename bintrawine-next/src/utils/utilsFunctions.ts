@@ -66,7 +66,7 @@ export const userPercentage = (filieraChain: FilieraChain, roles: Role[]): numbe
     if (filieraChain.imbottigliatore.completed && roles.includes(Role.IMBOTTIGLIATORE)) totalCompleted += 1
     if (filieraChain.distributore.completed && roles.includes(Role.DISTRIBUITORE)) totalCompleted += 1
     if (filieraChain.enteCertificatore.completed && roles.includes(Role.ENTECERTIFICATORE)) totalCompleted += 1
-    return Math.round(totalCompleted / 7 * 100)
+    return Math.round(totalCompleted / roles.length * 100)
 }
 
 export const totalPercentage = (filieraChain: FilieraChain): number => {
