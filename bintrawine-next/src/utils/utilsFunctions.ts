@@ -44,6 +44,19 @@ export const transformRole = (role: string): Role => {
     }
 }
 
+export const getLottiRange = (numberOfLotti: number, pageNumber: number, lottiPerPage: number): Number[] => {
+    let lotti: number[] = []
+    for (let i = (lottiPerPage * (pageNumber - 1)); i < lottiPerPage * pageNumber; i++) {
+        if (i === numberOfLotti) {
+            console.log("LOTTI", lotti)
+            return lotti
+        }
+        lotti.push(i)
+    }
+    console.log("LOTTI", lotti)
+    return lotti
+}
+
 export const getCompletedByString = (id: string, filieraChain: FilieraChain): boolean => {
     switch (id) {
         case "agronomo": return filieraChain.agronomo.completed

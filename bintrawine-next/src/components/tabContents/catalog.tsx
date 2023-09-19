@@ -6,7 +6,7 @@ import Paginator from "@/components/paginator";
 import { cn } from "@/utils";
 import { api } from "@/utils/api";
 import Loader from "@/components/loading";
-import { getNumberOfLotti, getCompleted, checkIdLotto } from "@/utils/utilsFunctions";
+import { getNumberOfLotti, getCompleted, checkIdLotto, getLottiRange } from "@/utils/utilsFunctions";
 import { useState } from "react";
 
 export interface CatalogProps
@@ -24,9 +24,6 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
 
         const [currentPage, setCurrentPage] = useState<number>(1);
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_chains))
-        if (getLatestLotto.isFetched) {
-            console.log(checkIdLotto(number_of_chains), getLatestLotto.data)
-        }
 
         return (
             <div className={cn("flex flex-col gap-10 w-full", className)}>
@@ -42,13 +39,13 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                             <Loader /> :
                             getLatestLotto.isError ?
                                 <p>Error on fetching data</p> :
-                                Array.from(Array(getNumberOfLotti(Number(number_of_chains)))).map(function (_, i) {
+                                Array.from(getLottiRange(getNumberOfLotti(number_of_chains), currentPage, 8)).map(function (i, _) {
                                     return <ProductCard key={i + 1} setTabs={setTabs} idLotto={`${i + 1}`} name={`Lotto ${i + 1}`} status={getCompleted(Number(number_of_chains), Number(i + 1), getLatestLotto.data.completed) ? "COMPLETATO" : "IN CORSO"} lastUpdate="14/06/2023, 13:48" avatars={["https://picsum.photos/200/300", "https://picsum.photos/200/300", "https://picsum.photos/200/300"]} />;
                                 })
                     }
                 </div>
                 <div className="flex justify-center items-center">
-                    {number_of_chains > 8 && <Paginator numberOfPages={getNumberOfPages(number_of_chains, 8)} selectedPage={currentPage} />}
+                    {number_of_chains > 8 && <Paginator setCurrentPage={setCurrentPage} numberOfPages={getNumberOfPages(number_of_chains, 8)} selectedPage={currentPage} />}
                 </div>
             </div>
         );
