@@ -1,4 +1,5 @@
 import { FilieraChain } from "@/types/chainTypes"
+import { Role } from '@prisma/client';
 
 export const checkIdLotto = (number_of_chains: number): number => {
     if (number_of_chains === 1) return number_of_chains
@@ -22,6 +23,27 @@ export const getCompleted = (chainNumber: number, currentNumber: number, latestC
     return true
 }
 
+export const transformRole = (role: string): Role => {
+    switch (role) {
+        case "agronomo":
+            return Role.AGRONOMO;
+        case "viticoltore":
+            return Role.VITICOLTORE;
+        case "produttore":
+            return Role.PRODUTTORE;
+        case "imbottigliatore":
+            return Role.IMBOTTIGLIATORE;
+        case "distributore":
+            return Role.DISTRIBUITORE;
+        case "rivenditore":
+            return Role.RIVENDITORE;
+        case "ente_certificatore":
+            return Role.ENTECERTIFICATORE;
+        default:
+            return Role.AGRONOMO;
+    }
+}
+
 export const getCompletedByString = (id: string, filieraChain: FilieraChain): boolean => {
     switch (id) {
         case "agronomo": return filieraChain.agronomo.completed
@@ -33,6 +55,30 @@ export const getCompletedByString = (id: string, filieraChain: FilieraChain): bo
         case "enteCertificatore": return filieraChain.enteCertificatore.completed
         default: return false
     }
+}
+
+export const userPercentage = (filieraChain: FilieraChain, roles: Role[]): number => {
+    let totalCompleted = 0
+    if (roles.includes(Role.RIVENDITORE)) totalCompleted += 1
+    if (filieraChain.agronomo.completed && roles.includes(Role.AGRONOMO)) totalCompleted += 1
+    if (filieraChain.viticoltore.completed && roles.includes(Role.VITICOLTORE)) totalCompleted += 1
+    if (filieraChain.produttore.completed && roles.includes(Role.PRODUTTORE)) totalCompleted += 1
+    if (filieraChain.imbottigliatore.completed && roles.includes(Role.IMBOTTIGLIATORE)) totalCompleted += 1
+    if (filieraChain.distributore.completed && roles.includes(Role.DISTRIBUITORE)) totalCompleted += 1
+    if (filieraChain.enteCertificatore.completed && roles.includes(Role.ENTECERTIFICATORE)) totalCompleted += 1
+    return Math.round(totalCompleted / 7 * 100)
+}
+
+export const totalPercentage = (filieraChain: FilieraChain): number => {
+    let totalCompleted = 1
+    if (filieraChain.agronomo.completed) totalCompleted += 1
+    if (filieraChain.viticoltore.completed) totalCompleted += 1
+    if (filieraChain.distributore.completed) totalCompleted += 1
+    if (filieraChain.imbottigliatore.completed) totalCompleted += 1
+    if (filieraChain.produttore.completed) totalCompleted += 1
+    if (filieraChain.enteCertificatore.completed) totalCompleted += 1
+
+    return Math.round(totalCompleted / 7 * 100)
 }
 
 export const getDataToShow = (id: string, filieraChain: FilieraChain): { label: string, value: string }[] => {

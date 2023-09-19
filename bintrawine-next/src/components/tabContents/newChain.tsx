@@ -5,7 +5,9 @@ import { cn } from "@/utils";
 import ChainForm from "@/components/chainForms/chainForm";
 import DoughnutChart from "@/components/charts/doughnut";
 import { api } from "@/utils/api";
+import { useSession } from 'next-auth/react';
 import Loader from "@/components/loading";
+import { totalPercentage, userPercentage } from "@/utils/utilsFunctions";
 
 export interface NewChainProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,6 +18,7 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
     ({ className, idLotto }, ref) => {
 
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
+        const { data: session, status } = useSession();
 
         return (
             <div className={cn("flex flex-col w-full", className)}>
@@ -45,12 +48,12 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                                         <div className="flex flex-row sm:flex-col gap-8 items-center">
                                             <p className="basis-1/2 font-primary text-primary text-xl font-normal">Percentuale di compilazione dei <span className="font-bold">tuoi dati</span></p>
                                             <div className="basis-1/2">
-                                                <DoughnutChart percentage={75} fullData />
+                                                <DoughnutChart percentage={userPercentage(getLotto.data, session?.user.roles ?? [])} fullData />
                                             </div>
                                         </div>
                                         <div className="flex flex-row sm:flex-col-reverse gap-8 items-center">
                                             <div className="basis-1/2">
-                                                <DoughnutChart percentage={25} />
+                                                <DoughnutChart percentage={totalPercentage(getLotto.data)} />
                                             </div>
                                             <p className="basis-1/2 font-primary text-primary text-xl font-normal">Percentuale di compilazione di <span className="font-bold">tutti i dati della filiera</span></p>
                                         </div>
