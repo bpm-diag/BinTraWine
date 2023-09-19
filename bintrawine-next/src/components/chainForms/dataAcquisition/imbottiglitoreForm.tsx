@@ -29,7 +29,12 @@ type FieldProduttoreType = {
 const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreFormProps>(
     ({ className }, ref) => {
 
-        const sendImbottigliatoreData = api.imbottigliatore.send.useMutation();
+        const utils = api.useContext()
+        const sendImbottigliatoreData = api.imbottigliatore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+            }
+        });
 
         const fields: FieldProduttoreType[] = [
             { name: 'presenzaSolfiti', label: 'Presenza Solfiti' },

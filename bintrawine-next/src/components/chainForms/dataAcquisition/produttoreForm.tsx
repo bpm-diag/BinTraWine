@@ -29,7 +29,12 @@ type FieldProduttoreType = {
 const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
     ({ className }, ref) => {
 
-        const sendProduttoreData = api.produttore.send.useMutation();
+        const utils = api.useContext()
+        const sendProduttoreData = api.produttore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+            }
+        });
 
         const fields: FieldProduttoreType[] = [
             { name: 'prodottiVinificazione', label: 'Prodotti Vinificazione' },

@@ -29,7 +29,12 @@ type FieldEnteCertificatoreType = {
 const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
     ({ className }, ref) => {
 
-        const sendEnteCertificatoreData = api.enteCertificatore.send.useMutation();
+        const utils = api.useContext()
+        const sendEnteCertificatoreData = api.enteCertificatore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+            }
+        });
 
         const fields: FieldEnteCertificatoreType[] = [
             { name: 'validazione', label: 'Validazione' },

@@ -7,6 +7,8 @@ import { cn } from "@/utils";
 import { api } from "@/utils/api";
 import Loader from "@/components/loading";
 import { getNumberOfLotti, getCompleted, checkIdLotto } from "@/utils/utilsFunctions";
+import { useState } from "react";
+import { MdAssignmentReturned } from "react-icons/md";
 
 export interface CatalogProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,13 +16,18 @@ export interface CatalogProps
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
+const getNumberOfPages = (numberOfLotti: number, lottiPerPage: number): number => {
+    return Math.ceil(numberOfLotti / lottiPerPage);
+}
+
 const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
     ({ className, number_of_chains, setTabs }, ref) => {
 
+        const [currentPage, setCurrentPage] = useState<number>(1);
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_chains))
 
         return (
-            <div className={cn("flex flex-col gap-14 w-full", className)}>
+            <div className={cn("flex flex-col gap-10 w-full", className)}>
                 <div className="bg-white py-2 px-8 flex flex-row gap-4 items-center border-b-2 border-b-black_dim">
                     <h1 className="font-primary font-semibold text-2xl">Catalogo (221)</h1>
                 </div>
@@ -39,7 +46,7 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                     }
                 </div>
                 <div className="flex justify-center items-center">
-                    <Paginator numberOfPages={5} selectedPage={3} />
+                    {number_of_chains > 8 && <Paginator numberOfPages={getNumberOfPages(number_of_chains, 8)} selectedPage={currentPage} />}
                 </div>
             </div>
         );

@@ -29,7 +29,12 @@ type FieldAgronomoType = {
 const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
     ({ className }, ref) => {
 
-        const sendAgronomoData = api.agronomo.send.useMutation();
+        const utils = api.useContext()
+        const sendAgronomoData = api.agronomo.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+            }
+        });
 
         const fields: FieldAgronomoType[] = [
             { name: 'analisiQualitàProdotto', label: 'Analisi Qualità Prodotto' },

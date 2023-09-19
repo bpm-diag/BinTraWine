@@ -8,7 +8,7 @@ export interface PaginatorProps
 }
 
 const Paginator = React.forwardRef<HTMLDivElement, PaginatorProps>(
-    ({ className }, ref) => {
+    ({ className, numberOfPages, selectedPage }, ref) => {
         return (
             <nav className={cn("", className)}>
                 <ul className="flex items-center -space-x-px h-10 text-base">
@@ -19,15 +19,15 @@ const Paginator = React.forwardRef<HTMLDivElement, PaginatorProps>(
                             </svg>
                         </a>
                     </li>
-                    <li>
-                        <a className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500">1</a>
-                    </li>
-                    <li>
-                        <a className="flex items-center underline justify-center px-4 h-10 leading-tight text-gray-500">2</a>
-                    </li>
-                    <li>
-                        <a className="z-10 flex items-center underline justify-center px-4 h-10 leading-tight">3</a>
-                    </li>
+                    {
+                        Array.from(Array(Number(numberOfPages))).map(function (_, i) {
+                            return (
+                                <li>
+                                    <a className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${selectedPage !== (i + 1) && "underline"}`}>{i + 1}</a>
+                                </li>
+                            )
+                        })
+                    }
                     <li>
                         <a href="#" className="flex items-center justify-center px-4 h-10 leading-tight text-white rounded-sm bg-primary_light">
                             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">

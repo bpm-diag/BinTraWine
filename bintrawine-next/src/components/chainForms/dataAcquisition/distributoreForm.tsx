@@ -34,7 +34,12 @@ type FieldDistributoreType = {
 const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
     ({ className }, ref) => {
 
-        const sendDistributoreData = api.distributore.send.useMutation()
+        const utils = api.useContext()
+        const sendDistributoreData = api.distributore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+            }
+        })
 
         const fields: FieldDistributoreType[] = [
             { name: 'destinazioneDiConsegna', label: 'Destinazione di Consegna' },

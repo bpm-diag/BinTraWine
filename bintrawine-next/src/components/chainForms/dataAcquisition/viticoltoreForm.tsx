@@ -10,7 +10,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
@@ -37,7 +36,12 @@ type FieldViticoltoreType = {
 const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
     ({ className }, ref) => {
 
-        const sendViticoltoreData = api.viticoltore.send.useMutation();
+        const utils = api.useContext()
+        const sendViticoltoreData = api.viticoltore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+            }
+        });
 
         const fields: FieldViticoltoreType[] = [
             { name: 'dataRaccolta', label: 'Data Raccolta' },
