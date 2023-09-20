@@ -48,12 +48,10 @@ export const getLottiRange = (numberOfLotti: number, pageNumber: number, lottiPe
     let lotti: number[] = []
     for (let i = (lottiPerPage * (pageNumber - 1)); i < lottiPerPage * pageNumber; i++) {
         if (i === numberOfLotti) {
-            console.log("LOTTI", lotti)
             return lotti
         }
         lotti.push(i)
     }
-    console.log("LOTTI", lotti)
     return lotti
 }
 
@@ -128,7 +126,7 @@ export const getDataToShow = (id: string, filieraChain: FilieraChain): { label: 
             { label: "Nome Cliente Vendita", value: filieraChain.distributore.data?.nomeClienteVendita ?? "" },
             { label: "Nome Prodotto", value: filieraChain.distributore.data?.nomeProdotto ?? "" },
             { label: "Prezzo", value: filieraChain.distributore.data?.prezzo ?? "" },
-            { label: "Quantita Vendita", value: filieraChain.distributore.data?.quantitaVendita ?? "" }
+            { label: "Quantita Vendita", value: String(filieraChain.distributore.data?.quantitaVendita) ?? "" }
         ]
         case "enteCertificatore": return [
             { label: "Validazione", value: filieraChain.enteCertificatore.data?.validazione ?? "" },
