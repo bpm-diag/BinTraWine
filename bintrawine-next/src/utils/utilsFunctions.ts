@@ -44,7 +44,7 @@ export const transformRole = (role: string): Role => {
     }
 }
 
-export const getLottiRange = (numberOfLotti: number, pageNumber: number, lottiPerPage: number): Number[] => {
+export const getLottiRange = (numberOfLotti: number, pageNumber: number, lottiPerPage: number): number[] => {
     let lotti: number[] = []
     for (let i = (lottiPerPage * (pageNumber - 1)); i < lottiPerPage * pageNumber; i++) {
         if (i === numberOfLotti) {
