@@ -10,10 +10,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
+import { DistributoreSchema, DistributoreSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface ViticoltoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -21,58 +23,47 @@ export interface ViticoltoreFormProps
 
 type FieldDistributoreType = {
     name: "destinazioneDiConsegna" |
+    "nomeProdotto" |
     "prezzo" |
     "quantitaVendita" |
     "nomeClienteVendita" |
-    "dataVendita" |
-    "addresses";
+    "dataVendita";
     label: string;
 }
 
 const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
     ({ className }, ref) => {
 
+        const utils = api.useContext()
+        const sendDistributoreData = api.distributore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
+            }
+        })
+
         const fields: FieldDistributoreType[] = [
             { name: 'destinazioneDiConsegna', label: 'Destinazione di Consegna' },
+            { name: 'nomeProdotto', label: 'Nome Prodotto' },
             { name: 'prezzo', label: 'Prezzo' },
             { name: 'quantitaVendita', label: 'Quantità Vendita' },
             { name: 'nomeClienteVendita', label: 'Nome Cliente Vendita' },
-            { name: 'dataVendita', label: 'Data Vendita' },
-            { name: 'addresses', label: 'Addresses' },
+            { name: 'dataVendita', label: 'Data Vendita' }
         ];
 
-        const distributoreSchema = z.object({
-            destinazioneDiConsegna: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            prezzo: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            nomeClienteVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            dataVendita: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            addresses: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ViticoltoreSchemaForm = z.infer<typeof distributoreSchema>;
-
-        const form = useForm<ViticoltoreSchemaForm>({
-            resolver: zodResolver(distributoreSchema)
+        const form = useForm<DistributoreSchemaForm>({
+            resolver: zodResolver(DistributoreSchema)
         });
 
-        const onSubmit = (data: ViticoltoreSchemaForm) => {
-            console.log(data);
+        const onSubmit = (data: DistributoreSchemaForm) => {
+            sendDistributoreData.mutate(data)
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendDistributoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

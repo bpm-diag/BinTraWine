@@ -39,10 +39,9 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                     </div>
                     {/* Persone aggiunte */}
                     <div className="flex flex-wrap gap-2">
-                        <Account className="bg-accent_light" close variant='selected' name="Fabio" surname="D'Adda" />
-                        <Account className="bg-accent_light" close variant='selected' name="Fabio" surname="D'Adda" />
-                        <Account className="bg-accent_light" close variant='selected' name="Fabio" surname="D'Adda" />
-                        <Account className="bg-accent_light" close variant='selected' name="Fabio" surname="D'Adda" />
+                        <Account className="bg-accent_light" close variant='selected' name="Elia" surname="Guarnieri" />
+                        <Account className="bg-accent_light" close variant='selected' name="David" surname="Chieregato" />
+                        <Account className="bg-accent_light" close variant='selected' name="Marco" surname="Cremaschi" />
 
                     </div>
                     <Separator className="bg-surface_dark" />
@@ -56,8 +55,6 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                     <div>
                         <Button variant="compilation">Inserzione manuale</Button>
                         <Button variant="compilation">Raccolta Automatica</Button>
-                        <Button variant="compilation">Dati Produttore</Button>
-                        <Button variant="compilation">Dati Agronomo</Button>
                     </div>
                 </div>
             </div>

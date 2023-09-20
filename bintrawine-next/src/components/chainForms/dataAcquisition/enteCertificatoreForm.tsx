@@ -10,10 +10,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { EnteCertificatoreSchema, EnteCertificatoreSchemaForm } from "@/types/chainTypes";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface AgronomoFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,31 +29,32 @@ type FieldEnteCertificatoreType = {
 const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
     ({ className }, ref) => {
 
+        const utils = api.useContext()
+        const sendEnteCertificatoreData = api.enteCertificatore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
+            }
+        });
+
         const fields: FieldEnteCertificatoreType[] = [
             { name: 'validazione', label: 'Validazione' },
             { name: 'certificazione', label: 'Certificazione' }
         ];
 
-        const enteCertificatoreSchema = z.object({
-            validazione: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            certificazione: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type EnteCertificatoreSchemaForm = z.infer<typeof enteCertificatoreSchema>;
-
         const form = useForm<EnteCertificatoreSchemaForm>({
-            resolver: zodResolver(enteCertificatoreSchema)
+            resolver: zodResolver(EnteCertificatoreSchema)
         });
 
         const onSubmit = (data: EnteCertificatoreSchemaForm) => {
-            console.log(data);
+            sendEnteCertificatoreData.mutate(data)
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendEnteCertificatoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

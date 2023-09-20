@@ -10,10 +10,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
+import { ProduttoreSchema, ProduttoreSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface ProduttoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,35 +29,33 @@ type FieldProduttoreType = {
 const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
     ({ className }, ref) => {
 
+        const utils = api.useContext()
+        const sendProduttoreData = api.produttore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
+            }
+        });
+
         const fields: FieldProduttoreType[] = [
             { name: 'prodottiVinificazione', label: 'Prodotti Vinificazione' },
             { name: 'quantitaVinoOttenuto', label: 'Quantità Vino Ottenuto' },
             { name: 'quantitaVinoRivendicato', label: 'Quantità Vino Rivendicato' }
         ];
 
-        const agronomoSchema = z.object({
-            prodottiVinificazione: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVinoOttenuto: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            quantitaVinoRivendicato: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ProduttoreSchemaForm = z.infer<typeof agronomoSchema>;
-
         const form = useForm<ProduttoreSchemaForm>({
-            resolver: zodResolver(agronomoSchema)
+            resolver: zodResolver(ProduttoreSchema)
         });
 
         const onSubmit = (data: ProduttoreSchemaForm) => {
-            console.log(data);
+            sendProduttoreData.mutate(data)
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendProduttoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

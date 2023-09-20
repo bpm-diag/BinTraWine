@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import SidebarLogin from '@/components/sidebarLogin';
 import { Role } from '@prisma/client';
+import { transformRole } from '@/utils/utilsFunctions';
 
 type FieldType = {
     name: "name" | "surname" | "email" | "password" | "cantina";
@@ -25,27 +26,6 @@ type FieldType = {
     label: string;
     message: string;
     design: string;
-}
-
-const transformRole = (role: string): Role => {
-    switch (role) {
-        case "agronomo":
-            return Role.AGRONOMO;
-        case "viticoltore":
-            return Role.VITICOLTORE;
-        case "produttore":
-            return Role.PRODUTTORE;
-        case "imbottigliatore":
-            return Role.IMBOTTIGLIATORE;
-        case "distributore":
-            return Role.DISTRIBUITORE;
-        case "rivenditore":
-            return Role.RIVENDITORE;
-        case "ente_certificatore":
-            return Role.ENTECERTIFICATORE;
-        default:
-            return Role.AGRONOMO;
-    }
 }
 
 const SignUpPage = () => {

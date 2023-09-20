@@ -10,10 +10,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
+import { AgronomoSchema, AgronomoSchemaForm } from "@/types/chainTypes";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { api } from '@/utils/api';
+import Loader from "@/components/loading";
 
 export interface AgronomoFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,31 +29,32 @@ type FieldAgronomoType = {
 const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
     ({ className }, ref) => {
 
+        const utils = api.useContext()
+        const sendAgronomoData = api.agronomo.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
+            }
+        });
+
         const fields: FieldAgronomoType[] = [
             { name: 'analisiQualitàProdotto', label: 'Analisi Qualità Prodotto' },
             { name: 'certificazioneUvaAppezzamento', label: 'Certificazione Uva Appezzamento' }
         ];
 
-        const agronomoSchema = z.object({
-            analisiQualitàProdotto: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            certificazioneUvaAppezzamento: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type AgronomoSchemaForm = z.infer<typeof agronomoSchema>;
-
         const form = useForm<AgronomoSchemaForm>({
-            resolver: zodResolver(agronomoSchema)
+            resolver: zodResolver(AgronomoSchema)
         });
 
         const onSubmit = (data: AgronomoSchemaForm) => {
-            console.log(data);
+            sendAgronomoData.mutate(data);
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendAgronomoData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>

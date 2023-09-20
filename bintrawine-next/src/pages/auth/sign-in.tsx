@@ -37,7 +37,7 @@ const SignIn = () => {
 
     const userSchemaLogin = z.object({
         email: z.string().email({ message: "email is required and must be a valid email" }),
-        password: z.string().min(1, { message: "Password must be atleast 1 characters" }).max(255)
+        password: z.string().min(1, { message: "Password must be at least 1 characters" }).max(255)
     });
 
     type UserLogin = z.infer<typeof userSchemaLogin>;

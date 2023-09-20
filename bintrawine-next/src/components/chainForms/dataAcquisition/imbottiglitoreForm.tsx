@@ -10,10 +10,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { cn } from "@/utils";
 import { Separator } from "@/components/ui/separator";
+import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm } from "@/types/chainTypes";
+import { api } from "@/utils/api";
+import Loader from "@/components/loading";
 
 export interface ImbottigliatoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -27,6 +29,14 @@ type FieldProduttoreType = {
 const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreFormProps>(
     ({ className }, ref) => {
 
+        const utils = api.useContext()
+        const sendImbottigliatoreData = api.imbottigliatore.send.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.invalidate()
+                utils.agronomo.getNumberOfChains.invalidate()
+            }
+        });
+
         const fields: FieldProduttoreType[] = [
             { name: 'presenzaSolfiti', label: 'Presenza Solfiti' },
             { name: 'presenzaAllergeni', label: 'Presenza Allergeni' },
@@ -34,32 +44,19 @@ const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreForm
             { name: 'codiceAbarre', label: 'Codice a Barre' }
         ];
 
-        const agronomoSchema = z.object({
-            presenzaSolfiti: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            presenzaAllergeni: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            localitaUve: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-            codiceAbarre: z.string().min(1, {
-                message: "Dato obbligatorio",
-            }),
-        });
-        type ImbottigliatoreSchemaForm = z.infer<typeof agronomoSchema>;
-
         const form = useForm<ImbottigliatoreSchemaForm>({
-            resolver: zodResolver(agronomoSchema)
+            resolver: zodResolver(ImbottigliatoreSchema)
         });
 
         const onSubmit = (data: ImbottigliatoreSchemaForm) => {
-            console.log(data);
+            sendImbottigliatoreData.mutate(data)
         }
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
+                {
+                    sendImbottigliatoreData.isLoading && <Loader />
+                }
                 <div className="">
                     <p className="text-primary font-primary text-xl font-bold">Inserzione Manuale</p>
                 </div>
