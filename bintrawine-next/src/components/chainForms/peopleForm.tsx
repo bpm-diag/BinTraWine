@@ -8,10 +8,12 @@ import { Button } from "../ui/button";
 export interface PeopleFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
     chainType: string;
+    selected: "MANUALE" | "SENSORI";
+    setManuale: React.Dispatch<React.SetStateAction<"MANUALE" | "SENSORI">>
 }
 
 const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
-    ({ className, chainType }, ref) => {
+    ({ className, chainType, selected, setManuale }, ref) => {
 
         return (
             <div className="p-7 flex flex-col col-span-2 gap-8 bg-white">
@@ -53,8 +55,8 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                         <p className="text-black_dim font-primary text-base font-semibold">Inserisci le informazioni necessarie e verifica i dati inseriti automaticamente</p>
                     </div>
                     <div>
-                        <Button variant="compilation">Inserzione manuale</Button>
-                        <Button variant="compilation">Raccolta Automatica</Button>
+                        {chainType !== "Rivenditore" && <Button onClick={() => setManuale("MANUALE")} className={selected === "MANUALE" ? "bg-opacity-10 bg-accent border-accent" : ""} variant="compilation">Inserzione manuale</Button>}
+                        {chainType !== "Ente Certificatore" && <Button onClick={() => setManuale("SENSORI")} className={selected === "SENSORI" ? "bg-opacity-10 bg-accent border-accent" : ""} variant="compilation">Raccolta Automatica</Button>}
                     </div>
                 </div>
             </div>

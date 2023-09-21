@@ -19,6 +19,7 @@ import Loader from "@/components/loading";
 
 export interface ImbottigliatoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    idLotto: number
 }
 
 type FieldProduttoreType = {
@@ -27,7 +28,7 @@ type FieldProduttoreType = {
 }
 
 const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreFormProps>(
-    ({ className }, ref) => {
+    ({ className, idLotto }, ref) => {
 
         const utils = api.useContext()
         const sendImbottigliatoreData = api.imbottigliatore.send.useMutation({

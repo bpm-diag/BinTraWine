@@ -14,8 +14,12 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
     ({ className, idLotto }, ref) => {
 
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
+        const getDatiSensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto))
+        if (getDatiSensori.isFetched) {
+            console.log(getDatiSensori.data)
+        }
 
-        if (getLotto.isLoading) {
+        if (getLotto.isLoading || getDatiSensori.isLoading) {
             return (
                 <div className="bg-surface_dark flex justify-center items-center">
                     <Loader />
@@ -23,7 +27,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
             )
         }
 
-        if (getLotto.isError) {
+        if (getLotto.isError || getDatiSensori.isError) {
             return (
                 <div className="bg-surface_dark flex justify-center items-center">
                     <p>Errore nel caricamento, provare a ricaricare</p>
@@ -43,19 +47,19 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                         data: [
                             {
                                 name: "Superficie",
-                                value: "2000mq"
+                                value: getDatiSensori.data.agronomo?.superficie + "mq" ?? "Dato non trovato"
                             },
                             {
                                 name: "Umidità",
-                                value: "43%"
+                                value: getDatiSensori.data.agronomo?.umidita + "%" ?? "Dato non trovato"
                             },
                             {
                                 name: "Temperatura",
-                                value: "22°"
+                                value: getDatiSensori.data.agronomo?.temperatura + "°" ?? "Dato non trovato"
                             },
                             {
                                 name: "Pioggia",
-                                value: "3mm"
+                                value: getDatiSensori.data.agronomo?.pioggia + "mm" ?? "Dato non trovato"
                             },
                         ]
                     },
@@ -116,7 +120,33 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                                 value: getLotto.data.viticoltore.data?.dataVendita ?? "Dato non trovato"
                             }
                         ]
-                    }
+                    },
+                    {
+                        title: "Dati Sensori Viticoltore",
+                        contentType: "key-value",
+                        data: [
+                            {
+                                name: "Quantità Fertilizzanti",
+                                value: getDatiSensori.data.viticoltore?.quantitaFertilizzanti + "l" ?? "Dato non trovato"
+                            },
+                            {
+                                name: "Tipologia Uva",
+                                value: getDatiSensori.data.viticoltore?.tipologiaUva ?? "Dato non trovato"
+                            },
+                            {
+                                name: "Quantità uva raccolta",
+                                value: getDatiSensori.data.viticoltore?.quantitaUvaRaccolta + "kg" ?? "Dato non trovato"
+                            },
+                            {
+                                name: "Temperatura",
+                                value: getDatiSensori.data.viticoltore?.temperatura + "°" ?? "Dato non trovato"
+                            },
+                            {
+                                name: "Umidità",
+                                value: getDatiSensori.data.viticoltore?.umidita + "%" ?? "Dato non trovato"
+                            },
+                        ]
+                    },
                 ]
             },
             {
@@ -144,20 +174,20 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                         contentType: "key-value",
                         data: [
                             {
-                                name: "Superficie",
-                                value: "2000mq"
+                                name: "Peso arrivo",
+                                value: getDatiSensori.data.produttore?.pesoArrivo + "kg" ?? "Dato non trovato"
                             },
                             {
-                                name: "Umidità",
-                                value: "43%"
+                                name: "Peso prodotto finito",
+                                value: getDatiSensori.data.produttore?.pesoProdottoFinito + "kg" ?? "Dato non trovato"
                             },
                             {
-                                name: "Temperatura",
-                                value: "22°"
+                                name: "Id container",
+                                value: getDatiSensori.data.produttore?.idContainer ?? "Dato non trovato"
                             },
                             {
-                                name: "Pioggia",
-                                value: "3mm"
+                                name: "Temperatura container",
+                                value: getDatiSensori.data.produttore?.temperaturaContainer + "°" ?? "Dato non trovato"
                             },
                         ]
                     }
@@ -196,6 +226,24 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                                 name: "Fertilizzanti",
                                 value: "x, y, z"
                             },
+                        ]
+                    },
+                    {
+                        title: "Dati Sensori Imbottigliatore",
+                        contentType: "key-value",
+                        data: [
+                            {
+                                name: "Quantità vino imbottigliato",
+                                value: getDatiSensori.data.imbottigliatore?.quantitaVinoImbottigliata + "l" ?? "Dato non trovato"
+                            },
+                            {
+                                name: "Quantità prodotto ricevuto",
+                                value: getDatiSensori.data.imbottigliatore?.quantitaProdottoRicevuta + "kg" ?? "Dato non trovato"
+                            },
+                            {
+                                name: "Gradazione alcolica",
+                                value: getDatiSensori.data.imbottigliatore?.gradazioneAlcolica + "°" ?? "Dato non trovato"
+                            }
                         ]
                     }
                 ]
@@ -237,25 +285,17 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                         ]
                     },
                     {
-                        title: "Dati Sensori Agronomo",
+                        title: "Dati Sensori Distributore",
                         contentType: "key-value",
                         data: [
                             {
-                                name: "Superficie",
-                                value: "2000mq"
+                                name: "Quantità trasportata",
+                                value: getDatiSensori.data.distributore?.quantitaTrasportata + "kg" ?? "Dato non trovato"
                             },
                             {
-                                name: "Umidità",
-                                value: "43%"
-                            },
-                            {
-                                name: "Temperatura",
-                                value: "22°"
-                            },
-                            {
-                                name: "Pioggia",
-                                value: "3mm"
-                            },
+                                name: "Temperature di trasporto",
+                                value: getDatiSensori.data.distributore?.temperaturaTrasporto + "°" ?? "Dato non trovato"
+                            }
                         ]
                     }
                 ]
@@ -266,26 +306,26 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                 lastUpdate: "14/06/2023, 13:48",
                 actorItemData: [
                     {
-                        title: "Data Raccolta",
+                        title: "Dati Sensori Rivenditore",
                         contentType: "key-value",
                         data: [
                             {
-                                name: "Data",
-                                value: "31/05/2023"
-                            },
+                                name: "Quantità trasportata",
+                                value: getDatiSensori.data.rivenditore?.tipologiaQuantita ?? "Dato non trovato"
+                            }
                         ]
                     },
-                    {
-                        title: "Dati Forniture",
-                        contentType: "key-value",
-                        countedData: 1,
-                        data: [
-                            {
-                                name: "Fertilizzanti",
-                                value: "x, y, z"
-                            },
-                        ]
-                    }
+                    //{
+                    //    title: "Dati Forniture",
+                    //    contentType: "key-value",
+                    //    countedData: 1,
+                    //    data: [
+                    //        {
+                    //            name: "Fertilizzanti",
+                    //            value: "x, y, z"
+                    //        },
+                    //    ]
+                    //}
                 ]
             },
             {
@@ -302,28 +342,6 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                         title: "Certificazione",
                         contentType: "textual",
                         data: getLotto.data.enteCertificatore.data?.certificazione ?? "Dato non trovato"
-                    },
-                    {
-                        title: "Dati Sensori Agronomo",
-                        contentType: "key-value",
-                        data: [
-                            {
-                                name: "Superficie",
-                                value: "2000mq"
-                            },
-                            {
-                                name: "Umidità",
-                                value: "43%"
-                            },
-                            {
-                                name: "Temperatura",
-                                value: "22°"
-                            },
-                            {
-                                name: "Pioggia",
-                                value: "3mm"
-                            },
-                        ]
                     }
                 ]
             },

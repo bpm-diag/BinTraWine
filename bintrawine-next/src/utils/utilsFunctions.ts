@@ -1,4 +1,4 @@
-import { FilieraChain } from "@/types/chainTypes"
+import { FilieraChain, FilieraChainSensori } from "@/types/chainTypes"
 import { Role } from '@prisma/client';
 
 export const checkIdLotto = (number_of_chains: number): number => {
@@ -138,4 +138,42 @@ export const getDataToShow = (id: string, filieraChain: FilieraChain): { label: 
 
 export const getRandomNumber = (maxNumber: number): number => {
     return Math.floor(Math.random() * maxNumber + 1);
+}
+
+export const getDataToShowSensori = (id: string, filieraChainSensori: FilieraChainSensori): { label: string, value: string }[] => {
+
+    switch (id) {
+        case "agronomo": return [
+            { label: "Superficie", value: filieraChainSensori.agronomo?.superficie + "mq" ?? "" },
+            { label: "Pioggia", value: filieraChainSensori.agronomo?.pioggia + "mm" ?? "" },
+            { label: "Temperatura", value: filieraChainSensori.agronomo?.temperatura + "°" ?? "" },
+            { label: "Umidità", value: filieraChainSensori.agronomo?.umidita + "%" ?? "" }
+        ]
+        case "viticoltore": return [
+            { label: "Quantità uva raccolta", value: filieraChainSensori.viticoltore?.quantitaUvaRaccolta + "kg" ?? "" },
+            { label: "Tipologia Uva", value: filieraChainSensori.viticoltore?.tipologiaUva ?? "" },
+            { label: "Umidità", value: filieraChainSensori.viticoltore?.umidita + "%" ?? "" },
+            { label: "Temperatura", value: filieraChainSensori.viticoltore?.temperatura + "°" ?? "" },
+            { label: "Quantità Fertilizzanti", value: filieraChainSensori.viticoltore?.quantitaFertilizzanti + "l" ?? "" },
+        ]
+        case "produttore": return [
+            { label: "Peso alla consegna", value: filieraChainSensori.produttore?.pesoArrivo + "kg" ?? "" },
+            { label: "Peso prodotto finito", value: filieraChainSensori.produttore?.pesoProdottoFinito + "kg" ?? "" },
+            { label: "ID container", value: filieraChainSensori.produttore?.idContainer + "kg" ?? "" },
+            { label: "Temperatura container", value: filieraChainSensori.produttore?.temperaturaContainer + "°" ?? "" },
+        ]
+        case "imbottigliatore": return [
+            { label: "Quantità prodotto rcevuto", value: filieraChainSensori.imbottigliatore?.quantitaProdottoRicevuta + "kg" ?? "" },
+            { label: "Quantità vino imbottigliato", value: filieraChainSensori.imbottigliatore?.quantitaVinoImbottigliata + "l" ?? "" },
+            { label: "Gradazione Alcolica", value: filieraChainSensori.imbottigliatore?.gradazioneAlcolica + "%" ?? "" },
+        ]
+        case "distributore": return [
+            { label: "Quantità trasportata", value: filieraChainSensori.distributore?.quantitaTrasportata + "kg" ?? "" },
+            { label: "Temperatura di trasporto", value: filieraChainSensori.distributore?.temperaturaTrasporto + "°" ?? "" },
+        ]
+        case "rivenditore": return [
+            { label: "Tipologia - Quantità", value: filieraChainSensori.rivenditore?.tipologiaQuantita ?? "" },
+        ]
+        default: return []
+    }
 }

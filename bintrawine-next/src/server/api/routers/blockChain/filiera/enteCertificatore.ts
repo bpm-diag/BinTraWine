@@ -23,7 +23,6 @@ export const enteCertificatoreRouter = createTRPCRouter({
                     // send produttore data
                     const validazione = await contract.methods.setValidazione(input.validazione).send({ from: currentAddress, privateFor: privateFor })
                     const certificazione = await contract.methods.setCertificazione(input.certificazione).send({ from: currentAddress, privateFor: privateFor })
-
                     return {
                         validazione: validazione,
                         certificazione: certificazione

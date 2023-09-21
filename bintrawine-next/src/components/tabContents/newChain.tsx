@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineBubbleChart } from "react-icons/md";
 import { Separator } from "../ui/separator";
 import { cn } from "@/utils";
@@ -17,7 +17,19 @@ export interface NewChainProps
 const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
     ({ className, idLotto }, ref) => {
 
+        const utils = api.useContext()
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
+        const sensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto));
+        const setSensori = api.blockChainRouter.setSensoriData.useMutation()
+        console.log(sensori.data)
+        useEffect(() => {
+            if (sensori.isFetched) {
+                if (!sensori.data!.completed) {
+                    setSensori.mutate(Number(idLotto))
+                }
+            }
+        }, [sensori])
+
         const { data: session, status } = useSession();
 
         return (
@@ -29,9 +41,9 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                 </div>
                 {/* Compilazione */}
                 {
-                    getLotto.isLoading ?
+                    (getLotto.isLoading || sensori.isLoading || !sensori.data?.completed) ?
                         <Loader className="justify-center items-center" /> :
-                        getLotto.isError ?
+                        (getLotto.isError || sensori.isError) ?
                             <p>Error on Loading</p> :
                             <div className="p-7 grid grid-cols-4 gap-4">
                                 {/* Stato compilazione */}
@@ -60,7 +72,7 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                                     </div>
                                 </div>
                                 {/* Filiera */}
-                                <ChainForm filieraChain={getLotto.data!} />
+                                <ChainForm idLotto={Number(idLotto)} filieraChainSensori={sensori.data!} filieraChain={getLotto.data!} />
                             </div>
                 }
             </div>

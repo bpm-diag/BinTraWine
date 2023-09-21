@@ -19,6 +19,7 @@ import Loader from "@/components/loading";
 
 export interface AgronomoFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    idLotto: number
 }
 
 type FieldEnteCertificatoreType = {
@@ -27,7 +28,7 @@ type FieldEnteCertificatoreType = {
 }
 
 const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
-    ({ className }, ref) => {
+    ({ className, idLotto }, ref) => {
 
         const utils = api.useContext()
         const sendEnteCertificatoreData = api.enteCertificatore.send.useMutation({

@@ -5,6 +5,7 @@ import { cn } from "@/utils";
 export interface ShowDataProps
     extends React.HTMLAttributes<HTMLDivElement> {
     title: string,
+    preTitle: string,
     data: {
         label: string,
         value: string
@@ -12,12 +13,12 @@ export interface ShowDataProps
 }
 
 const ShowData = React.forwardRef<HTMLDivElement, ShowDataProps>(
-    ({ className, title, data }, ref) => {
+    ({ className, title, data, preTitle }, ref) => {
 
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
                 <div className="">
-                    <p className="text-primary font-primary text-xl font-normal">Dati inseriti per: <span className="font-bold">{title}</span></p>
+                    <p className="text-primary font-primary text-xl font-normal">{preTitle} <span className="font-bold">{title}</span></p>
                 </div>
                 <div className="flex-1 flex flex-col gap-4">
                     {

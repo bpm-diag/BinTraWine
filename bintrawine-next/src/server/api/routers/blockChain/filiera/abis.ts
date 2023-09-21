@@ -2950,7 +2950,25 @@ export const SimulatoreSensori: AbiItem[] = [
                 "internalType": "address",
                 "name": "produttoreContractAddr",
                 "type": "address"
-            }, { "internalType": "address", "name": "imbottigliatoreContractAddr", "type": "address" }, { "internalType": "address", "name": "distributoreContractAddr", "type": "address" }, { "internalType": "address", "name": "rivenditoreContractAddr", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor"
+            },
+            {
+                "internalType": "address",
+                "name": "imbottigliatoreContractAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "distributoreContractAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "rivenditoreContractAddr",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
     },
     {
         "inputs": [
@@ -2960,7 +2978,9 @@ export const SimulatoreSensori: AbiItem[] = [
                 "type": "uint256"
             },
             {
-                "internalType": "string", "name": "_superficie", "type": "string"
+                "internalType": "string",
+                "name": "_superficie",
+                "type": "string"
             },
             {
                 "internalType": "string",
@@ -2987,21 +3007,69 @@ export const SimulatoreSensori: AbiItem[] = [
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "_idTerreno",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_quantitaUvaRaccolta",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_tipologiaUva",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_umidita",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_temperatura",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_quantitaFertilizzanti",
+                "type": "string"
+            }
+        ],
+        "name": "setSensoriViticoltore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
                 "name": "_idLotto",
                 "type": "uint256"
             },
             {
                 "internalType": "string",
-                "name": "_quantitaTrasportata",
+                "name": "_pesoArrivo",
                 "type": "string"
             },
             {
                 "internalType": "string",
-                "name": "_temperaturaTrasporto",
+                "name": "_pesoProdottoFinito",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_idContainer",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_temperaturaContainer",
                 "type": "string"
             }
         ],
-        "name": "setSensoriDistributore",
+        "name": "setSensoriProduttore",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3043,24 +3111,36 @@ export const SimulatoreSensori: AbiItem[] = [
             },
             {
                 "internalType": "string",
-                "name": "_pesoArrivo",
+                "name": "_quantitaTrasportata",
                 "type": "string"
             },
             {
                 "internalType": "string",
-                "name": "_pesoProdottoFinito",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "_idContainer",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "_temperaturaContainer",
+                "name": "_temperaturaTrasporto",
                 "type": "string"
             }
         ],
-        "name": "setSensoriProduttore", "outputs": [], "stateMutability": "nonpayable", "type": "function"
-    }, { "inputs": [{ "internalType": "uint256", "name": "_idLotto", "type": "uint256" }, { "internalType": "string", "name": "_tipologiaQuantita", "type": "string" }], "name": "setSensoriRivenditore", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_idTerreno", "type": "uint256" }, { "internalType": "string", "name": "_quantitaUvaRaccolta", "type": "string" }, { "internalType": "string", "name": "_tipologiaUva", "type": "string" }, { "internalType": "string", "name": "_umidita", "type": "string" }, { "internalType": "string", "name": "_temperatura", "type": "string" }, { "internalType": "string", "name": "_quantitaFertilizzanti", "type": "string" }], "name": "setSensoriViticoltore", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]
+        "name": "setSensoriDistributore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idLotto",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_tipologiaQuantita",
+                "type": "string"
+            }
+        ],
+        "name": "setSensoriRivenditore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

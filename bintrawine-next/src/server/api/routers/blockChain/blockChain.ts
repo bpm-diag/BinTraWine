@@ -9,13 +9,15 @@ import {
     DistributoreSchemaForm,
     EnteCertificatoreSchemaForm,
     FilieraChain,
+    FilieraChainSensori
 } from '@/types/chainTypes';
-import { getManualAgronomoData, getAgronomoIDLotto } from '@/server/api/routers/blockChain/filiera/agronomo'
-import { getManualViticoltoreData, getViticoltoreIDLotto } from '@/server/api/routers/blockChain/filiera/viticoltore'
-import { getManualProduttoreData, getProduttoreIDLotto } from '@/server/api/routers/blockChain/filiera/produttore'
-import { getManualImbottigliatoreData, getImbottigliatoreIDLotto } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
-import { getManualDistributoreData, getDistributoreIDLotto } from '@/server/api/routers/blockChain/filiera/distributore'
+import { getManualAgronomoData, getAgronomoIDLotto, getSensoriAgronomo, setSensoriAgronomo } from '@/server/api/routers/blockChain/filiera/agronomo'
+import { getManualViticoltoreData, getViticoltoreIDLotto, getSensoriViticoltore, setSensoriViticoltore } from '@/server/api/routers/blockChain/filiera/viticoltore'
+import { getManualProduttoreData, getProduttoreIDLotto, getSensoriProduttore, setSensoriProduttore } from '@/server/api/routers/blockChain/filiera/produttore'
+import { getManualImbottigliatoreData, getImbottigliatoreIDLotto, getSensoriImbottigliatore, setSensoriImbottigliatore } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
+import { getManualDistributoreData, getDistributoreIDLotto, getSensoriDistributore, setSensoriDistributore } from '@/server/api/routers/blockChain/filiera/distributore'
 import { getManualEnteCertificatoreData, getEnteCertificatoreIDLotto } from '@/server/api/routers/blockChain/filiera/enteCertificatore'
+import { getSensoriRivenditore, setSensoriRivenditore } from '@/server/api/routers/blockChain/filiera/rivenditore'
 
 const checkAgronomoData = (agronomoData: (void | AgronomoSchemaForm)): [AgronomoSchemaForm | undefined, boolean] => {
     if (!agronomoData) return [undefined, false]
@@ -57,6 +59,21 @@ const checkEnteCertificatoreData = (enteCertificatoreData: (void | EnteCertifica
     const { validazione, certificazione } = enteCertificatoreData
     if (validazione && certificazione) return [enteCertificatoreData, true]
     return [undefined, false]
+}
+
+const checkSensoriData = (filieraChainSensori: FilieraChainSensori): FilieraChainSensori => {
+    if (
+        filieraChainSensori.agronomo?.temperatura &&
+        filieraChainSensori.viticoltore?.quantitaFertilizzanti &&
+        filieraChainSensori.produttore?.pesoArrivo &&
+        filieraChainSensori.imbottigliatore?.gradazioneAlcolica &&
+        filieraChainSensori.distributore?.quantitaTrasportata &&
+        filieraChainSensori.rivenditore?.tipologiaQuantita
+    ) {
+        filieraChainSensori.completed = true
+        return filieraChainSensori
+    }
+    return filieraChainSensori
 }
 
 export const blockChainRouter = createTRPCRouter({
@@ -102,6 +119,42 @@ export const blockChainRouter = createTRPCRouter({
             }
 
             return filieraData
+        }),
+
+    setSensoriData: publicProcedure
+        .input(z.number())
+        .mutation(async ({ input, ctx }) => {
+            await setSensoriAgronomo(input)
+            await setSensoriViticoltore(input)
+            await setSensoriProduttore(input)
+            await setSensoriImbottigliatore(input)
+            await setSensoriDistributore(input)
+            await setSensoriRivenditore(input)
+        }),
+
+    getSensoriData: publicProcedure
+        .input(z.number())
+        .query(async ({ input, ctx }) => {
+
+            const sensoriAgronomo = await getSensoriAgronomo(input)
+            const sensoriViticoltore = await getSensoriViticoltore(input)
+            const sensoriProduttore = await getSensoriProduttore(input)
+            const sensoriImbottigliatore = await getSensoriImbottigliatore(input)
+            const sensoriDistributore = await getSensoriDistributore(input)
+            const sensoriRivenditore = await getSensoriRivenditore(input)
+
+            const filieraChainSensori: FilieraChainSensori = {
+                completed: false,
+                agronomo: sensoriAgronomo ?? undefined,
+                viticoltore: sensoriViticoltore ?? undefined,
+                produttore: sensoriProduttore ?? undefined,
+                imbottigliatore: sensoriImbottigliatore ?? undefined,
+                distributore: sensoriDistributore ?? undefined,
+                rivenditore: sensoriRivenditore ?? undefined
+            }
+
+            return checkSensoriData(filieraChainSensori)
+
         }),
 
     getLatestIDLotto: publicProcedure

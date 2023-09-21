@@ -45,7 +45,7 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                     }
                 </div>
                 <div className="flex justify-center items-center py-5">
-                    {number_of_chains > 8 && <Paginator setCurrentPage={setCurrentPage} numberOfPages={getNumberOfPages(number_of_chains, 8)} selectedPage={currentPage} />}
+                    {number_of_chains > 9 && <Paginator setCurrentPage={setCurrentPage} numberOfPages={getNumberOfPages(number_of_chains, 8)} selectedPage={currentPage} />}
                 </div>
             </div>
         );

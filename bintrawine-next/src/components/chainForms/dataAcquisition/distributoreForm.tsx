@@ -19,6 +19,7 @@ import Loader from "@/components/loading";
 
 export interface ViticoltoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    idLotto: number
 }
 
 type FieldDistributoreType = {
@@ -32,7 +33,7 @@ type FieldDistributoreType = {
 }
 
 const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
-    ({ className }, ref) => {
+    ({ className, idLotto }, ref) => {
 
         const utils = api.useContext()
         const sendDistributoreData = api.distributore.send.useMutation({
