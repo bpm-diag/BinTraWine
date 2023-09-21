@@ -135,3 +135,7 @@ export const getDataToShow = (id: string, filieraChain: FilieraChain): { label: 
         default: return []
     }
 }
+
+export const getRandomNumber = (maxNumber: number): number => {
+    return Math.floor(Math.random() * maxNumber + 1);
+}

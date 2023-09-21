@@ -2932,3 +2932,135 @@ export const EnteCertificatoreAbi: AbiItem[] = [
         "type": "function"
     }
 ];
+
+export const SimulatoreSensori: AbiItem[] = [
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "agronomoContractAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "viticoltoreContractAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "produttoreContractAddr",
+                "type": "address"
+            }, { "internalType": "address", "name": "imbottigliatoreContractAddr", "type": "address" }, { "internalType": "address", "name": "distributoreContractAddr", "type": "address" }, { "internalType": "address", "name": "rivenditoreContractAddr", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idTerreno",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string", "name": "_superficie", "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_umiditaTerreno",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_temperaturaTerreno",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_pioggia",
+                "type": "string"
+            }
+        ],
+        "name": "setSensoriAgronomo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idLotto",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_quantitaTrasportata",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_temperaturaTrasporto",
+                "type": "string"
+            }
+        ],
+        "name": "setSensoriDistributore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idLotto",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_quantitaProdottoRicevuta",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_quantitaVinoImbottigliata",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_gradazioneAlcolica",
+                "type": "string"
+            }
+        ],
+        "name": "setSensoriImbottigliatore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idLotto",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_pesoArrivo",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_pesoProdottoFinito",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_idContainer",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_temperaturaContainer",
+                "type": "string"
+            }
+        ],
+        "name": "setSensoriProduttore", "outputs": [], "stateMutability": "nonpayable", "type": "function"
+    }, { "inputs": [{ "internalType": "uint256", "name": "_idLotto", "type": "uint256" }, { "internalType": "string", "name": "_tipologiaQuantita", "type": "string" }], "name": "setSensoriRivenditore", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_idTerreno", "type": "uint256" }, { "internalType": "string", "name": "_quantitaUvaRaccolta", "type": "string" }, { "internalType": "string", "name": "_tipologiaUva", "type": "string" }, { "internalType": "string", "name": "_umidita", "type": "string" }, { "internalType": "string", "name": "_temperatura", "type": "string" }, { "internalType": "string", "name": "_quantitaFertilizzanti", "type": "string" }], "name": "setSensoriViticoltore", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]

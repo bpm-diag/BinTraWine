@@ -33,7 +33,6 @@ const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
         const sendAgronomoData = api.agronomo.send.useMutation({
             onSuccess() {
                 utils.blockChainRouter.invalidate()
-                utils.agronomo.getNumberOfChains.invalidate()
             }
         });
 

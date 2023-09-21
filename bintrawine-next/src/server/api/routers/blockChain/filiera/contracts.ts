@@ -5,7 +5,8 @@ type Contracts = {
     imbottigliatore: string,
     distributore: string,
     rivenditore: string,
-    enteCertificatore: string
+    enteCertificatore: string,
+    simulatoreSensori: string
 }
 
 export const contracts: Contracts = {
@@ -15,5 +16,6 @@ export const contracts: Contracts = {
     imbottigliatore: "0xC3E5a3f8Cb0AD0736520A0066295733D70d92ba8",
     distributore: "0xd72bd6897Ada03e02694e3ef3fA74566D63aFb6d",
     rivenditore: "0x60516F9b57AdFD0681B54682082faA53E37eEeF7",
-    enteCertificatore: "0x69e87592267B258EbcEa2414533d188A995DA417"
+    enteCertificatore: "0x69e87592267B258EbcEa2414533d188A995DA417",
+    simulatoreSensori: "0x130BacfEeFF3C8757DC10F03E8722d13fC429fCc"
 }
