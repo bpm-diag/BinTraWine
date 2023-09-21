@@ -38,7 +38,6 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
         const sendDistributoreData = api.distributore.send.useMutation({
             onSuccess() {
                 utils.blockChainRouter.invalidate()
-                utils.agronomo.getNumberOfChains.invalidate()
             }
         })
 
@@ -57,6 +56,15 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
 
         const onSubmit = (data: DistributoreSchemaForm) => {
             sendDistributoreData.mutate(data)
+        }
+
+        const quantitaOutput = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const output = parseInt(e.target.value, 10);
+            return isNaN(output) ? 0 : output;
+        }
+
+        const quantitaInput = (value: number): string => {
+            return isNaN(value) || value === 0 ? "" : value.toString()
         }
 
         return (
@@ -81,7 +89,16 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
                                                 <FormItem className="flex flex-col gap-4">
                                                     <FormLabel className="text-primary font-primary text-xl font-normal">{fieldItem.label}</FormLabel>
                                                     <FormControl>
-                                                        <Input placeholder={fieldItem.label} type="text" {...field} />
+                                                        {
+                                                            fieldItem.name === "quantitaVendita" ?
+                                                                <Input {...field}
+                                                                    onChange={(e) => field.onChange(quantitaOutput(e))} placeholder={fieldItem.label}
+                                                                    type="text"
+                                                                    value={quantitaInput(field.value as number)}
+                                                                />
+                                                                :
+                                                                <Input placeholder={fieldItem.label} type="text" {...field} />
+                                                        }
                                                     </FormControl>
                                                     <FormMessage />
                                                     <Separator className="bg-surface_dark" />

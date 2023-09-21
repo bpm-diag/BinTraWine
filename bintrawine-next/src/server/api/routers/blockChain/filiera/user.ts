@@ -22,15 +22,3 @@ export const userRouter = createTRPCRouter({
             return users;
         })
 });
-
-/*
-const createUser = api.users.getAllUsers.useQuery({
-}, {
-    onSuccess: (data) => {
-        console.log('success', data);
-    },
-    select: (data) => {
-        return data;
-    }
-});
-*/

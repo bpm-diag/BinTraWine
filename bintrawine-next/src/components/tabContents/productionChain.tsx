@@ -224,7 +224,7 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                             },
                             {
                                 name: "Quantità",
-                                value: getLotto.data.distributore.data?.quantitaVendita ?? "Dato non trovato"
+                                value: String(getLotto.data.distributore.data?.quantitaVendita) ?? "Dato non trovato"
                             },
                             {
                                 name: "Nome Cliente",
@@ -295,12 +295,12 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                 actorItemData: [
                     {
                         title: "Validazione",
-                        contentType: "value",
+                        contentType: "textual",
                         data: getLotto.data.enteCertificatore.data?.validazione ?? "Dato non trovato"
                     },
                     {
                         title: "Certificazione",
-                        contentType: "value",
+                        contentType: "textual",
                         data: getLotto.data.enteCertificatore.data?.certificazione ?? "Dato non trovato"
                     },
                     {

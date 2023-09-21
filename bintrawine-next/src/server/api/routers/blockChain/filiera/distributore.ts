@@ -1,5 +1,4 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { z } from 'zod';
 import Web3 from 'web3';
 import { DistributoreSchema, DistributoreSchemaForm } from '@/types/chainTypes';
 import { DistributoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
@@ -42,7 +41,7 @@ export const getManualDistributoreData = (input: number): Promise<void | Distrib
             const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
             const prezzoVendita = datiVendita['0'] as string
             const nomeProdotto = datiVendita['1'] as string
-            const quantita = datiVendita['2'] as string
+            const quantita = datiVendita['2'] as number
             const nomeCliente = datiVendita['3'] as string
             const dataVendita = datiVendita['4'] as string
 
@@ -58,7 +57,7 @@ export const getManualDistributoreData = (input: number): Promise<void | Distrib
             return retrievedData
         })
         .catch((error) => {
-            console.error("ERROR GET DISTRIB", error);
+
         })
 }
 

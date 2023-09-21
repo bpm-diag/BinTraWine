@@ -88,8 +88,9 @@ export const DistributoreSchema = z.object({
     prezzo: z.string().min(1, {
         message: "Dato obbligatorio",
     }),
-    quantitaVendita: z.string().min(1, {
-        message: "Dato obbligatorio",
+    quantitaVendita: z.number({
+        required_error: "Dato obbligatorio",
+        invalid_type_error: "La quantità deve essere un numero",
     }),
     nomeClienteVendita: z.string().min(1, {
         message: "Dato obbligatorio",
