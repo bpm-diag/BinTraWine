@@ -19,10 +19,24 @@ export interface TabProps {
 
 export default function LandingPage() {
 
+  const utils = api.useContext()
   const getTerreni = api.blockChainRouter.getLatestIDLotto.useQuery();
+  const setSensori = api.blockChainRouter.setSensoriData.useMutation({
+    onSuccess() {
+      utils.blockChainRouter.getSensoriData.invalidate()
+    }
+  })
+  const [sensoriSetted, setSensoriSetted] = useState<boolean>(false);
 
   const [tabs, setTabs] = useState<TabProps[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("catalogo");
+
+  if (getTerreni.isFetched) {
+    if (getTerreni.data === 1 && !sensoriSetted) {
+      setSensori.mutate(1)
+      setSensoriSetted(true)
+    }
+  }
 
   useEffect(() => {
     const isTabPresent = tabs.some(tab => tab.triggerKey === currentTab)

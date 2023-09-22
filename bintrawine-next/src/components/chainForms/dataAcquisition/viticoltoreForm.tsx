@@ -19,6 +19,7 @@ import Loader from "@/components/loading";
 
 export interface ViticoltoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    idLotto: number
 }
 
 type FieldViticoltoreType = {
@@ -34,7 +35,7 @@ type FieldViticoltoreType = {
 }
 
 const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
-    ({ className }, ref) => {
+    ({ className, idLotto }, ref) => {
 
         const utils = api.useContext()
         const sendViticoltoreData = api.viticoltore.send.useMutation({

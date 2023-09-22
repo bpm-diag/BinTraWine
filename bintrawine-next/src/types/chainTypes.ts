@@ -1,3 +1,4 @@
+import { type } from "os";
 import { z } from "zod";
 
 // AGRONOMO SCHEMA
@@ -115,14 +116,101 @@ export type EnteCertificatoreSchemaForm = z.infer<typeof EnteCertificatoreSchema
 
 // SENSORI SCHEMA
 
-// RIVENDITORE SENSORI SCHEMA
+// AGRONOMO SENSORI
 
-export const RivenditoreSensoriSchema = z.object({
-    sensoriRivenditore: z.string().min(1, {
+export const AgronomoSensoriSchema = z.object({
+    superficie: z.string().min(1, {
         message: "Dato obbligatorio",
     }),
+    umidita: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    temperatura: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    pioggia: z.string().min(1, {
+        message: "Dato obbligatorio",
+    })
+})
+export type AgronomoSensoriSchemaForm = z.infer<typeof AgronomoSensoriSchema>;
+
+// VITICOLTORE SENSORI
+
+export const ViticoltoreSensoriSchema = z.object({
+    quantitaUvaRaccolta: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    tipologiaUva: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    umidita: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    temperatura: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    quantitaFertilizzanti: z.string().min(1, {
+        message: "Dato obbligatorio",
+    })
+})
+export type ViticoltoreSensoriSchemaForm = z.infer<typeof ViticoltoreSensoriSchema>;
+
+// PRODUTTORE SENSORI
+
+export const ProduttoreSensoriSchema = z.object({
+    pesoArrivo: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    pesoProdottoFinito: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    idContainer: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    temperaturaContainer: z.string().min(1, {
+        message: "Dato obbligatorio",
+    })
+})
+export type ProduttoreSensoriSchemaForm = z.infer<typeof ProduttoreSensoriSchema>;
+
+// IMBOTTIGLIATORE SENSORI
+
+export const ImbottigliatoreSensoriSchema = z.object({
+    quantitaProdottoRicevuta: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    quantitaVinoImbottigliata: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    gradazioneAlcolica: z.string().min(1, {
+        message: "Dato obbligatorio",
+    })
+})
+export type ImbottigliatoreSensoriSchemaForm = z.infer<typeof ImbottigliatoreSensoriSchema>;
+
+
+// DISTRIBUTORE SENSORI
+
+export const DistributoreSensoriSchema = z.object({
+    quantitaTrasportata: z.string().min(1, {
+        message: "Dato obbligatorio",
+    }),
+    temperaturaTrasporto: z.string().min(1, {
+        message: "Dato obbligatorio",
+    })
+})
+export type DistributoreSensoriSchemaForm = z.infer<typeof DistributoreSensoriSchema>;
+
+// RIVENDITORE SENSORI
+
+export const RivenditoreSensoriSchema = z.object({
+    tipologiaQuantita: z.string().min(1, {
+        message: "Dato obbligatorio",
+    })
 });
 export type RivenditoreSensoriSchemaForm = z.infer<typeof RivenditoreSensoriSchema>;
+
+// FILIERA
 
 export type FilieraChain = {
     completed: boolean,
@@ -150,4 +238,16 @@ export type FilieraChain = {
         data: EnteCertificatoreSchemaForm | undefined,
         completed: boolean
     }
+}
+
+// FILIERACHAINSENSORI
+
+export type FilieraChainSensori = {
+    completed: boolean,
+    agronomo: AgronomoSensoriSchemaForm | undefined,
+    viticoltore: ViticoltoreSensoriSchemaForm | undefined,
+    produttore: ProduttoreSensoriSchemaForm | undefined,
+    imbottigliatore: ImbottigliatoreSensoriSchemaForm | undefined,
+    distributore: DistributoreSensoriSchemaForm | undefined,
+    rivenditore: RivenditoreSensoriSchemaForm | undefined,
 }

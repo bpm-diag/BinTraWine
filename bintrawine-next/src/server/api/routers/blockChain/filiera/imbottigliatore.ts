@@ -1,13 +1,15 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm } from '@/types/chainTypes';
-import { ImbottigliatoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm, ImbottigliatoreSensoriSchemaForm } from '@/types/chainTypes';
+import { ImbottigliatoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
+import { getRandomNumber } from '@/utils/utilsFunctions';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
 const contract = new web3.eth.Contract(ImbottigliatoreAbi, contracts.imbottigliatore);
+const sensoriContract = new web3.eth.Contract(SimulatoreSensori, contracts.simulatoreSensori);
 
 const privateFor = ["BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=", "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=",
     "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=", "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=", "R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=",
@@ -69,6 +71,38 @@ export const getImbottigliatoreIDLotto = (): Promise<void | number> => {
             const [currentAddress, ...other] = accounts;
             const data = await contract.methods.getIdSolfitiSerial().call({ from: currentAddress, privateFor: privateFor }) as number
             return data;
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getSensoriImbottigliatore = (input: number): Promise<void | ImbottigliatoreSensoriSchemaForm> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getDatiSensoriImbottigliatore(input).call({ from: currentAddress, privateFor: privateFor })
+            const quantitaProdottoRicevuta = data['0'] as string
+            const quantitaVinoImbottigliata = data['1'] as string
+            const gradazioneAlcolica = data['2'] as string
+            return {
+                quantitaProdottoRicevuta: quantitaProdottoRicevuta,
+                quantitaVinoImbottigliata: quantitaVinoImbottigliata,
+                gradazioneAlcolica: gradazioneAlcolica,
+            };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const setSensoriImbottigliatore = (input: number) => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            // send agronomo data
+            const sensoriImbottigliatore = await sensoriContract.methods.setSensoriImbottigliatore(input, String(getRandomNumber(1000)), String(getRandomNumber(800)), String(getRandomNumber(30))).send({ from: currentAddress, privateFor: privateFor })
+            return { sensoriImbottigliatore };
         })
         .catch((error) => {
             console.error("ERROR", error);

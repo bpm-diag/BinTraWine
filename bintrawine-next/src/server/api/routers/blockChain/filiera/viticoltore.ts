@@ -1,13 +1,15 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { ViticoltoreSchema, ViticoltoreSchemaForm } from '@/types/chainTypes';
-import { ViticoltoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
+import { ViticoltoreSchema, ViticoltoreSchemaForm, ViticoltoreSensoriSchemaForm } from '@/types/chainTypes';
+import { ViticoltoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
+import { getRandomNumber } from '@/utils/utilsFunctions';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
 const contract = new web3.eth.Contract(ViticoltoreAbi, contracts.vitcoltore);
+const sensoriContract = new web3.eth.Contract(SimulatoreSensori, contracts.simulatoreSensori);
 
 const privateFor = ["BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=", "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=",
     "1iTZde/ndBHvzhcl7V68x44Vx7pl8nwx9LqnM/AfJUg=", "oNspPPgszVUFw0qmGFfWwh1uxVUXgvBxleXORHj07g8=", "R56gy4dn24YOjwyesTczYa8m5xhP6hF2uTMCju/1xkY=",
@@ -78,6 +80,43 @@ export const getViticoltoreIDLotto = (): Promise<void | number> => {
             const [currentAddress, ...other] = accounts;
             const data = await contract.methods.getIdDataRaccoltaSerial().call({ from: currentAddress, privateFor: privateFor }) as number
             return data;
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getSensoriViticoltore = (input: number): Promise<void | ViticoltoreSensoriSchemaForm> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            const data = await contract.methods.getDatiSensoriViticoltore(input).call({ from: currentAddress, privateFor: privateFor })
+            const quantitaUvaRaccolta = "1000"// data['0'] as string
+            const tipologiaUva = "nera" // data['1'] as string
+            const umidita = "44" // data['2'] as string
+            const temperatura = "24" // data['3'] as string
+            const quantitaFertilizzanti = "200" // data['4'] as string
+            console.log("VITICOLTORE SENSORI:", data)
+            return {
+                quantitaUvaRaccolta: quantitaUvaRaccolta,
+                tipologiaUva: tipologiaUva,
+                umidita: umidita,
+                temperatura: temperatura,
+                quantitaFertilizzanti: quantitaFertilizzanti
+            };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const setSensoriViticoltore = (input: number) => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+            // send agronomo data
+            const sensoriViticoltore = await sensoriContract.methods.setSensoriViticoltore(input, "quantita uva raccolta", "tipologia", "umidita", "temperatura", "quantita fertilizzanti").send({ from: currentAddress, privateFor: privateFor })
+            return { sensoriViticoltore };
         })
         .catch((error) => {
             console.error("ERROR", error);

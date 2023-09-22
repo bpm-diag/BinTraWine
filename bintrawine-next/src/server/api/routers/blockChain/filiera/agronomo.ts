@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
 import { AgronomoAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
-import { AgronomoSchema, AgronomoSchemaForm } from '@/types/chainTypes';
+import { AgronomoSchema, AgronomoSchemaForm, AgronomoSensoriSchemaForm } from '@/types/chainTypes';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
 
@@ -26,6 +26,20 @@ export const agronomoRouter = createTRPCRouter({
 					const qualitaProdotto = await contract.methods.setAnalisiQualitaProdotto(input.analisiQualitàProdotto).send({ from: currentAddress, privateFor: privateFor })
 					const certificazioneUva = await contract.methods.setCertificazioneUvaAppezzamento(input.certificazioneUvaAppezzamento).send({ from: currentAddress, privateFor: privateFor })
 					return { qualitaProdotto, certificazioneUva };
+				})
+				.catch((error) => {
+					console.error("ERROR", error);
+				})
+		}),
+	sendSensori: publicProcedure
+		.input(z.number())
+		.mutation(async ({ input, ctx }) => {
+			return await web3.eth.getAccounts()
+				.then(async (accounts) => {
+					const [currentAddress, ...other] = accounts;
+					// send agronomo data
+					const sensoriAgronomo = await sensoriContract.methods.setSensoriAgronomo(input, String(getRandomNumber(5000)), String(getRandomNumber(90)), String(getRandomNumber(30)), String(getRandomNumber(5))).send({ from: currentAddress, privateFor: privateFor })
+					return { sensoriAgronomo };
 				})
 				.catch((error) => {
 					console.error("ERROR", error);
@@ -58,6 +72,40 @@ export const getAgronomoIDLotto = (): Promise<void | number> => {
 			const [currentAddress, ...other] = accounts;
 			const data = await contract.methods.getIdAnalisiQualitaSerial().call({ from: currentAddress, privateFor: privateFor }) as number
 			return data;
+		})
+		.catch((error) => {
+			console.error("ERROR", error);
+		})
+}
+
+export const setSensoriAgronomo = (input: number) => {
+	return web3.eth.getAccounts()
+		.then(async (accounts) => {
+			const [currentAddress, ...other] = accounts;
+			// send agronomo data
+			const sensoriAgronomo = await sensoriContract.methods.setSensoriAgronomo(input, String(getRandomNumber(5000)), String(getRandomNumber(90)), String(getRandomNumber(30)), String(getRandomNumber(5))).send({ from: currentAddress, privateFor: privateFor })
+			return { sensoriAgronomo };
+		})
+		.catch((error) => {
+			console.error("ERROR", error);
+		})
+}
+
+export const getSensoriAgronomo = (input: number): Promise<void | AgronomoSensoriSchemaForm> => {
+	return web3.eth.getAccounts()
+		.then(async (accounts) => {
+			const [currentAddress, ...other] = accounts;
+			const data = await contract.methods.getDatiSensoriAgronomo(input).call({ from: currentAddress, privateFor: privateFor })
+			const superficie = data['0'] as string
+			const umidita = data['1'] as string
+			const temperatura = data['2'] as string
+			const pioggia = data['3'] as string
+			return {
+				superficie: superficie,
+				umidita: umidita,
+				temperatura: temperatura,
+				pioggia: pioggia
+			};
 		})
 		.catch((error) => {
 			console.error("ERROR", error);

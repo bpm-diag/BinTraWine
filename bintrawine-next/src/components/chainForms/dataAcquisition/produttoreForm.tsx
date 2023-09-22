@@ -19,6 +19,7 @@ import Loader from "@/components/loading";
 
 export interface ProduttoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    idLotto: number
 }
 
 type FieldProduttoreType = {
@@ -27,7 +28,7 @@ type FieldProduttoreType = {
 }
 
 const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
-    ({ className }, ref) => {
+    ({ className, idLotto }, ref) => {
 
         const utils = api.useContext()
         const sendProduttoreData = api.produttore.send.useMutation({
