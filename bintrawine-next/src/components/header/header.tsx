@@ -26,8 +26,13 @@ export interface HeaderProps
 const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
     ({ className, number_of_lotti, setTabs, ...props }, ref) => {
 
+        const utils = api.useContext()
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_lotti))
-        const setSensori = api.blockChainRouter.setSensoriData.useMutation()
+        const setSensori = api.blockChainRouter.setSensoriData.useMutation({
+            onSuccess() {
+                utils.blockChainRouter.getSensoriData.invalidate()
+            }
+        })
 
         const { data: session, status } = useSession();
 

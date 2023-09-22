@@ -219,16 +219,6 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                         data: getLotto.data.imbottigliatore.data?.codiceAbarre ?? "Dato non trovato"
                     },
                     {
-                        title: "Dati Forniture",
-                        contentType: "key-value",
-                        data: [
-                            {
-                                name: "Fertilizzanti",
-                                value: "x, y, z"
-                            },
-                        ]
-                    },
-                    {
                         title: "Dati Sensori Imbottigliatore",
                         contentType: "key-value",
                         data: [

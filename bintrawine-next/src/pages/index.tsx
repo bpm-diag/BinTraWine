@@ -19,8 +19,13 @@ export interface TabProps {
 
 export default function LandingPage() {
 
+  const utils = api.useContext()
   const getTerreni = api.blockChainRouter.getLatestIDLotto.useQuery();
-  const setSensori = api.blockChainRouter.setSensoriData.useMutation()
+  const setSensori = api.blockChainRouter.setSensoriData.useMutation({
+    onSuccess() {
+      utils.blockChainRouter.getSensoriData.invalidate()
+    }
+  })
   const [sensoriSetted, setSensoriSetted] = useState<boolean>(false);
 
   const [tabs, setTabs] = useState<TabProps[]>([]);
