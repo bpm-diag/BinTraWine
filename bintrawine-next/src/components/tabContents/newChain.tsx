@@ -17,18 +17,8 @@ export interface NewChainProps
 const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
     ({ className, idLotto }, ref) => {
 
-        const utils = api.useContext()
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
         const sensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto));
-        const setSensori = api.blockChainRouter.setSensoriData.useMutation()
-        console.log(sensori.data)
-        useEffect(() => {
-            if (sensori.isFetched) {
-                if (!sensori.data!.completed) {
-                    setSensori.mutate(Number(idLotto))
-                }
-            }
-        }, [sensori])
 
         const { data: session, status } = useSession();
 

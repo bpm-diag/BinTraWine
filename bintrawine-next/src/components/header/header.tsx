@@ -27,10 +27,12 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
     ({ className, number_of_lotti, setTabs, ...props }, ref) => {
 
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_lotti))
+        const setSensori = api.blockChainRouter.setSensoriData.useMutation()
 
         const { data: session, status } = useSession();
 
         const newTab = () => {
+            setSensori.mutate(number_of_lotti)
             setTabs(oldState => [...oldState, { triggerKey: `${number_of_lotti}`, triggerName: `Lotto ${number_of_lotti}`, status: 'IN CORSO' }])
         }
 
