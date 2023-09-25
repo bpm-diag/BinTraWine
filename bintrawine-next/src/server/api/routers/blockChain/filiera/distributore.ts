@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import Web3 from 'web3';
-import { z } from 'zod';
+import { ChartData } from '@/types/chainTypes';
 import { DistributoreSchema, DistributoreSchemaForm, DistributoreSensoriSchemaForm } from '@/types/chainTypes';
 import { DistributoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
@@ -100,6 +100,42 @@ export const setSensoriDistributore = (input: number) => {
             // send agronomo data
             const sensoriDistributore = await sensoriContract.methods.setSensoriDistributore(input, String(getRandomNumber(2000)), String(getRandomNumber(30))).send({ from: currentAddress, privateFor: privateFor })
             return { sensoriDistributore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getDistributoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const distributoreChartData: ChartData[] = []
+
+            const quantitaTrasportataPerLotto = await contract.methods.queryQuantitaTrasportataPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+            const nomiClientiQuantita = await contract.methods.queryNomiClientiQuantita().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            distributoreChartData.push({
+                title: "Quantita per lotto",
+                labels: quantitaTrasportataPerLotto['1'] as string[],
+                values: (quantitaTrasportataPerLotto['0'] as string[]).map((value) => Number(value)) as number[]
+            })
+
+
+            distributoreChartData.push({
+                title: "Nomi clienti quantità",
+                labels: nomiClientiQuantita['0'] as string[],
+                values: (nomiClientiQuantita['1'] as string[]).map((value) => Number(value)) as number[]
+            })
+
+            return distributoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);

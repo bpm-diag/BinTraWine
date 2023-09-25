@@ -20,9 +20,13 @@ ChartJS.register(
 );
 
 
-interface BarChartProps extends React.HTMLAttributes<HTMLHeadElement> { }
+interface BarChartProps extends React.HTMLAttributes<HTMLHeadElement> {
+    title: string,
+    labels: string[],
+    values: number[]
+}
 
-const BarChart = ({ className, ...props }: BarChartProps) => {
+const BarChart = ({ className, title, labels, values, ...props }: BarChartProps) => {
 
     const options = {
         plugins: {
@@ -47,15 +51,15 @@ const BarChart = ({ className, ...props }: BarChartProps) => {
 
     const dataset = [
         {
-            label: 'Red',
-            data: [5, 10, 15],
-            backgroundColor: '#E03C32',
+            label: title,
+            data: values,
+            backgroundColor: '#0F3835',
             borderRadius: 8
         }
     ]
 
     const data = {
-        labels: ["1", "2", "3"],
+        labels: labels,
         datasets: dataset,
     };
 

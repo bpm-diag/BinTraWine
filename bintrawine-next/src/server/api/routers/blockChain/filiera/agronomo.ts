@@ -5,6 +5,7 @@ import { AgronomoAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/
 import { AgronomoSchema, AgronomoSchemaForm, AgronomoSensoriSchemaForm } from '@/types/chainTypes';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
+import { ChartData } from '@/types/chainTypes';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -106,6 +107,49 @@ export const getSensoriAgronomo = (input: number): Promise<void | AgronomoSensor
 				temperatura: temperatura,
 				pioggia: pioggia
 			};
+		})
+		.catch((error) => {
+			console.error("ERROR", error);
+		})
+}
+
+export const getAgronomoAnalytics = (): Promise<void | ChartData[]> => {
+	return web3.eth.getAccounts()
+		.then(async (accounts) => {
+			const [currentAddress, ...other] = accounts;
+
+			const agronomoChartData: ChartData[] = []
+
+			const superficiePerTerreno = await contract.methods.querySuperficiePerTerreno().call({ from: currentAddress, privateFor: privateFor })
+			const temperaturaPerTerreno = await contract.methods.queryTemperaturaPerTerreno().call({ from: currentAddress, privateFor: privateFor })
+			const pioggiaPerTerreno = await contract.methods.queryPioggiaPerTerreno().call({ from: currentAddress, privateFor: privateFor })
+			const umiditaPerTerreno = await contract.methods.queryUmiditaPerTerreno().call({ from: currentAddress, privateFor: privateFor })
+
+			agronomoChartData.push({
+				title: "Superficie per terreno",
+				labels: superficiePerTerreno['1'] as string[],
+				values: (superficiePerTerreno['0'] as string[]).map((value) => parseInt(value)) as number[]
+			})
+
+			agronomoChartData.push({
+				title: "Temperatura per terreno",
+				labels: temperaturaPerTerreno['1'] as string[],
+				values: (temperaturaPerTerreno['0'] as string[]).map((value) => parseInt(value)) as number[]
+			})
+
+			agronomoChartData.push({
+				title: "Pioggia per terreno",
+				labels: pioggiaPerTerreno['1'] as string[],
+				values: (pioggiaPerTerreno['0'] as string[]).map((value) => parseInt(value)) as number[]
+			})
+
+			agronomoChartData.push({
+				title: "Umidità per terreno",
+				labels: umiditaPerTerreno['1'] as string[],
+				values: (umiditaPerTerreno['0'] as string[]).map((value) => parseInt(value)) as number[]
+			})
+
+			return agronomoChartData
 		})
 		.catch((error) => {
 			console.error("ERROR", error);

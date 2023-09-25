@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { z } from 'zod';
+import { ChartData } from '@/types/chainTypes';
 import Web3 from 'web3';
 import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm, ImbottigliatoreSensoriSchemaForm } from '@/types/chainTypes';
 import { ImbottigliatoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
@@ -103,6 +103,42 @@ export const setSensoriImbottigliatore = (input: number) => {
             // send agronomo data
             const sensoriImbottigliatore = await sensoriContract.methods.setSensoriImbottigliatore(input, String(getRandomNumber(1000)), String(getRandomNumber(800)), String(getRandomNumber(30))).send({ from: currentAddress, privateFor: privateFor })
             return { sensoriImbottigliatore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getImbottigliatoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const imbottigliatoreChartData: ChartData[] = []
+
+            const quantitaProdottoRicevutoPerLotto = await contract.methods.queryQuantitaProdottoRicevutaPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            const quantitaVinoImbottigliatoPerLotto = await contract.methods.queryQuantitaVinoImbottigliataPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            imbottigliatoreChartData.push({
+                title: "Quantità prodotto ricevuto per lotto",
+                labels: quantitaProdottoRicevutoPerLotto['1'] as string[],
+                values: (quantitaProdottoRicevutoPerLotto['0'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            imbottigliatoreChartData.push({
+                title: "Quantità vino imbottigliato per lotto",
+                labels: quantitaVinoImbottigliatoPerLotto['1'] as string[],
+                values: (quantitaVinoImbottigliatoPerLotto['0'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            return imbottigliatoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);

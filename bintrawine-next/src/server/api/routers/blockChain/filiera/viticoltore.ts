@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import { ViticoltoreSchema, ViticoltoreSchemaForm, ViticoltoreSensoriSchemaForm } from '@/types/chainTypes';
 import { ViticoltoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
-import { getRandomNumber } from '@/utils/utilsFunctions';
+import { ChartData } from '@/types/chainTypes';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -117,6 +117,42 @@ export const setSensoriViticoltore = (input: number) => {
             // send agronomo data
             const sensoriViticoltore = await sensoriContract.methods.setSensoriViticoltore(input, "quantita uva raccolta", "tipologia", "umidita", "temperatura", "quantita fertilizzanti").send({ from: currentAddress, privateFor: privateFor })
             return { sensoriViticoltore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getViticoltoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const viticoltoreChartData: ChartData[] = []
+
+            const dataUvaRaccolta = await contract.methods.queryDataUvaRaccolta().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            const nomiClientiQuantita = await contract.methods.queryNomiClientiQuantita().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            viticoltoreChartData.push({
+                title: "Data uva raccolta",
+                labels: dataUvaRaccolta['0'] as string[],
+                values: (dataUvaRaccolta['1'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            viticoltoreChartData.push({
+                title: "Nomi clienti quantità",
+                labels: nomiClientiQuantita['0'] as string[],
+                values: (nomiClientiQuantita['1'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            return viticoltoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);

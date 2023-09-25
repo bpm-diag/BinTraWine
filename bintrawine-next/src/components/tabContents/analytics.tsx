@@ -2,14 +2,41 @@ import React, { useState } from 'react';
 import { cn } from "@/utils";
 import { Button } from '@/components/ui/button';
 import BarChart from '@/components/charts/barChart';
+import { api } from '@/utils/api';
+import Loader from "@/components/loading";
+import { ChartData, Charts } from '@/types/chainTypes';
 import { MdOutlineAgriculture, MdOutlineLocalShipping, MdOutlineWineBar, MdProductionQuantityLimits, MdOutlineLocalFlorist, MdOutlineSell } from "react-icons/md";
 
 
 export interface AnalyticsProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
+const getCharts = (charts: Charts, currentSelected: string): ChartData[] => {
+    switch (currentSelected) {
+        case "agronomo":
+            return charts.agronomo
+        case "viticoltore":
+            return charts.viticoltore
+        case "distributore":
+            return charts.distributore
+        case "imbottigliatore":
+            return charts.imbottigliatore
+        case "produttore":
+            return charts.produttore
+        case "rivenditore":
+            return charts.rivenditore
+        default:
+            return charts.agronomo
+    }
+}
+
 const Analytics = React.forwardRef<HTMLDivElement, AnalyticsProps>(
     ({ className }, ref) => {
+
+        const analytics = api.blockChainRouter.getAnalytics.useQuery();
+        if (analytics.isFetched) {
+            console.log(analytics.data)
+        }
 
         const buttons: { id: string, name: string, icon: React.ElementType }[] = [
             {
@@ -51,37 +78,32 @@ const Analytics = React.forwardRef<HTMLDivElement, AnalyticsProps>(
                 <div className="bg-white py-2 px-8 flex flex-row gap-4 items-center border-b-2 border-b-black_dim">
                     <h1 className="font-primary font-semibold text-2xl">Analytics</h1>
                 </div>
-                <div className='flex flex-row justify-around items-center'>
+                <div className='flex flex-row lg:justify-around md:justify-around sm:just items-center gap-4 flex-wrap'>
                     {
                         buttons.map((element) => {
-                            return (<Button id={element.id} variant="text" onClick={() => setCurrentAnalytic(element.id)} className={`flex flex-row rounded-full justify-center items-center ${element.id === currentAnalytic ? "bg-accent" : ""} `}>
-                                {element.name}
-                                <element.icon size={20} />
-                            </Button>)
+                            return (
+                                <Button key={element.id} variant="text" onClick={() => setCurrentAnalytic(element.id)} className={`flex flex-row rounded-full justify-center items-center ${element.id === currentAnalytic ? "bg-accent" : ""} `}>
+                                    {element.name}
+                                    <element.icon size={20} />
+                                </Button>)
                         })
                     }
                 </div>
                 <div className='m-8 flex flex-row flex-wrap justify-center'>
-                    <div className='m-4 flex flex-col gap-4 justify-center items-center bg-surface rounded-sm'>
-                        <p className='text-primary text-lg font-semibold'>Pioggia</p>
-                        <BarChart />
-                    </div>
-                    <div className='m-4 flex flex-col gap-4 justify-center items-center bg-surface rounded-sm'>
-                        <p className='text-primary text-lg font-semibold'>Pioggia</p>
-                        <BarChart />
-                    </div>
-                    <div className='m-4 flex flex-col gap-4 justify-center items-center bg-surface rounded-sm'>
-                        <p className='text-primary text-lg font-semibold'>Pioggia</p>
-                        <BarChart />
-                    </div>
-                    <div className='m-4 flex flex-col gap-4 justify-center items-center bg-surface rounded-sm'>
-                        <p className='text-primary text-lg font-semibold'>Pioggia</p>
-                        <BarChart />
-                    </div>
-                    <div className='m-4 flex flex-col gap-4 justify-center items-center bg-surface rounded-sm'>
-                        <p className='text-primary text-lg font-semibold'>Pioggia</p>
-                        <BarChart />
-                    </div>
+                    {analytics.isLoading && <Loader />}
+                    {analytics.isError && <p className='text-base font-semibold text-red-500'>Errore nel caricamento, provare a ricaricare la pagina</p>}
+                    {
+                        analytics.isFetched &&
+                        getCharts(analytics.data!, currentAnalytic).map((currentChart, index) => {
+                            return (
+                                <div key={index} className='m-4 flex flex-col gap-4 justify-center items-center bg-surface rounded-sm'>
+                                    <p className='text-primary text-lg font-semibold'>{currentChart.title}</p>
+                                    <BarChart title={currentChart.title} labels={currentChart.labels} values={currentChart.values} />
+                                </div>
+                            )
+                        })
+                    }
+
                 </div>
             </div>
         );

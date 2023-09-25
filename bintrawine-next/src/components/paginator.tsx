@@ -30,7 +30,7 @@ const Paginator = React.forwardRef<HTMLDivElement, PaginatorProps>(
                     {
                         Array.from(Array(Number(numberOfPages))).map(function (_, i) {
                             return (
-                                <li>
+                                <li key={i}>
                                     <a className={`flex items-center justify-center px-4 h-10 leading-tight text-gray-500 ${selectedPage !== (i + 1) && "underline"}`}>{i + 1}</a>
                                 </li>
                             )
