@@ -28,7 +28,7 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
         return (
             <div className={cn("flex flex-col gap-10 w-full", className)}>
                 <div className="bg-white py-2 px-8 flex flex-row gap-4 items-center border-b-2 border-b-black_dim">
-                    <h1 className="font-primary font-semibold text-2xl">Catalogo (221)</h1>
+                    <h1 className="font-primary font-semibold text-2xl">Catalogo ({number_of_chains - 1})</h1>
                 </div>
                 <div className="flex justify-center items-center">
                     <Input className="w-1/3 rounded-none text-sm" placeholder="Cerca per Lotto o Terreno" />
