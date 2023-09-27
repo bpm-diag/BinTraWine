@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import { RivenditoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { RivenditoreSensoriSchemaForm } from '@/types/chainTypes';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
-import { getRandomNumber } from '@/utils/utilsFunctions';
+import { ChartData } from '@/types/chainTypes';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -59,6 +59,31 @@ export const setSensoriRivenditore = (input: number) => {
             // send agronomo data
             const sensoriDistributore = await sensoriContract.methods.setSensoriRivenditore(input, "Montepulciano d'Abruzzo, 200").send({ from: currentAddress, privateFor: privateFor })
             return { sensoriDistributore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getRivenditoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const rivenditoreChartData: ChartData[] = []
+
+            const tipologiaQuantita = await contract.methods.queryTipologiaQuantita().call({
+                from: currentAddress,
+                privateFor: privateFor
+            })
+
+            rivenditoreChartData.push({
+                title: "Tipologia quantità",
+                labels: tipologiaQuantita['0'] as string[],
+                values: (tipologiaQuantita['1'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            return rivenditoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);

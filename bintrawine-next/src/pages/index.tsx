@@ -10,6 +10,7 @@ import { api } from "@/utils/api";
 import NewChain from "@/components/tabContents/newChain";
 import ProductionChain from "@/components/tabContents/productionChain";
 import Loader from "@/components/loading";
+import Analytics from "@/components/tabContents/analytics";
 
 
 export interface TabProps {
@@ -124,7 +125,8 @@ export default function LandingPage() {
             tabs.map((tab, index) => (
               <TabsContent key={index} value={tab.triggerKey}>
                 {
-                  tab.status === "IN CORSO" ? <NewChain idLotto={tab.triggerKey} /> : <ProductionChain idLotto={tab.triggerKey} />
+                  tab.triggerKey === "analytics" ? <Analytics /> :
+                    tab.status === "IN CORSO" ? <NewChain idLotto={tab.triggerKey} /> : <ProductionChain idLotto={tab.triggerKey} />
                 }
               </TabsContent>
             ))

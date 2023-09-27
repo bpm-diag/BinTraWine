@@ -1,4 +1,3 @@
-import { api } from "@/utils/api";
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import {
@@ -9,15 +8,16 @@ import {
     DistributoreSchemaForm,
     EnteCertificatoreSchemaForm,
     FilieraChain,
-    FilieraChainSensori
+    FilieraChainSensori,
+    Charts
 } from '@/types/chainTypes';
-import { getManualAgronomoData, getAgronomoIDLotto, getSensoriAgronomo, setSensoriAgronomo } from '@/server/api/routers/blockChain/filiera/agronomo'
-import { getManualViticoltoreData, getViticoltoreIDLotto, getSensoriViticoltore, setSensoriViticoltore } from '@/server/api/routers/blockChain/filiera/viticoltore'
-import { getManualProduttoreData, getProduttoreIDLotto, getSensoriProduttore, setSensoriProduttore } from '@/server/api/routers/blockChain/filiera/produttore'
-import { getManualImbottigliatoreData, getImbottigliatoreIDLotto, getSensoriImbottigliatore, setSensoriImbottigliatore } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
-import { getManualDistributoreData, getDistributoreIDLotto, getSensoriDistributore, setSensoriDistributore } from '@/server/api/routers/blockChain/filiera/distributore'
+import { getManualAgronomoData, getAgronomoIDLotto, getSensoriAgronomo, setSensoriAgronomo, getAgronomoAnalytics } from '@/server/api/routers/blockChain/filiera/agronomo'
+import { getManualViticoltoreData, getViticoltoreIDLotto, getSensoriViticoltore, setSensoriViticoltore, getViticoltoreAnalytics } from '@/server/api/routers/blockChain/filiera/viticoltore'
+import { getManualProduttoreData, getProduttoreIDLotto, getSensoriProduttore, setSensoriProduttore, getProduttoreAnalytics } from '@/server/api/routers/blockChain/filiera/produttore'
+import { getManualImbottigliatoreData, getImbottigliatoreIDLotto, getSensoriImbottigliatore, setSensoriImbottigliatore, getImbottigliatoreAnalytics } from '@/server/api/routers/blockChain/filiera/imbottigliatore'
+import { getManualDistributoreData, getDistributoreIDLotto, getSensoriDistributore, setSensoriDistributore, getDistributoreAnalytics } from '@/server/api/routers/blockChain/filiera/distributore'
 import { getManualEnteCertificatoreData, getEnteCertificatoreIDLotto } from '@/server/api/routers/blockChain/filiera/enteCertificatore'
-import { getSensoriRivenditore, setSensoriRivenditore } from '@/server/api/routers/blockChain/filiera/rivenditore'
+import { getSensoriRivenditore, setSensoriRivenditore, getRivenditoreAnalytics } from '@/server/api/routers/blockChain/filiera/rivenditore'
 
 const checkAgronomoData = (agronomoData: (void | AgronomoSchemaForm)): [AgronomoSchemaForm | undefined, boolean] => {
     if (!agronomoData) return [undefined, false]
@@ -190,5 +190,26 @@ export const blockChainRouter = createTRPCRouter({
             }
 
             return 1
+        }),
+
+    getAnalytics: publicProcedure
+        .query(async ({ ctx }) => {
+            const agronomoAnalytics = await getAgronomoAnalytics();
+            const distributoreAnalytics = await getDistributoreAnalytics()
+            const imbottigliatoreAnalytics = await getImbottigliatoreAnalytics()
+            const produttoreAnalytics = await getProduttoreAnalytics()
+            const rivenditoreAnalytics = await getRivenditoreAnalytics()
+            const viticoltoreAnalytics = await getViticoltoreAnalytics()
+
+            const chartData: Charts = {
+                agronomo: agronomoAnalytics!,
+                distributore: distributoreAnalytics!,
+                imbottigliatore: imbottigliatoreAnalytics!,
+                produttore: produttoreAnalytics!,
+                rivenditore: rivenditoreAnalytics!,
+                viticoltore: viticoltoreAnalytics!
+            }
+
+            return chartData
         })
 })

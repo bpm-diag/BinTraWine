@@ -1,5 +1,5 @@
 import { type } from "os";
-import { z } from "zod";
+import { string, z } from "zod";
 
 // AGRONOMO SCHEMA
 
@@ -250,4 +250,19 @@ export type FilieraChainSensori = {
     imbottigliatore: ImbottigliatoreSensoriSchemaForm | undefined,
     distributore: DistributoreSensoriSchemaForm | undefined,
     rivenditore: RivenditoreSensoriSchemaForm | undefined,
+}
+
+export type ChartData = {
+    title: string,
+    labels: string[],
+    values: number[]
+}
+
+export type Charts = {
+    agronomo: ChartData[],
+    distributore: ChartData[],
+    imbottigliatore: ChartData[],
+    produttore: ChartData[],
+    rivenditore: ChartData[],
+    viticoltore: ChartData[],
 }

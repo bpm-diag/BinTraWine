@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { z } from 'zod';
+import { ChartData } from '@/types/chainTypes';
 import Web3 from 'web3';
 import { ProduttoreSchema, ProduttoreSchemaForm, ProduttoreSensoriSchemaForm } from '@/types/chainTypes';
 import { ProduttoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
@@ -101,6 +101,42 @@ export const setSensoriProduttore = (input: number) => {
             // send agronomo data
             const sensoriProduttore = await sensoriContract.methods.setSensoriProduttore(input, String(getRandomNumber(1000)), String(getRandomNumber(1000)), String(input), String(getRandomNumber(50))).send({ from: currentAddress, privateFor: privateFor })
             return { sensoriProduttore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getProduttoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const produttoreChartData: ChartData[] = []
+
+            const vinoRivendicatoPerLotto = await contract.methods.queryVinoRivendicatoPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor
+            })
+
+            const vinoOttenutoPerLotto = await contract.methods.queryVinoOttenutoPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            produttoreChartData.push({
+                title: "Vino rivendicato per lotto",
+                labels: vinoRivendicatoPerLotto['0'] as string[],
+                values: (vinoRivendicatoPerLotto['1'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            produttoreChartData.push({
+                title: "Vino ottenuto per lotto",
+                labels: vinoOttenutoPerLotto['0'] as string[],
+                values: (vinoOttenutoPerLotto['1'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            return produttoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);
