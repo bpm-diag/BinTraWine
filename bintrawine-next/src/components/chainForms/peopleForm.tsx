@@ -1,22 +1,31 @@
 import React from "react";
 import { MdAddCircleOutline } from "react-icons/md";
-import Account from "../account";
-import { Separator } from "../ui/separator";
+import Account from "@/components/account";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/utils";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogTrigger
+} from "@/components/ui/dialog"
+import SearchPeopleDialog from "@/components/chainForms/searchPeopleDialog";
+import { api } from "@/utils/api";
 
 export interface PeopleFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
+    idLotto: number,
     chainType: string;
     selected: "MANUALE" | "SENSORI";
     setManuale: React.Dispatch<React.SetStateAction<"MANUALE" | "SENSORI">>
 }
 
 const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
-    ({ className, chainType, selected, setManuale }, ref) => {
+    ({ className, idLotto, chainType, selected, setManuale }, ref) => {
+
+        const lotto = api.lotto.getLotto.useQuery(idLotto);
 
         return (
-            <div className="p-7 flex flex-col col-span-2 gap-8 bg-white">
+            <div className={cn("p-7 flex flex-col col-span-2 gap-8 bg-white", className)}>
                 {/* Titolo */}
                 <div>
                     <p className="text-primary font-primary text-xl font-bold">{chainType}</p>
@@ -24,7 +33,7 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                 {/* Created By */}
                 <div className="flex flex-col items-start">
                     <p className="text-primary font-primary text-base font-semibold">Creato da</p>
-                    <Account className="bg-accent" icon={false} variant='selected' name="Fabio" surname="D'Adda" />
+                    {lotto.isFetched && <Account className="bg-accent" icon={false} variant='selected' name={lotto.data?.creator.name} surname={lotto.data?.creator.surname} />}
                 </div>
                 {/* Aggiunta Persone */}
                 <div className="flex flex-col gap-4">
@@ -34,17 +43,21 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                             <p className="text-primary font-primary text-base font-semibold">Collaboratori:</p>
                             <p className="text-black_dim font-primary text-base font-semibold line-clamp-1">Compila il form insieme al tuo team</p>
                         </div>
-                        <div className="flex flex-row basis-1/2 justify-end items-center hover:cursor-pointer">
-                            <p className="font-primary text-base font-semibold">Aggiungi collaboratori</p>
-                            <MdAddCircleOutline size={24} className="text-primary" />
-                        </div>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <div className="flex flex-row basis-1/2 justify-end items-center hover:cursor-pointer">
+                                    <p className="font-primary text-base font-semibold">Aggiungi collaboratori</p>
+                                    <MdAddCircleOutline size={24} className="text-primary" />
+                                </div>
+                            </DialogTrigger>
+                            {lotto.isFetched && <SearchPeopleDialog />}
+                        </Dialog>
                     </div>
                     {/* Persone aggiunte */}
                     <div className="flex flex-wrap gap-2">
                         <Account className="bg-accent_light" close variant='selected' name="Elia" surname="Guarnieri" />
                         <Account className="bg-accent_light" close variant='selected' name="David" surname="Chieregato" />
                         <Account className="bg-accent_light" close variant='selected' name="Marco" surname="Cremaschi" />
-
                     </div>
                     <Separator className="bg-surface_dark" />
                 </div>

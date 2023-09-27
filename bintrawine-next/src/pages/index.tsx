@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from '@/components/header/header';
+import { useSession } from 'next-auth/react';
 import Catalog from "../components/tabContents/catalog";
 import { MdClose, MdOutlineHome } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -27,13 +28,16 @@ export default function LandingPage() {
     }
   })
   const [sensoriSetted, setSensoriSetted] = useState<boolean>(false);
-
+  const { data: session, status } = useSession();
   const [tabs, setTabs] = useState<TabProps[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("catalogo");
 
   if (getTerreni.isFetched) {
     if (getTerreni.data === 1 && !sensoriSetted) {
-      setSensori.mutate(1)
+      setSensori.mutate({
+        lottoId: 1,
+        creatorId: session!.user.id
+      })
       setSensoriSetted(true)
     }
   }

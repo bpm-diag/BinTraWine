@@ -9,6 +9,7 @@ import { distributoreRouter } from "@/server/api/routers/blockChain/filiera/dist
 import { rivenditoreRouter } from "@/server/api/routers/blockChain/filiera/rivenditore";
 import { enteCertificatoreRouter } from "@/server/api/routers/blockChain/filiera/enteCertificatore";
 import { blockChainRouter } from "@/server/api/routers/blockChain/blockChain";
+import { lottoRouter } from "@/server/api/routers/lotto";
 
 /**
  * This is the primary router for your server.
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   distributore: distributoreRouter,
   rivenditore: rivenditoreRouter,
   enteCertificatore: enteCertificatoreRouter,
+  lotto: lottoRouter,
   blockChainRouter: blockChainRouter,
 });
 

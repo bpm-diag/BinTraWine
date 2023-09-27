@@ -15,9 +15,8 @@ export const userRouter = createTRPCRouter({
         }),
 
     getAllUsers: publicProcedure
-        .input(UserFindManyArgsSchema)
         .query(async ({ input, ctx }) => {
-            const users = await ctx.prisma.user.findMany(input);
+            const users = await ctx.prisma.user.findMany();
 
             return users;
         })

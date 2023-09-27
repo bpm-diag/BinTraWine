@@ -122,14 +122,30 @@ export const blockChainRouter = createTRPCRouter({
         }),
 
     setSensoriData: publicProcedure
-        .input(z.number())
+        .input(z.object({
+            lottoId: z.number(),
+            creatorId: z.number()
+        }))
         .mutation(async ({ input, ctx }) => {
-            await setSensoriAgronomo(input)
-            await setSensoriViticoltore(input)
-            await setSensoriProduttore(input)
-            await setSensoriImbottigliatore(input)
-            await setSensoriDistributore(input)
-            await setSensoriRivenditore(input)
+            await setSensoriAgronomo(input.lottoId)
+            await setSensoriViticoltore(input.lottoId)
+            await setSensoriProduttore(input.lottoId)
+            await setSensoriImbottigliatore(input.lottoId)
+            await setSensoriDistributore(input.lottoId)
+            await setSensoriRivenditore(input.lottoId)
+
+            const lotto = await ctx.prisma.lotto.findUnique({
+                where: {
+                    id: input.lottoId
+                }
+            })
+
+            if (lotto == null) await ctx.prisma.lotto.create({
+                data: {
+                    id: input.lottoId,
+                    creatorId: input.creatorId
+                }
+            })
         }),
 
     getSensoriData: publicProcedure

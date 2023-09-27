@@ -53,15 +53,17 @@ model Session {
 }
 
 model User {
-    id             Int       @id @default(autoincrement())
-    name           String
-    surname        String
-    email          String    @unique
-    cellar         String
-    roles          Role[]
-    hashedPassword String
-    accounts       Account[]
-    sessions       Session[]
+    id                Int       @id @unique @default(autoincrement())
+    name              String
+    surname           String
+    email             String    @unique
+    cellar            String
+    roles             Role[]
+    hashedPassword    String
+    accounts          Account[]
+    sessions          Session[]
+    createdLotti      Lotto[]   @relation(name: "creator")
+    collaboratorLotti Lotto[]   @relation(name: "collaborator")
 }
 
 model VerificationToken {
@@ -70,6 +72,13 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Lotto {
+    id            Int    @id @unique
+    creator       User   @relation(name: "creator", fields: [creatorId], references: [id])
+    creatorId     Int
+    collaborators User[] @relation(name: "collaborator")
 }
 
 enum Role {
