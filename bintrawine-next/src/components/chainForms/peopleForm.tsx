@@ -22,7 +22,14 @@ export interface PeopleFormProps
 const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
     ({ className, idLotto, chainType, selected, setManuale }, ref) => {
 
+        const utils = api.useContext()
         const lotto = api.lotto.getLotto.useQuery(idLotto);
+        const deletePerson = api.lotto.deletePerson.useMutation({
+            onSuccess() {
+                utils.lotto.getLotto.invalidate()
+                utils.lotto.getAllLotti.invalidate()
+            }
+        })
 
         return (
             <div className={cn("p-7 flex flex-col col-span-2 gap-8 bg-white", className)}>
@@ -50,14 +57,17 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                                     <MdAddCircleOutline size={24} className="text-primary" />
                                 </div>
                             </DialogTrigger>
-                            {lotto.isFetched && <SearchPeopleDialog />}
+                            {lotto.isFetched && <SearchPeopleDialog idLotto={idLotto} />}
                         </Dialog>
                     </div>
                     {/* Persone aggiunte */}
                     <div className="flex flex-wrap gap-2">
-                        <Account className="bg-accent_light" close variant='selected' name="Elia" surname="Guarnieri" />
-                        <Account className="bg-accent_light" close variant='selected' name="David" surname="Chieregato" />
-                        <Account className="bg-accent_light" close variant='selected' name="Marco" surname="Cremaschi" />
+                        {
+                            lotto.isFetched &&
+                            lotto.data?.collaborators.map(person => {
+                                return <Account onClick={() => deletePerson.mutate({ user: person.id, lottoId: idLotto })} className="bg-accent_light" close variant='selected' name={person.name} surname={person.surname} />
+                            })
+                        }
                     </div>
                     <Separator className="bg-surface_dark" />
                 </div>

@@ -40,7 +40,8 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                 </div>
                 <div className='w-full bg-surface_dark h-0.5' />
                 <div className='flex flex-row justify-between items-center'>
-                    <p className='font-primary text-sm font-normal text-primary_light'><span className='font-semibold'>{avatars.length} persone</span> coinvolte nella filiera</p>
+                    {avatars.length === 1 && <p className='font-primary text-sm font-normal text-primary_light'><span className='font-semibold'>{avatars.length} persona</span> coinvolta nella filiera</p>}
+                    {avatars.length > 1 && <p className='font-primary text-sm font-normal text-primary_light'><span className='font-semibold'>{avatars.length} persone</span> coinvolte nella filiera</p>}
                     <div className='flex flex-row'>
                         {
                             avatars.map((avatar, index) => {
