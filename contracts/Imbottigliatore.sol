@@ -18,6 +18,10 @@ contract Imbottigliatore {
         authorized[owner] = true; //solo per fare test, oppure è un'opzione valida se il deploy viene fatto da ogni singolo attore in maniera indipendente.
         produttoreContract = Produttore(_produttoreContractAddress);
         viticoltoreContract = Viticoltore(_viticoltoreContractAddress);
+
+        //TESTING
+        produttoreContract.addAuthorized(address(this));
+        viticoltoreContract.addAuthorized(address(this));
     }
 
     struct DatiImbottigliatore {
@@ -163,7 +167,7 @@ contract Imbottigliatore {
     }
 
     function getCodiceBarre(uint256 _idLotto) public view returns(string memory) {
-        require(authorized[msg.sender]);
+        //require(authorized[msg.sender]); TEST
         return lotti[_idLotto].codiceBarre;
     }
 
