@@ -266,3 +266,18 @@ export type Charts = {
     rivenditore: ChartData[],
     viticoltore: ChartData[],
 }
+
+export type Customer = {
+    certificazioneUva: string
+    dataRaccolta: string,
+    datiFornitura: string,
+    destinazioneUva: string,
+    prodottiVinificazione: string,
+    solfiti: string,
+    allergeni: string,
+    localitaUve: string,
+    gradazioneAlcolica: string,
+    temperaturaTrasporto: string,
+    validazione: string,
+    certificazione: string
+}

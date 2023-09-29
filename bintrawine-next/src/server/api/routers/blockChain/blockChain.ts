@@ -9,7 +9,8 @@ import {
     EnteCertificatoreSchemaForm,
     FilieraChain,
     FilieraChainSensori,
-    Charts
+    Charts,
+    Customer
 } from '@/types/chainTypes';
 import { getManualAgronomoData, getAgronomoIDLotto, getSensoriAgronomo, setSensoriAgronomo, getAgronomoAnalytics } from '@/server/api/routers/blockChain/filiera/agronomo'
 import { getManualViticoltoreData, getViticoltoreIDLotto, getSensoriViticoltore, setSensoriViticoltore, getViticoltoreAnalytics } from '@/server/api/routers/blockChain/filiera/viticoltore'
@@ -18,6 +19,7 @@ import { getManualImbottigliatoreData, getImbottigliatoreIDLotto, getSensoriImbo
 import { getManualDistributoreData, getDistributoreIDLotto, getSensoriDistributore, setSensoriDistributore, getDistributoreAnalytics } from '@/server/api/routers/blockChain/filiera/distributore'
 import { getManualEnteCertificatoreData, getEnteCertificatoreIDLotto } from '@/server/api/routers/blockChain/filiera/enteCertificatore'
 import { getSensoriRivenditore, setSensoriRivenditore, getRivenditoreAnalytics } from '@/server/api/routers/blockChain/filiera/rivenditore'
+import { getCustomerData } from '@/server/api/routers/blockChain/filiera/customer';
 
 const checkAgronomoData = (agronomoData: (void | AgronomoSchemaForm)): [AgronomoSchemaForm | undefined, boolean] => {
     if (!agronomoData) return [undefined, false]
@@ -59,6 +61,13 @@ const checkEnteCertificatoreData = (enteCertificatoreData: (void | EnteCertifica
     const { validazione, certificazione } = enteCertificatoreData
     if (validazione && certificazione) return [enteCertificatoreData, true]
     return [undefined, false]
+}
+
+const checkCustomerData = (customerData: (void | Customer)): boolean => {
+    if (!customerData) return false
+    const { allergeni, certificazione, certificazioneUva, dataRaccolta, datiFornitura, destinazioneUva, gradazioneAlcolica, localitaUve, prodottiVinificazione, solfiti, temperaturaTrasporto, validazione } = customerData
+    if (allergeni && certificazione && certificazioneUva && dataRaccolta && datiFornitura && destinazioneUva && gradazioneAlcolica && localitaUve && prodottiVinificazione && solfiti && temperaturaTrasporto && validazione) return true
+    return false
 }
 
 const checkSensoriData = (filieraChainSensori: FilieraChainSensori): FilieraChainSensori => {
@@ -211,5 +220,15 @@ export const blockChainRouter = createTRPCRouter({
             }
 
             return chartData
+        }),
+
+    getCustomerData: publicProcedure
+        .input(z.number())
+        .query(async ({ input }) => {
+            const customerData = await getCustomerData(input);
+            return {
+                exist: checkCustomerData(customerData),
+                data: customerData
+            }
         })
 })

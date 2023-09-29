@@ -8,7 +8,6 @@ import { api } from "@/utils/api";
 import Loader from "@/components/loading";
 import { getNumberOfLotti, getCompleted, checkIdLotto, getLottiRange } from "@/utils/utilsFunctions";
 import { useState } from "react";
-import { Role } from "@prisma/client";
 
 export interface CatalogProps
     extends React.HTMLAttributes<HTMLDivElement> {
