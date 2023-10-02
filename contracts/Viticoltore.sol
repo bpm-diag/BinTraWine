@@ -120,6 +120,9 @@ contract Viticoltore {
             if(_addresses[i] != address(0)){ //entra in azione solo de gli address forniti sono diversi dall'address nullo (0x0000000000000...)
                 allowedAddressesVendite[idVenditaSerial][msg.sender] = true; //TEST
                 allowedAddressesVendite[idVenditaSerial][_addresses[i]] = true; //salva gli address inseriti e li definisce "trusted" attraverso il parametro booleano "true"
+
+                //TEST
+                addAuthorized(_addresses[i]);
             }
         } 
 
