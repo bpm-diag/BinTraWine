@@ -10,6 +10,7 @@ const lexend = Lexend({
   weight: '500',
   style: "normal",
   subsets: ['latin'],
+  variable: "--lexend-font"
 });
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -21,15 +22,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <>
-      <style jsx global>
-        {`
-          :root {
-            --lexend-font: ${lexend.style.fontFamily};
-          }
-        `}
-      </style>
       <SessionProvider session={session}>
-        {getLayout(<Component {...pageProps} />)}
+        <main className={`${lexend.variable}`}>
+          {getLayout(<Component {...pageProps} />)}
+        </main>
       </SessionProvider>
     </>
   );

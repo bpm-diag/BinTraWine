@@ -67,10 +67,6 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
                                 <MdAdd size='20' />
                             </Button>
                         }
-                        <Button className='bg-aqua text-primary hover:text-white' variant="text" onClick={() => newAnalytics()}>
-                            Analytics
-                            <MdBarChart size='20' />
-                        </Button>
                     </div>
                     <div className='flex-1 gap-5 flex justify-end items-center'>
                         {status == 'authenticated' &&

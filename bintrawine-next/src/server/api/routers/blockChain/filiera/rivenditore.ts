@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
 import { RivenditoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
-import { RivenditoreSensoriSchemaForm } from '@/types/chainTypes';
+import { RivenditoreSensoriSchemaForm, DistributoreInRivenditoreData } from '@/types/chainTypes';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { ChartData } from '@/types/chainTypes';
 
@@ -37,14 +37,43 @@ export const rivenditoreRouter = createTRPCRouter({
         })
 });
 
-export const getSensoriRivenditore = (input: number): Promise<void | RivenditoreSensoriSchemaForm> => {
+export const getSensoriRivenditore = (input: number): Promise<void | { rivenditore: RivenditoreSensoriSchemaForm, distributoreData: DistributoreInRivenditoreData | undefined }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
             const data = await contract.methods.getDatiSensoriRivenditore(input).call({ from: currentAddress, privateFor: privateFor })
 
+            // dati distributore
+            try {
+                const distributore = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
+                const prezzoVendita = distributore['0'] as string
+                const nomeProdotto = distributore['1'] as string
+                const quantita = distributore['2'] as string
+                const nomeCliente = distributore['3'] as string
+                const dataVendita = distributore['4'] as string
+
+                return {
+                    rivenditore: {
+                        tipologiaQuantita: "tipologia 1"
+                    },
+                    distributoreData: {
+                        prezzoVendita: prezzoVendita,
+                        nomeProdotto: nomeProdotto,
+                        quantita: quantita,
+                        nomeCliente: nomeCliente,
+                        dataVendita: dataVendita,
+                    }
+                };
+
+            } catch (error) {
+                console.log("NOT AUTHORIZED", input)
+            }
+
             return {
-                tipologiaQuantita: "tipologia 1",
+                rivenditore: {
+                    tipologiaQuantita: "tipologia 1"
+                },
+                distributoreData: undefined
             };
         })
         .catch((error) => {

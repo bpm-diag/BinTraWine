@@ -8,7 +8,7 @@ import {
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
-import bcrypt from 'bcrypt';
+//import bcrypt from 'bcrypt';
 import { Role } from "@prisma/client";
 
 /**
@@ -99,13 +99,14 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user || !user?.hashedPassword) return null;
+        if (credentials.password !== user.hashedPassword) return null
 
-        const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
-          user.hashedPassword
-        );
+        //const isCorrectPassword = await bcrypt.compare(
+        //  credentials.password,
+        //  user.hashedPassword
+        //);
 
-        if (!isCorrectPassword) return null;
+        //if (!isCorrectPassword) return null;
 
         return user;
       },

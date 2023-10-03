@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import Web3 from 'web3';
 import { ChartData } from '@/types/chainTypes';
-import { DistributoreSchema, DistributoreSchemaForm, DistributoreSensoriSchemaForm } from '@/types/chainTypes';
+import { DistributoreSchema, DistributoreSchemaForm, DistributoreSensoriSchemaForm, ImbottigliatoreInDistributoreData } from '@/types/chainTypes';
 import { DistributoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
@@ -24,7 +24,7 @@ export const distributoreRouter = createTRPCRouter({
                     const [currentAddress, ...other] = accounts;
                     // send imbottigliatore data
                     const destinazione = await contract.methods.setDestinazione(input.destinazioneDiConsegna).send({ from: currentAddress, privateFor: privateFor })
-                    const datiVendita = await contract.methods.setDatiVendita(input.prezzo, input.nomeProdotto, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, [currentAddress]).send({ from: currentAddress, privateFor: privateFor })
+                    const datiVendita = await contract.methods.setDatiVendita(input.prezzo, input.nomeProdotto, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, input.distributoreAddress ? [contracts.rivenditore] : [currentAddress]).send({ from: currentAddress, privateFor: privateFor })
                     return {
                         destinazione: destinazione,
                         datiVendita: datiVendita
@@ -36,7 +36,7 @@ export const distributoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualDistributoreData = (input: number): Promise<void | DistributoreSchemaForm> => {
+export const getManualDistributoreData = (input: number): Promise<void | { distributore: DistributoreSchemaForm, imbottigliatoreData: ImbottigliatoreInDistributoreData | undefined }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -48,13 +48,22 @@ export const getManualDistributoreData = (input: number): Promise<void | Distrib
             const nomeCliente = datiVendita['3'] as string
             const dataVendita = datiVendita['4'] as string
 
-            const retrievedData: DistributoreSchemaForm = {
-                destinazioneDiConsegna: destinazione,
-                nomeProdotto: nomeProdotto,
-                prezzo: prezzoVendita,
-                quantitaVendita: quantita,
-                nomeClienteVendita: nomeCliente,
-                dataVendita: dataVendita
+            // dati imbottigliatore                    
+            const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
+
+            const retrievedData = {
+                distributore: {
+                    destinazioneDiConsegna: destinazione,
+                    nomeProdotto: nomeProdotto,
+                    prezzo: prezzoVendita,
+                    quantitaVendita: quantita,
+                    nomeClienteVendita: nomeCliente,
+                    dataVendita: dataVendita,
+                    distributoreAddress: false
+                },
+                imbottigliatoreData: {
+                    codiceABarre: codiceABarre
+                }
             }
 
             return retrievedData

@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { ChartData } from '@/types/chainTypes';
 import Web3 from 'web3';
-import { ProduttoreSchema, ProduttoreSchemaForm, ProduttoreSensoriSchemaForm } from '@/types/chainTypes';
+import { ProduttoreSchema, ProduttoreSchemaForm, ProduttoreSensoriSchemaForm, ViticoltoreInProduttoreData } from '@/types/chainTypes';
 import { ProduttoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
@@ -39,7 +39,7 @@ export const produttoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualProduttoreData = (input: number): Promise<void | ProduttoreSchemaForm> => {
+export const getManualProduttoreData = (input: number): Promise<void | { produttore: ProduttoreSchemaForm, viticoltoreData: ViticoltoreInProduttoreData | undefined }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -47,10 +47,52 @@ export const getManualProduttoreData = (input: number): Promise<void | Produttor
             const quantitaVinoOttenuto = await contract.methods.getQuantitaVinoOttenuto(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const quantitaVinoRivendicato = await contract.methods.getQuantitaVinoRivendicato(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-            const retrievedData: ProduttoreSchemaForm = {
-                prodottiVinificazione: prodottiVinificazione,
-                quantitaVinoOttenuto: quantitaVinoOttenuto,
-                quantitaVinoRivendicato: quantitaVinoRivendicato
+            // viticolore data
+            try {
+                const tipologiaUva = await contract.methods.getTipologiaUva(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                const destinazioneUva = await contract.methods.getDestinazioneUva(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                const dataRaccolta = await contract.methods.getDataRaccolta(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                const pesoViticoltore = await contract.methods.getPesoViticoltore(input).call({ from: currentAddress, privateFor: privateFor }) as string
+                const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
+
+                const nomeProdotto = await datiVendita['0'] as string
+                const prezzo = await datiVendita['1'] as string
+                const quantita = await datiVendita['2'] as string
+                const nomeCliente = await datiVendita['3'] as string
+                const dataVendita = await datiVendita['4'] as string
+
+                return {
+                    produttore: {
+                        prodottiVinificazione: prodottiVinificazione,
+                        quantitaVinoOttenuto: quantitaVinoOttenuto,
+                        quantitaVinoRivendicato: quantitaVinoRivendicato
+                    },
+                    viticoltoreData: {
+                        tipologiaUva: tipologiaUva,
+                        destinazioneUva: destinazioneUva,
+                        dataRaccolta: dataRaccolta,
+                        pesoViticoltore: pesoViticoltore,
+                        datiVendita: {
+                            nomeProdotto: nomeProdotto,
+                            prezzo: prezzo,
+                            quantita: quantita,
+                            nomeCliente: nomeCliente,
+                            dataVendita: dataVendita
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log("ERROR", error)
+            }
+
+
+            const retrievedData = {
+                produttore: {
+                    prodottiVinificazione: prodottiVinificazione,
+                    quantitaVinoOttenuto: quantitaVinoOttenuto,
+                    quantitaVinoRivendicato: quantitaVinoRivendicato
+                },
+                viticoltoreData: undefined
             }
 
             return retrievedData

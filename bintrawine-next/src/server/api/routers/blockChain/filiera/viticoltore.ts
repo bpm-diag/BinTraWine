@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { ViticoltoreSchema, ViticoltoreSchemaForm, ViticoltoreSensoriSchemaForm } from '@/types/chainTypes';
+import { ViticoltoreSchema, ViticoltoreSchemaForm, ViticoltoreSensoriSchemaForm, AgronomoInViticoltoreData } from '@/types/chainTypes';
 import { ViticoltoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { ChartData } from '@/types/chainTypes';
@@ -26,7 +26,7 @@ export const viticoltoreRouter = createTRPCRouter({
                     const dataRaccolta = await contract.methods.setDataRaccolta(input.dataRaccolta).send({ from: currentAddress, privateFor: privateFor })
                     const datiForniture = await contract.methods.setDatiForniture(input.datiForniture).send({ from: currentAddress, privateFor: privateFor })
                     const destinazioneUva = await contract.methods.setDestinazioneUva(input.destinazioneUva).send({ from: currentAddress, privateFor: privateFor })
-                    const datiVendita = await contract.methods.setVendita(input.nomeProdotto, input.prezzo, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, [currentAddress]).send({ from: currentAddress, privateFor: privateFor })
+                    const datiVendita = await contract.methods.setVendita(input.nomeProdotto, input.prezzo, input.quantitaVendita, input.nomeClienteVendita, input.dataVendita, input.viticoltoreAddress ? [contracts.produttore] : [currentAddress]).send({ from: currentAddress, privateFor: privateFor })
 
                     return {
                         dataRaccolta: dataRaccolta,
@@ -41,7 +41,7 @@ export const viticoltoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualViticoltoreData = (input: number): Promise<void | ViticoltoreSchemaForm> => {
+export const getManualViticoltoreData = (input: number): Promise<void | { viticoltore: ViticoltoreSchemaForm, agronomoData: AgronomoInViticoltoreData }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -50,21 +50,36 @@ export const getManualViticoltoreData = (input: number): Promise<void | Viticolt
             const destinazioneUva = await contract.methods.getDestinazioneUva(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
 
+            // dati agronomo
+            const superficieTerreno = await contract.methods.getSuperficieTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const umiditaTerreno = await contract.methods.getUmiditaTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const temperaturaTerreno = await contract.methods.getTemperaturaTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
+            const pioggiaTerreno = await contract.methods.getPioggiaTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
+
             const nomeProdotto = datiVendita['0'] as string
             const prezzoVendita = datiVendita['1'] as string
             const quantitaVendita = datiVendita['2'] as string
             const nomeCliente = datiVendita['3'] as string
             const dataVendita = datiVendita['4'] as string
 
-            const retrievedData: ViticoltoreSchemaForm = {
-                dataRaccolta: dataRaccolta,
-                datiForniture: datiForniture,
-                destinazioneUva: destinazioneUva,
-                nomeProdotto: nomeProdotto,
-                prezzo: prezzoVendita,
-                quantitaVendita: quantitaVendita,
-                nomeClienteVendita: nomeCliente,
-                dataVendita: dataVendita
+            const retrievedData = {
+                viticoltore: {
+                    dataRaccolta: dataRaccolta,
+                    datiForniture: datiForniture,
+                    destinazioneUva: destinazioneUva,
+                    nomeProdotto: nomeProdotto,
+                    prezzo: prezzoVendita,
+                    quantitaVendita: quantitaVendita,
+                    nomeClienteVendita: nomeCliente,
+                    dataVendita: dataVendita,
+                    viticoltoreAddress: false
+                },
+                agronomoData: {
+                    superficieTerreno: superficieTerreno,
+                    umiditaTerreno: umiditaTerreno,
+                    temperaturaTerreno: temperaturaTerreno,
+                    pioggiaTerreno: pioggiaTerreno
+                }
             }
 
             return retrievedData
@@ -96,7 +111,7 @@ export const getSensoriViticoltore = (input: number): Promise<void | Viticoltore
             const umidita = "44" // data['2'] as string
             const temperatura = "24" // data['3'] as string
             const quantitaFertilizzanti = "200" // data['4'] as string
-            console.log("VITICOLTORE SENSORI:", data)
+
             return {
                 quantitaUvaRaccolta: quantitaUvaRaccolta,
                 tipologiaUva: tipologiaUva,

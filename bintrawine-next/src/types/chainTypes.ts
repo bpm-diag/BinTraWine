@@ -1,5 +1,5 @@
 import { type } from "os";
-import { string, z } from "zod";
+import { ZodBoolean, string, z } from "zod";
 
 // AGRONOMO SCHEMA
 
@@ -40,7 +40,8 @@ export const ViticoltoreSchema = z.object({
     }),
     dataVendita: z.string().min(1, {
         message: "Dato obbligatorio",
-    })
+    }),
+    viticoltoreAddress: z.boolean().default(false)
 });
 export type ViticoltoreSchemaForm = z.infer<typeof ViticoltoreSchema>;
 
@@ -98,7 +99,8 @@ export const DistributoreSchema = z.object({
     }),
     dataVendita: z.string().min(1, {
         message: "Dato obbligatorio",
-    })
+    }),
+    distributoreAddress: z.boolean().default(false)
 });
 export type DistributoreSchemaForm = z.infer<typeof DistributoreSchema>;
 
@@ -210,36 +212,6 @@ export const RivenditoreSensoriSchema = z.object({
 });
 export type RivenditoreSensoriSchemaForm = z.infer<typeof RivenditoreSensoriSchema>;
 
-// FILIERA
-
-export type FilieraChain = {
-    completed: boolean,
-    agronomo: {
-        data: AgronomoSchemaForm | undefined,
-        completed: boolean
-    },
-    viticoltore: {
-        data: ViticoltoreSchemaForm | undefined,
-        completed: boolean
-    },
-    produttore: {
-        data: ProduttoreSchemaForm | undefined,
-        completed: boolean
-    },
-    imbottigliatore: {
-        data: ImbottigliatoreSchemaForm | undefined,
-        completed: boolean
-    },
-    distributore: {
-        data: DistributoreSchemaForm | undefined,
-        completed: boolean
-    },
-    enteCertificatore: {
-        data: EnteCertificatoreSchemaForm | undefined,
-        completed: boolean
-    }
-}
-
 // FILIERACHAINSENSORI
 
 export type FilieraChainSensori = {
@@ -249,7 +221,10 @@ export type FilieraChainSensori = {
     produttore: ProduttoreSensoriSchemaForm | undefined,
     imbottigliatore: ImbottigliatoreSensoriSchemaForm | undefined,
     distributore: DistributoreSensoriSchemaForm | undefined,
-    rivenditore: RivenditoreSensoriSchemaForm | undefined,
+    rivenditore: {
+        rivenditore: RivenditoreSensoriSchemaForm | undefined,
+        distributoreData: DistributoreInRivenditoreData | undefined
+    } | undefined,
 }
 
 export type ChartData = {
@@ -280,4 +255,107 @@ export type Customer = {
     temperaturaTrasporto: string,
     validazione: string,
     certificazione: string
+}
+
+// DATA TO SHOW INSIEDE OTHER ACTORS
+
+export type AgronomoInViticoltoreData = {
+    superficieTerreno: string,
+    umiditaTerreno: string,
+    temperaturaTerreno: string,
+    pioggiaTerreno: string
+}
+
+export type ViticoltoreInProduttoreData = {
+    tipologiaUva: string,
+    destinazioneUva: string,
+    dataRaccolta: string,
+    pesoViticoltore: string,
+    datiVendita: {
+        nomeProdotto: string
+        prezzo: string
+        quantita: string
+        nomeCliente: string
+        dataVendita: string
+    }
+}
+
+export type ProduttoreInImbottigliatoreData = {
+    prodottiVinificazione: string
+}
+
+export type ViticoltoreInImbottigliatoreData = {
+    destinazioneUva: string
+}
+
+export type ImbottigliatoreInDistributoreData = {
+    codiceABarre: string
+}
+
+export type DistributoreInRivenditoreData = {
+    prezzoVendita: string,
+    nomeProdotto: string,
+    quantita: string,
+    nomeCliente: string,
+    dataVendita: string,
+}
+
+export type AgronomoInEnteCertificatoreData = {
+    analisiQualitàProdotto: string,
+    certificazioneUvaAppezzamento: string,
+    superficieTerreno: string,
+    umiditaTerreno: string,
+    temperaturaTerreno: string,
+    pioggiaTerreno: string
+}
+
+export type ViticoltoreInEnteCertificatoreData = {
+    dataRaccolta: string,
+    datiForniture: string,
+    destinazioneUva: string,
+    datiVenditaNomeProdotto: string,
+    datiVenditaPrezzo: string,
+    datiVenditaQuantita: string,
+    datiVenditaNomeCliente: string,
+    datiVenditaDataVendita: string,
+    datiSensoriQuantitaRaccolta: string,
+    datiSensoriTipologiaUva: string,
+    datiSensoriUmiditaViticoltore: string,
+    datiSensoriTemperaturaViticoltore: string,
+    datiSensoriQuantitaFertilizzanti: string
+}
+
+// FILIERA
+
+export type FilieraChain = {
+    completed: boolean,
+    agronomo: {
+        data: AgronomoSchemaForm | undefined,
+        completed: boolean
+    },
+    viticoltore: {
+        data: ViticoltoreSchemaForm | undefined,
+        agronomoData: AgronomoInViticoltoreData | undefined,
+        completed: boolean
+    },
+    produttore: {
+        data: ProduttoreSchemaForm | undefined,
+        viticoltoreData: ViticoltoreInProduttoreData | undefined,
+        completed: boolean
+    },
+    imbottigliatore: {
+        data: ImbottigliatoreSchemaForm | undefined,
+        produttoreData: ProduttoreInImbottigliatoreData | undefined,
+        viticoltoreData: ViticoltoreInImbottigliatoreData | undefined,
+        completed: boolean
+    },
+    distributore: {
+        data: DistributoreSchemaForm | undefined,
+        imbottigliatoreData: ImbottigliatoreInDistributoreData | undefined,
+        completed: boolean
+    },
+    enteCertificatore: {
+        data: EnteCertificatoreSchemaForm | undefined,
+        completed: boolean
+    }
 }

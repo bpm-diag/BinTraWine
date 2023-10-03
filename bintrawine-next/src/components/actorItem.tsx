@@ -20,15 +20,16 @@ export interface ActorItemProps
     extends React.HTMLAttributes<HTMLDivElement> {
     actorItem: ActorItemType
     countedData?: number
+    disabled?: boolean
 }
 
 const ActorItem = React.forwardRef<HTMLDivElement, ActorItemProps>(
-    ({ className, actorItem, countedData }, ref) => {
+    ({ className, actorItem, countedData, disabled }, ref) => {
 
         return (
-            <Accordion type="single" className={cn(className, "data-[state=open]:border-2 data-[state=open]:border-primary")} collapsible>
+            <Accordion disabled={disabled} type="single" className={cn(className, "data-[state=open]:border-2 data-[state=open]:border-primary")} collapsible>
                 <AccordionItem className="data-[state=open]:border-2 data-[state=open]:border-primary" value="item-1">
-                    <AccordionTrigger className={cn("flex flex-row py-1 px-4", countedData ? "bg-primary_light text-white" : "bg-white")}>
+                    <AccordionTrigger className={cn("flex flex-row py-3 px-4", countedData ? "bg-primary_light text-white" : "bg-white")}>
                         {countedData && <Counter className="p-0 font-semibold shrink-0 text-primary bg-white h-5 w-5 rounded-full text-xs flex flex-col justify-center items-center">{countedData}</Counter>}
                         <p className='font-primary text-base font-normal text-left'>{actorItem.title}</p>
                     </AccordionTrigger>

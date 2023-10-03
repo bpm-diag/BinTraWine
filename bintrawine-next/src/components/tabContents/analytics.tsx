@@ -34,9 +34,6 @@ const Analytics = React.forwardRef<HTMLDivElement, AnalyticsProps>(
     ({ className }, ref) => {
 
         const analytics = api.blockChainRouter.getAnalytics.useQuery();
-        if (analytics.isFetched) {
-            console.log(analytics.data)
-        }
 
         const buttons: { id: string, name: string, icon: React.ElementType }[] = [
             {

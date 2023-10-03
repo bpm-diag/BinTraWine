@@ -77,7 +77,7 @@ const checkSensoriData = (filieraChainSensori: FilieraChainSensori): FilieraChai
         filieraChainSensori.produttore?.pesoArrivo &&
         filieraChainSensori.imbottigliatore?.gradazioneAlcolica &&
         filieraChainSensori.distributore?.quantitaTrasportata &&
-        filieraChainSensori.rivenditore?.tipologiaQuantita
+        filieraChainSensori.rivenditore?.rivenditore?.tipologiaQuantita
     ) {
         filieraChainSensori.completed = true
         return filieraChainSensori
@@ -90,15 +90,20 @@ export const blockChainRouter = createTRPCRouter({
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
+            const viticoltoreData = await getManualViticoltoreData(input)
+            const produttoreData = await getManualProduttoreData(input)
+            const imbottigliatoreData = await getManualImbottigliatoreData(input)
+            const distributoreData = await getManualDistributoreData(input)
+            const enteCertificatoreData = await getManualEnteCertificatoreData(input)
+
             // get and check data
             const [agronomoManualData, agronomoCompleted] = checkAgronomoData(await getManualAgronomoData(input))
-            const [viticoltoreManualData, viticoltoreCompleted] = checkViticoltoreData(await getManualViticoltoreData(input))
-            const [produttoreManualData, produttoreCompleted] = checkProduttoreData(await getManualProduttoreData(input))
-            const [imbottigliatoreManualData, imbottigliatoreCompleted] = checkImbottigliatoreData(await getManualImbottigliatoreData(input))
-            const [distributoreManualData, distributoreCompleted] = checkDistributoreData(await getManualDistributoreData(input))
-            const [enteCertificatoreManualData, enteCertificatoreCompleted] = checkEnteCertificatoreData(await getManualEnteCertificatoreData(input))
+            const [viticoltoreManualData, viticoltoreCompleted] = checkViticoltoreData(viticoltoreData?.viticoltore)
+            const [produttoreManualData, produttoreCompleted] = checkProduttoreData(produttoreData?.produttore)
+            const [imbottigliatoreManualData, imbottigliatoreCompleted] = checkImbottigliatoreData(imbottigliatoreData?.imbottigliatore)
+            const [distributoreManualData, distributoreCompleted] = checkDistributoreData(distributoreData?.distributore)
+            const [enteCertificatoreManualData, enteCertificatoreCompleted] = checkEnteCertificatoreData(enteCertificatoreData)
             const allCompleted = agronomoCompleted && viticoltoreCompleted && produttoreCompleted && imbottigliatoreCompleted && distributoreCompleted && enteCertificatoreCompleted
-
             const filieraData: FilieraChain = {
                 completed: allCompleted,
                 agronomo: {
@@ -107,18 +112,23 @@ export const blockChainRouter = createTRPCRouter({
                 },
                 viticoltore: {
                     data: viticoltoreManualData,
+                    agronomoData: viticoltoreData?.agronomoData,
                     completed: viticoltoreCompleted
                 },
                 produttore: {
                     data: produttoreManualData,
+                    viticoltoreData: produttoreData?.viticoltoreData,
                     completed: produttoreCompleted
                 },
                 imbottigliatore: {
                     data: imbottigliatoreManualData,
+                    produttoreData: imbottigliatoreData?.produttoreData,
+                    viticoltoreData: imbottigliatoreData?.viticoltoreData,
                     completed: imbottigliatoreCompleted
                 },
                 distributore: {
                     data: distributoreManualData,
+                    imbottigliatoreData: distributoreData?.imbottigliatoreData,
                     completed: distributoreCompleted
                 },
                 enteCertificatore: {
@@ -191,8 +201,6 @@ export const blockChainRouter = createTRPCRouter({
             const imbottigliatoreIDLotto = await getImbottigliatoreIDLotto()
             const produttoreIDLotto = await getProduttoreIDLotto()
             const enteCertificatoreIDLotto = await getEnteCertificatoreIDLotto()
-
-            console.log(agronomoIDLotto, viticoltoreIDLotto, distributoreIDLotto, imbottigliatoreIDLotto, produttoreIDLotto, enteCertificatoreIDLotto)
 
             if (agronomoIDLotto && viticoltoreIDLotto && distributoreIDLotto && imbottigliatoreIDLotto && produttoreIDLotto && enteCertificatoreIDLotto) {
                 return Math.max(agronomoIDLotto, viticoltoreIDLotto, distributoreIDLotto, imbottigliatoreIDLotto, produttoreIDLotto, enteCertificatoreIDLotto)

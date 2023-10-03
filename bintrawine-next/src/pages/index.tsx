@@ -2,7 +2,7 @@ import Head from "next/head";
 import Header from '@/components/header/header';
 import { useSession } from 'next-auth/react';
 import Catalog from "../components/tabContents/catalog";
-import { MdClose, MdOutlineHome } from "react-icons/md";
+import { MdClose, MdOutlineHome, MdBarChart } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
@@ -103,6 +103,10 @@ export default function LandingPage() {
               <MdOutlineHome size={24} />
               <p className="font-primary">Catalogo</p>
             </TabsTrigger>
+            <TabsTrigger onClick={() => setCurrentTab("analytics")} className="bg-primary" value="analytics">
+              <MdBarChart size={24} />
+              <p className="font-primary">Analytics</p>
+            </TabsTrigger>
             <Separator orientation="vertical" className="h-8 bg-black_dim" />
             {
               tabs.map((tab, index) => (
@@ -121,12 +125,14 @@ export default function LandingPage() {
                   <Catalog setTabs={setTabs} number_of_chains={getTerreni.data!} />
             }
           </TabsContent>
+          <TabsContent className="flex justify-center items-center" value="analytics">
+            <Analytics />
+          </TabsContent>
           {
             tabs.map((tab, index) => (
               <TabsContent key={index} value={tab.triggerKey}>
                 {
-                  tab.triggerKey === "analytics" ? <Analytics /> :
-                    tab.status === "IN CORSO" ? <NewChain idLotto={tab.triggerKey} /> : <ProductionChain idLotto={tab.triggerKey} />
+                  tab.status === "IN CORSO" ? <NewChain idLotto={tab.triggerKey} /> : <ProductionChain idLotto={tab.triggerKey} />
                 }
               </TabsContent>
             ))

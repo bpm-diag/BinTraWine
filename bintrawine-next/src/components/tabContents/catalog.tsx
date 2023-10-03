@@ -23,7 +23,6 @@ const getNumberOfCollaborators = (currentLotto: number, lottiCollaborators: { lo
     if (!lottiCollaborators) return 1
     let value: number = 1
     lottiCollaborators.map((lotto) => {
-        console.log(currentLotto, lotto.lottoId, currentLotto === lotto.lottoId)
         if (currentLotto === lotto.lottoId) value = lotto.numberOfCollaborators
     })
     return value

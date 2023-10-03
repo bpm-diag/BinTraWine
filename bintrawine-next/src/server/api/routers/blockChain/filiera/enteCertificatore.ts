@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
-import { EnteCertificatoreSchema, EnteCertificatoreSchemaForm } from '@/types/chainTypes';
+import { EnteCertificatoreSchema, EnteCertificatoreSchemaForm, AgronomoInEnteCertificatoreData, ViticoltoreInEnteCertificatoreData } from '@/types/chainTypes';
 import { EnteCertificatoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
@@ -42,7 +42,7 @@ export const getManualEnteCertificatoreData = (input: number): Promise<void | En
             const validazione = await contract.methods.getValidazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const certificazione = await contract.methods.getCertificazione(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-            const retrievedData: EnteCertificatoreSchemaForm = {
+            const retrievedData = {
                 validazione: validazione,
                 certificazione: certificazione
             }

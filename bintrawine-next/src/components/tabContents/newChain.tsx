@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MdOutlineBubbleChart } from "react-icons/md";
 import { Separator } from "../ui/separator";
 import { cn } from "@/utils";
@@ -47,13 +47,13 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                                         <div>
                                             <p className="font-primary text-primary text-xl font-normal">Stato Compilazione</p>
                                         </div>
-                                        <div className="flex flex-row sm:flex-col gap-8 items-center">
+                                        <div className="flex xl:flex-row sm:flex-col gap-8 items-center">
                                             <p className="basis-1/2 font-primary text-primary text-xl font-normal">Percentuale di compilazione dei <span className="font-bold">tuoi dati</span></p>
                                             <div className="basis-1/2">
                                                 <DoughnutChart percentage={userPercentage(getLotto.data, session?.user.roles ?? [])} fullData />
                                             </div>
                                         </div>
-                                        <div className="flex flex-row sm:flex-col-reverse gap-8 items-center">
+                                        <div className="flex xl:flex-row sm:flex-col-reverse gap-8 items-center">
                                             <div className="basis-1/2">
                                                 <DoughnutChart percentage={totalPercentage(getLotto.data)} />
                                             </div>

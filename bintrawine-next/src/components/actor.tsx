@@ -7,6 +7,7 @@ export type ActorData = {
     name: string,
     icon: React.ElementType,
     lastUpdate: string,
+    disabled: boolean,
     actorItemData: ActorItemType[]
 }
 
@@ -19,7 +20,7 @@ const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
     ({ className, data }, ref) => {
 
         return (
-            <div className={cn(className, "flex flex-col gap-4 p-2 bg-surface")}>
+            <div className={cn(className, "flex flex-col gap-4 p-2 bg-surface", data.disabled ? "opacity-40" : "")}>
                 <div className="flex flex-col gap-1">
                     <div className="flex flex-row gap-2 items-center">
                         <data.icon size="24" />
@@ -34,7 +35,7 @@ const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
                     {
                         data.actorItemData.map((item, index) => {
                             return (
-                                <DataItem key={index} actorItem={item} countedData={item.countedData} />
+                                <DataItem key={index} disabled={data.disabled} actorItem={item} countedData={item.countedData} />
                             )
                         })
                     }
