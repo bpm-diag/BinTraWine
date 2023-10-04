@@ -20,7 +20,7 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
         const sensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto));
 
-        const { data: session, status } = useSession();
+        const { data: session } = useSession();
 
         return (
             <div className={cn("flex flex-col w-full", className)}>

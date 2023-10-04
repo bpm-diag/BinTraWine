@@ -53,7 +53,7 @@ const BarChart = ({ className, title, labels, values, ...props }: BarChartProps)
         {
             label: title,
             data: values,
-            backgroundColor: '#0F3835',
+            backgroundColor: '#F13B0999',
             borderRadius: 8
         }
     ]

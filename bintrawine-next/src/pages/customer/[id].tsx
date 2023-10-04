@@ -35,7 +35,7 @@ export default function Customer() {
                                         </div>
                                         <div className="py-5">
                                             <p className="text-white font-extralight text-sm font-primary">Hai scansionato</p>
-                                            <p className="text-white font-semibold text-xl font-primary">Poggesco DOC</p>
+                                            <p className="text-white font-semibold text-xl font-primary">"Poggesco DOC"</p>
                                         </div>
                                     </div>
                                 </div>

@@ -5,6 +5,7 @@ import BarChart from '@/components/charts/barChart';
 import { api } from '@/utils/api';
 import Loader from "@/components/loading";
 import { ChartData, Charts } from '@/types/chainTypes';
+import { Separator } from '@/components/ui/separator';
 import { MdOutlineAgriculture, MdOutlineLocalShipping, MdOutlineWineBar, MdProductionQuantityLimits, MdOutlineLocalFlorist, MdOutlineSell } from "react-icons/md";
 
 
@@ -72,19 +73,22 @@ const Analytics = React.forwardRef<HTMLDivElement, AnalyticsProps>(
 
         return (
             <div className={cn("flex flex-col gap-10 w-full", className)}>
-                <div className="bg-white py-2 px-8 flex flex-row gap-4 items-center border-b-2 border-b-black_dim">
-                    <h1 className="font-primary font-semibold text-2xl">Analytics</h1>
-                </div>
-                <div className='flex flex-row lg:justify-around md:justify-around sm:just items-center gap-4 flex-wrap'>
-                    {
-                        buttons.map((element) => {
-                            return (
-                                <Button key={element.id} variant="text" onClick={() => setCurrentAnalytic(element.id)} className={`flex flex-row rounded-full justify-center items-center ${element.id === currentAnalytic ? "bg-accent" : ""} `}>
-                                    {element.name}
-                                    <element.icon size={20} />
-                                </Button>)
-                        })
-                    }
+                <div className='flex flex-row bg-white border-b-black_dim border-b-2 p-2 gap-4 items-center'>
+                    <div className="bg-white py-2 px-2 flex flex-row gap-4 items-center">
+                        <h1 className="font-primary font-semibold text-2xl">Data Aggregation</h1>
+                    </div>
+                    <Separator orientation="vertical" className="h-8 bg-black_dim" />
+                    <div className='flex flex-row lg:justify-around md:justify-around items-center gap-4 flex-wrap'>
+                        {
+                            buttons.map((element) => {
+                                return (
+                                    <Button key={element.id} variant="text" onClick={() => setCurrentAnalytic(element.id)} className={`flex flex-row rounded-md border-primary border bg-white text-primary justify-center items-center ${element.id === currentAnalytic ? "bg-accent" : ""} `}>
+                                        {element.name}
+                                        <element.icon size={20} />
+                                    </Button>)
+                            })
+                        }
+                    </div>
                 </div>
                 <div className='m-8 flex flex-row flex-wrap justify-center'>
                     {analytics.isLoading && <Loader />}
