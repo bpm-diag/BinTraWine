@@ -6,7 +6,7 @@ import { ProduttoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChai
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
+const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.SERVER_IP}:22006`));
 
 const contract = new web3.eth.Contract(ProduttoreAbi, contracts.produttore);
 const sensoriContract = new web3.eth.Contract(SimulatoreSensori, contracts.simulatoreSensori);
