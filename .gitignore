@@ -1,3 +1,5 @@
 /node_modules
 /bintrawine-next/node_modules
 build/
+postgres_data/
+.env
