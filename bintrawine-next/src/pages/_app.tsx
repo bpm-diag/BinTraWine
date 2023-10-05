@@ -22,10 +22,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <>
+      <style jsx global>
+        {`
+          :root {
+            --lexend-font: ${lexend.style.fontFamily};
+          }
+        `}
+      </style>
       <SessionProvider session={session}>
-        <main className={`${lexend.variable}`}>
-          {getLayout(<Component {...pageProps} />)}
-        </main>
+        {getLayout(<Component {...pageProps} />)}
       </SessionProvider>
     </>
   );

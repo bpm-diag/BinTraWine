@@ -32,7 +32,10 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                 {/* Compilazione */}
                 {
                     (getLotto.isLoading || sensori.isLoading || !sensori.data?.completed) ?
-                        <Loader className="justify-center items-center" /> :
+                        <div className="flex justify-center items-center">
+                            <Loader />
+                        </div>
+                        :
                         (getLotto.isError || sensori.isError) ?
                             <p>Error on Loading</p> :
                             <div className="p-7 grid grid-cols-4 gap-4">
@@ -47,13 +50,13 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                                         <div>
                                             <p className="font-primary text-primary text-xl font-normal">Stato Compilazione</p>
                                         </div>
-                                        <div className="flex xl:flex-row sm:flex-col gap-8 items-center">
+                                        <div className="flex 2xl:flex-row flex-col gap-8 items-center">
                                             <p className="basis-1/2 font-primary text-primary text-xl font-normal">Percentuale di compilazione dei <span className="font-bold">tuoi dati</span></p>
                                             <div className="basis-1/2">
                                                 <DoughnutChart percentage={userPercentage(getLotto.data, session?.user.roles ?? [])} fullData />
                                             </div>
                                         </div>
-                                        <div className="flex xl:flex-row sm:flex-col-reverse gap-8 items-center">
+                                        <div className="flex 2xl:flex-row flex-col sm:flex-col-reverse gap-8 items-center">
                                             <div className="basis-1/2">
                                                 <DoughnutChart percentage={totalPercentage(getLotto.data)} />
                                             </div>

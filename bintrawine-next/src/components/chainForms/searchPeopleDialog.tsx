@@ -62,10 +62,10 @@ const SearchPeopleDialog = React.forwardRef<HTMLDivElement, SearchPeopleDialogPr
                 {allUsers.isFetched &&
                     <div className="flex flex-col gap-4 py-4">
                         <Input onChange={(e) => setPeoopleToShow(filteredPeople(e.target.value, allUsers.data!))} placeholder="Nome e Cognome" type="text" />
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-row flex-wrap gap-2">
                             {
                                 peopleToShow.map(person => {
-                                    return <Account onClick={() => setSelectedUser(person)} className={`hover:cursor-pointer hover:bg-accent ${(selectedUser && selectedUser.id === person.id) ? "bg-accent" : ""}`} icon={false} variant='selected' name={person.name} surname={person.surname} />
+                                    return <Account onClick={() => setSelectedUser(person)} className={`self-start hover:cursor-pointer hover:bg-accent ${(selectedUser && selectedUser.id === person.id) ? "bg-accent" : ""}`} icon={false} variant='selected' name={person.name} surname={person.surname} />
                                 })
                             }
                         </div>
