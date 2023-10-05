@@ -129,7 +129,7 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
                                                 </FormControl>
                                                 <div className="space-y-1 leading-none">
                                                     <FormLabel className='font-normal text-primary font-primary text-base'>
-                                                        Mostrare dati al <span className='text-accent'>Rivenditore</span>
+                                                        Mostrare dati vendita al <span className='text-accent'>Rivenditore</span>
                                                     </FormLabel>
                                                 </div>
                                             </div>

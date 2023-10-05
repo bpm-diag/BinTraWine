@@ -10,12 +10,26 @@ export default {
           'header',
           'main',
         ],
+        'customer': [
+          'sidebar main',
+          'sidebar main',
+          'footer main',
+        ],
+        'customer-mobile': [
+          'sidebar',
+          'main',
+          'footer',
+        ]
       },
       gridTemplateColumns: {
         'layout': '1fr',
+        'customer': '20% 1fr',
+        'customer-mobile': '1fr',
       },
       gridTemplateRows: {
         'layout': '4rem 1fr',
+        'customer': 'auto 1fr',
+        'customer-mobile': 'auto 1fr auto',
       },
       colors: {
         accent: "#F13B09",
@@ -63,5 +77,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@savvywombat/tailwindcss-grid-areas')
+  ],
 } satisfies Config;
