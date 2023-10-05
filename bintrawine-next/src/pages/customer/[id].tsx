@@ -20,8 +20,8 @@ export default function Customer() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className="min-h-screen">
-                <div className="flex flex-row min-h-screen">
-                    <div className="flex flex-col w-1/3">
+                <div className="grid md:grid-areas-customer md:grid-cols-customer md:grid-rows-customer grid-areas-customer-mobile grid-cols-customer-mobile grid-rows-customer-mobile min-h-screen">
+                    <div className="flex flex-col grid-in-sidebar">
                         <div className="bg-primary flex-1">
                             <div className="flex flex-col gap-4 w-full h-full p-5">
                                 <div className="flex flex-row justify-center items-center">
@@ -35,28 +35,28 @@ export default function Customer() {
                                         </div>
                                         <div className="py-5">
                                             <p className="text-white font-extralight text-sm font-primary">Hai scansionato</p>
-                                            <p className="text-white font-semibold text-xl font-primary">"Poggesco DOC"</p>
+                                            <p className="text-white font-semibold text-xl font-primary">Poggesco DOC</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-primary_light flex flex-row gap-10 px-7 pt-5 pb-10">
-                            <div className="flex flex-col w-1/4 gap-2">
-                                <p className="text-white text-base font-primary font-semibold">BinTraWine</p>
-                                <p className="text-white text-base font-primary">Blockchain, Tracking and Tracing solutions for Wine</p>
-                            </div>
-                            <div className="flex flex-col flex-1 gap-2">
-                                <p className="text-white text-base font-primary font-semibold">Vuoi saperne di più</p>
-                                <p className="text-white text-base font-primary">Visita il <span className="underline">sito internet</span> oppure seguici sui nostri social</p>
-                                <div className="flex flex-row gap-6">
-                                    <BsLinkedin className="text-white text-4xl hover:cursor-pointer" />
-                                    <BsFacebook className="text-white text-4xl hover:cursor-pointer" />
-                                </div>
+                    </div>
+                    <div className="bg-primary_light flex flex-row gap-10 px-7 pt-5 pb-10 grid-in-footer">
+                        <div className="flex flex-col w-1/4 gap-2">
+                            <p className="text-white text-base font-primary font-semibold">BinTraWine</p>
+                            <p className="text-white text-base font-primary">Blockchain, Tracking and Tracing solutions for Wine</p>
+                        </div>
+                        <div className="flex flex-col flex-1 gap-2">
+                            <p className="text-white text-base font-primary font-semibold">Vuoi saperne di più</p>
+                            <p className="text-white text-base font-primary">Visita il <span className="underline">sito internet</span> oppure seguici sui nostri social</p>
+                            <div className="flex flex-row gap-6">
+                                <BsLinkedin className="text-white text-4xl hover:cursor-pointer" />
+                                <BsFacebook className="text-white text-4xl hover:cursor-pointer" />
                             </div>
                         </div>
                     </div>
-                    <div className="flex-1 p-11 flex flex-col gap-7 items-center bg-surface_dark">
+                    <div className="flex-1 p-11 flex flex-col gap-7 items-center bg-surface_dark grid-in-main">
                         <p className="text-primary font-primary font-medium text-2xl">Scopri tutti i dati certificati</p>
                         {customerData.isLoading && <div className="flex justify-center items-center"><Loader /></div>}
                         {customerData.isError && <div><p>Errore nel caricamento, provare a ricaricare o cambiare bottiglia</p></div>}
