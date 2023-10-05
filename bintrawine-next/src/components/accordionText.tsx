@@ -7,8 +7,7 @@ export interface AccordionTextProps
     text: string
 }
 
-const AccordionText = React.forwardRef<HTMLDivElement, AccordionTextProps>(
-    ({ className, text }, ref) => {
+const AccordionText = ({ className, text }: AccordionTextProps) => {
 
         const [isOpen, setIsOpen] = React.useState(false);
 
@@ -21,6 +20,6 @@ const AccordionText = React.forwardRef<HTMLDivElement, AccordionTextProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default AccordionText;
