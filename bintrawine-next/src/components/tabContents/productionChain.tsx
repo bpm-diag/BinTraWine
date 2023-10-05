@@ -646,11 +646,35 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                     },
                 ]
             })
+        } else {
+            data[2]?.actorItemData.push({
+                title: "Dati Viticoltore",
+                contentType: "key-value",
+                countedData: 4,
+                data: [
+                    {
+                        name: "Qtà uva raccolta",
+                        value: getLotto.data.viticoltore.data?.quantitaVendita ?? "Dato non trovato"
+                    },
+                    {
+                        name: "Tipologia uva",
+                        value: getDatiSensori.data.viticoltore?.tipologiaUva ?? "Dato non trovato"
+                    },
+                    {
+                        name: "Data raccolta",
+                        value: getLotto.data.viticoltore.data?.dataRaccolta ?? "Dato non trovato"
+                    },
+                    {
+                        name: "Destinazione uva",
+                        value: getLotto.data.viticoltore.data?.destinazioneUva ?? "Dato non trovato"
+                    },
+                ]
+            })
         }
 
         if (getDatiSensori.data.rivenditore?.distributoreData) {
             data[5]?.actorItemData.push({
-                title: "Dati Viticoltore",
+                title: "Dati Distributore",
                 contentType: "key-value",
                 countedData: 5,
                 data: [
