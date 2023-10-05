@@ -14,7 +14,7 @@ const HeaderPath = React.forwardRef<HTMLDivElement, HeaderPathProps>(
                 {
                     paths.map((path, index) => {
                         return (
-                            <div className='flex flex-row gap-4'>
+                            <div key={index} className='flex flex-row gap-4'>
                                 <p className='text-14 font-normal font-primary'>{path}</p>
                                 {
                                     index < paths.length - 1 && <MdChevronRight size='24' />

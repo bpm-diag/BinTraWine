@@ -10,6 +10,7 @@ const lexend = Lexend({
   weight: '500',
   style: "normal",
   subsets: ['latin'],
+  variable: "--lexend-font"
 });
 
 const MyApp: AppType<{ session: Session | null }> = ({

@@ -7,6 +7,7 @@ import {
     FormMessage,
     FormControl,
 } from '@/components/ui/form';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -56,7 +57,10 @@ const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
         ];
 
         const form = useForm<ViticoltoreSchemaForm>({
-            resolver: zodResolver(ViticoltoreSchema)
+            resolver: zodResolver(ViticoltoreSchema),
+            defaultValues: {
+                viticoltoreAddress: false
+            }
         });
 
         const onSubmit = (data: ViticoltoreSchemaForm) => {
@@ -94,6 +98,31 @@ const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
                                         />
                                     ))
                                 }
+                            </div>
+                            <div>
+                                <FormField
+                                    control={form.control}
+                                    name="viticoltoreAddress"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col justify-between">
+                                            <FormLabel className='text-primary text-sm font-primary'>Visibilità Produttore</FormLabel>
+                                            <div className='flex flex-row items-center space-x-3 space-y-0'>
+                                                <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value}
+                                                        onCheckedChange={field.onChange}
+                                                    />
+                                                </FormControl>
+                                                <div className="space-y-1 leading-none">
+                                                    <FormLabel className='font-normal text-primary font-primary text-base'>
+                                                        Mostrare dati vendita al <span className='text-accent'>Produttore</span>
+                                                    </FormLabel>
+                                                </div>
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
                             <Button className="bg-accent w-1/3 self-end flex justify-center items-center" type="submit">Invia</Button>
                         </form>

@@ -3144,3 +3144,560 @@ export const SimulatoreSensori: AbiItem[] = [
         "type": "function"
     }
 ]
+
+export const customerAbi: AbiItem[] = [
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_agronomoContractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_ViticoltoreContractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_produttoreContractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_imbottigliatoreContractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_distributoreContractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_enteCertificatoreContractAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "bottiglie",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "certificazioneUvaAppezzamento",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "dataRaccolta",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "datiForniture",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "destinazioneUva",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "prodottiVinificazione",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "solfiti",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "allergeni",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "gradazioneAlcolica",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "localitaUve",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "temperaturaTrasporto",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "validazione",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "certificazione",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_certificazioneUvaAppezzamento",
+                "type": "string"
+            }
+        ],
+        "name": "setCertificazioneUvaAppezzamento",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_dataRaccolta",
+                "type": "string"
+            }
+        ],
+        "name": "setDataRaccolta",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_datiForniture",
+                "type": "string"
+            }
+        ],
+        "name": "setDatiForniture",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_destinazioneUva",
+                "type": "string"
+            }
+        ],
+        "name": "setDestinazioneUva",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_prodottiVinificazione",
+                "type": "string"
+            }
+        ],
+        "name": "setProdottiVinificazione",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_solfiti",
+                "type": "string"
+            }
+        ],
+        "name": "setSolfiti",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_allergeni",
+                "type": "string"
+            }
+        ],
+        "name": "setAllergeni",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_gradazioneAlcolica",
+                "type": "string"
+            }
+        ],
+        "name": "setGradazioneAlcolica",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_localitaUve",
+                "type": "string"
+            }
+        ],
+        "name": "setLocalitaUve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_temperaturaTrasporto",
+                "type": "string"
+            }
+        ],
+        "name": "setTemperaturaTrasporto",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idbottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_validazione",
+                "type": "string"
+            }
+        ],
+        "name": "setValidazione",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_certificazione",
+                "type": "string"
+            }
+        ],
+        "name": "setCertificazione",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCertificazioneAppezzamentoUva",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDataRaccolta",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDatiForniture",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDestinazioneUva",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getProdottiVinificazione",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSolfiti",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAllergeni",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getGradazioneAlcolica",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getLocalitaUve",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTemperaturaTrasporto",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getValidazione",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_idBottiglia",
+                "type": "uint256"
+            }
+        ],
+        "name": "getCertificazione",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+];

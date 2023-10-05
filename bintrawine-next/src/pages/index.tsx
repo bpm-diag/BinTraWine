@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Header from '@/components/header/header';
+import { useSession } from 'next-auth/react';
 import Catalog from "../components/tabContents/catalog";
-import { MdClose, MdOutlineHome } from "react-icons/md";
+import { MdClose, MdOutlineHome, MdBarChart } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
@@ -9,6 +10,7 @@ import { api } from "@/utils/api";
 import NewChain from "@/components/tabContents/newChain";
 import ProductionChain from "@/components/tabContents/productionChain";
 import Loader from "@/components/loading";
+import Analytics from "@/components/tabContents/analytics";
 
 
 export interface TabProps {
@@ -27,13 +29,16 @@ export default function LandingPage() {
     }
   })
   const [sensoriSetted, setSensoriSetted] = useState<boolean>(false);
-
+  const { data: session, status } = useSession();
   const [tabs, setTabs] = useState<TabProps[]>([]);
   const [currentTab, setCurrentTab] = useState<string>("catalogo");
 
   if (getTerreni.isFetched) {
     if (getTerreni.data === 1 && !sensoriSetted) {
-      setSensori.mutate(1)
+      setSensori.mutate({
+        lottoId: 1,
+        creatorId: session!.user.id
+      })
       setSensoriSetted(true)
     }
   }
@@ -98,6 +103,10 @@ export default function LandingPage() {
               <MdOutlineHome size={24} />
               <p className="font-primary">Catalogo</p>
             </TabsTrigger>
+            <TabsTrigger onClick={() => setCurrentTab("analytics")} className="bg-primary" value="analytics">
+              <MdBarChart size={24} />
+              <p className="font-primary">Analytics</p>
+            </TabsTrigger>
             <Separator orientation="vertical" className="h-8 bg-black_dim" />
             {
               tabs.map((tab, index) => (
@@ -115,6 +124,9 @@ export default function LandingPage() {
                   <p className="text-base font-primary font-normal">Errore nel caricamento, provare a ricaricare la pagina</p> :
                   <Catalog setTabs={setTabs} number_of_chains={getTerreni.data!} />
             }
+          </TabsContent>
+          <TabsContent className="flex justify-center items-center" value="analytics">
+            <Analytics />
           </TabsContent>
           {
             tabs.map((tab, index) => (

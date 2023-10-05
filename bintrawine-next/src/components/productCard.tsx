@@ -15,12 +15,23 @@ export interface ProductCardProps
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
+const elementExist = (tabprops: TabProps[], currentKey: string): boolean => {
+    let exist = false
+    tabprops.forEach(tab => {
+        if (tab.triggerKey === currentKey) exist = true
+    })
+    return exist
+}
+
 const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     ({ className, idLotto, name, status, avatars, lastUpdate, setTabs }, ref) => {
 
         return (
-            <div onClick={() => setTabs(oldState => [...oldState, { triggerKey: idLotto, triggerName: name, status: status }])} className={cn(
-                "flex flex-col p-8 gap-3 bg-surface rounded-sm hover:bg-surface_dark hover:cursor-pointer",
+            <div onClick={() => setTabs(oldState => {
+                if (elementExist(oldState, idLotto)) return [...oldState]
+                return [...oldState, { triggerKey: idLotto, triggerName: name, status: status }]
+            })} className={cn(
+                "flex flex-col p-8 gap-3 bg-surface rounded-sm hover:opacity-50 hover:cursor-pointer",
                 className
             )}>
                 <div className='flex flex-row justify-between items-center'>
@@ -40,7 +51,8 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                 </div>
                 <div className='w-full bg-surface_dark h-0.5' />
                 <div className='flex flex-row justify-between items-center'>
-                    <p className='font-primary text-sm font-normal text-primary_light'><span className='font-semibold'>{avatars.length} persone</span> coinvolte nella filiera</p>
+                    {avatars.length === 1 && <p className='font-primary text-sm font-normal text-primary_light'><span className='font-semibold'>{avatars.length} persona</span> coinvolta nella filiera</p>}
+                    {avatars.length > 1 && <p className='font-primary text-sm font-normal text-primary_light'><span className='font-semibold'>{avatars.length} persone</span> coinvolte nella filiera</p>}
                     <div className='flex flex-row'>
                         {
                             avatars.map((avatar, index) => {

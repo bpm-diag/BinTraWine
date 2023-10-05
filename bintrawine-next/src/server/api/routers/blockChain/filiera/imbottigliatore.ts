@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { z } from 'zod';
+import { ChartData } from '@/types/chainTypes';
 import Web3 from 'web3';
-import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm, ImbottigliatoreSensoriSchemaForm } from '@/types/chainTypes';
+import { ImbottigliatoreSchema, ImbottigliatoreSchemaForm, ImbottigliatoreSensoriSchemaForm, ProduttoreInImbottigliatoreData, ViticoltoreInImbottigliatoreData } from '@/types/chainTypes';
 import { ImbottigliatoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
@@ -41,7 +41,7 @@ export const imbottigliatoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualImbottigliatoreData = (input: number): Promise<void | ImbottigliatoreSchemaForm> => {
+export const getManualImbottigliatoreData = (input: number): Promise<void | { imbottigliatore: ImbottigliatoreSchemaForm, produttoreData: ProduttoreInImbottigliatoreData, viticoltoreData: ViticoltoreInImbottigliatoreData }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -51,11 +51,24 @@ export const getManualImbottigliatoreData = (input: number): Promise<void | Imbo
             const localitaUve = await contract.methods.getlocalitaUve(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-            const retrievedData: ImbottigliatoreSchemaForm = {
-                presenzaSolfiti: presenzaSolfiti,
-                presenzaAllergeni: presenzaAllergeni,
-                localitaUve: localitaUve,
-                codiceAbarre: codiceABarre
+            // dati produttore
+            const prodottiVinificazione = await contract.methods.getListaProdottiVinificazione(input).send({ from: currentAddress, privateFor: privateFor }) as string
+            // dati viticoltore
+            const destinazioneUva = await contract.methods.getDestinazioneUva(input).send({ from: currentAddress, privateFor: privateFor }) as string
+
+            const retrievedData = {
+                imbottigliatore: {
+                    presenzaSolfiti: presenzaSolfiti,
+                    presenzaAllergeni: presenzaAllergeni,
+                    localitaUve: localitaUve,
+                    codiceAbarre: codiceABarre
+                },
+                produttoreData: {
+                    prodottiVinificazione: prodottiVinificazione
+                },
+                viticoltoreData: {
+                    destinazioneUva: destinazioneUva
+                }
             }
 
             return retrievedData
@@ -103,6 +116,42 @@ export const setSensoriImbottigliatore = (input: number) => {
             // send agronomo data
             const sensoriImbottigliatore = await sensoriContract.methods.setSensoriImbottigliatore(input, String(getRandomNumber(1000)), String(getRandomNumber(800)), String(getRandomNumber(30))).send({ from: currentAddress, privateFor: privateFor })
             return { sensoriImbottigliatore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getImbottigliatoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const imbottigliatoreChartData: ChartData[] = []
+
+            const quantitaProdottoRicevutoPerLotto = await contract.methods.queryQuantitaProdottoRicevutaPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            const quantitaVinoImbottigliatoPerLotto = await contract.methods.queryQuantitaVinoImbottigliataPerLotto().call({
+                from: currentAddress,
+                privateFor: privateFor,
+            })
+
+            imbottigliatoreChartData.push({
+                title: "Quantità prodotto ricevuto per lotto",
+                labels: quantitaProdottoRicevutoPerLotto['1'] as string[],
+                values: (quantitaProdottoRicevutoPerLotto['0'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            imbottigliatoreChartData.push({
+                title: "Quantità vino imbottigliato per lotto",
+                labels: quantitaVinoImbottigliatoPerLotto['1'] as string[],
+                values: (quantitaVinoImbottigliatoPerLotto['0'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            return imbottigliatoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);

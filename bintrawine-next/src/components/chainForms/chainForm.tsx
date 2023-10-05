@@ -59,7 +59,7 @@ const ChainForm = React.forwardRef<HTMLDivElement, ChainFormProps>(
                     <Chain disabled={!session?.user.roles.includes(Role.ENTECERTIFICATORE)} onClick={() => { (session?.user.roles.includes(Role.ENTECERTIFICATORE) && setSelectedChain(formSelection.get("enteCertificatore") as FormSelection)); setManuale("MANUALE") }} chainType="Ente Certificatore" completed={filieraChain.enteCertificatore.completed} />
                 </div>
                 {/* Dettaglio Catena */}
-                <PeopleForm selected={manuale} setManuale={setManuale} chainType={selectedChain.name} />
+                <PeopleForm idLotto={idLotto} selected={manuale} setManuale={setManuale} chainType={selectedChain.name} />
                 {/* Form Dettaglio Catena */}
                 <div className="col-span-2 flex flex-col">
                     {manuale === "MANUALE" && getCompletedByString(selectedChain.id, filieraChain) && <ShowData preTitle="Dati inseriti per:" title={selectedChain.name} data={getDataToShow(selectedChain.id, filieraChain)} />}

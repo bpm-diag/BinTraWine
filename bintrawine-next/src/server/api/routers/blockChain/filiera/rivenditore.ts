@@ -2,9 +2,9 @@ import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { z } from 'zod';
 import Web3 from 'web3';
 import { RivenditoreAbi, SimulatoreSensori } from '@/server/api/routers/blockChain/filiera/abis';
-import { RivenditoreSensoriSchemaForm } from '@/types/chainTypes';
+import { RivenditoreSensoriSchemaForm, DistributoreInRivenditoreData } from '@/types/chainTypes';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
-import { getRandomNumber } from '@/utils/utilsFunctions';
+import { ChartData } from '@/types/chainTypes';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://149.132.178.150:22006"));
 
@@ -37,14 +37,43 @@ export const rivenditoreRouter = createTRPCRouter({
         })
 });
 
-export const getSensoriRivenditore = (input: number): Promise<void | RivenditoreSensoriSchemaForm> => {
+export const getSensoriRivenditore = (input: number): Promise<void | { rivenditore: RivenditoreSensoriSchemaForm, distributoreData: DistributoreInRivenditoreData | undefined }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
             const data = await contract.methods.getDatiSensoriRivenditore(input).call({ from: currentAddress, privateFor: privateFor })
 
+            // dati distributore
+            try {
+                const distributore = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
+                const prezzoVendita = distributore['0'] as string
+                const nomeProdotto = distributore['1'] as string
+                const quantita = distributore['2'] as string
+                const nomeCliente = distributore['3'] as string
+                const dataVendita = distributore['4'] as string
+
+                return {
+                    rivenditore: {
+                        tipologiaQuantita: "tipologia 1"
+                    },
+                    distributoreData: {
+                        prezzoVendita: prezzoVendita,
+                        nomeProdotto: nomeProdotto,
+                        quantita: quantita,
+                        nomeCliente: nomeCliente,
+                        dataVendita: dataVendita,
+                    }
+                };
+
+            } catch (error) {
+                console.log("NOT AUTHORIZED", input)
+            }
+
             return {
-                tipologiaQuantita: "tipologia 1",
+                rivenditore: {
+                    tipologiaQuantita: "tipologia 1"
+                },
+                distributoreData: undefined
             };
         })
         .catch((error) => {
@@ -59,6 +88,31 @@ export const setSensoriRivenditore = (input: number) => {
             // send agronomo data
             const sensoriDistributore = await sensoriContract.methods.setSensoriRivenditore(input, "Montepulciano d'Abruzzo, 200").send({ from: currentAddress, privateFor: privateFor })
             return { sensoriDistributore };
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
+        })
+}
+
+export const getRivenditoreAnalytics = (): Promise<void | ChartData[]> => {
+    return web3.eth.getAccounts()
+        .then(async (accounts) => {
+            const [currentAddress, ...other] = accounts;
+
+            const rivenditoreChartData: ChartData[] = []
+
+            const tipologiaQuantita = await contract.methods.queryTipologiaQuantita().call({
+                from: currentAddress,
+                privateFor: privateFor
+            })
+
+            rivenditoreChartData.push({
+                title: "Tipologia quantità",
+                labels: tipologiaQuantita['0'] as string[],
+                values: (tipologiaQuantita['1'] as string[]).map((value) => parseInt(value)) as number[]
+            })
+
+            return rivenditoreChartData
         })
         .catch((error) => {
             console.error("ERROR", error);

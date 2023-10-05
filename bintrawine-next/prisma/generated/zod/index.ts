@@ -22,6 +22,8 @@ export const UserScalarFieldEnumSchema = z.enum(['id','name','surname','email','
 
 export const VerificationTokenScalarFieldEnumSchema = z.enum(['identifier','token','expires']);
 
+export const LottoScalarFieldEnumSchema = z.enum(['id','creatorId']);
+
 export const SortOrderSchema = z.enum(['asc','desc']);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
@@ -111,6 +113,17 @@ export const VerificationTokenSchema = z.object({
 export type VerificationToken = z.infer<typeof VerificationTokenSchema>
 
 /////////////////////////////////////////
+// LOTTO SCHEMA
+/////////////////////////////////////////
+
+export const LottoSchema = z.object({
+  id: z.number().int(),
+  creatorId: z.number().int(),
+})
+
+export type Lotto = z.infer<typeof LottoSchema>
+
+/////////////////////////////////////////
 // SELECT & INCLUDE
 /////////////////////////////////////////
 
@@ -177,6 +190,8 @@ export const SessionSelectSchema: z.ZodType<Prisma.SessionSelect> = z.object({
 export const UserIncludeSchema: z.ZodType<Prisma.UserInclude> = z.object({
   accounts: z.union([z.boolean(),z.lazy(() => AccountFindManyArgsSchema)]).optional(),
   sessions: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
+  createdLotti: z.union([z.boolean(),z.lazy(() => LottoFindManyArgsSchema)]).optional(),
+  collaboratorLotti: z.union([z.boolean(),z.lazy(() => LottoFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => UserCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -192,6 +207,8 @@ export const UserCountOutputTypeArgsSchema: z.ZodType<Prisma.UserCountOutputType
 export const UserCountOutputTypeSelectSchema: z.ZodType<Prisma.UserCountOutputTypeSelect> = z.object({
   accounts: z.boolean().optional(),
   sessions: z.boolean().optional(),
+  createdLotti: z.boolean().optional(),
+  collaboratorLotti: z.boolean().optional(),
 }).strict();
 
 export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
@@ -204,6 +221,8 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   hashedPassword: z.boolean().optional(),
   accounts: z.union([z.boolean(),z.lazy(() => AccountFindManyArgsSchema)]).optional(),
   sessions: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
+  createdLotti: z.union([z.boolean(),z.lazy(() => LottoFindManyArgsSchema)]).optional(),
+  collaboratorLotti: z.union([z.boolean(),z.lazy(() => LottoFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => UserCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
@@ -214,6 +233,36 @@ export const VerificationTokenSelectSchema: z.ZodType<Prisma.VerificationTokenSe
   identifier: z.boolean().optional(),
   token: z.boolean().optional(),
   expires: z.boolean().optional(),
+}).strict()
+
+// LOTTO
+//------------------------------------------------------
+
+export const LottoIncludeSchema: z.ZodType<Prisma.LottoInclude> = z.object({
+  creator: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  collaborators: z.union([z.boolean(),z.lazy(() => UserFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => LottoCountOutputTypeArgsSchema)]).optional(),
+}).strict()
+
+export const LottoArgsSchema: z.ZodType<Prisma.LottoArgs> = z.object({
+  select: z.lazy(() => LottoSelectSchema).optional(),
+  include: z.lazy(() => LottoIncludeSchema).optional(),
+}).strict();
+
+export const LottoCountOutputTypeArgsSchema: z.ZodType<Prisma.LottoCountOutputTypeArgs> = z.object({
+  select: z.lazy(() => LottoCountOutputTypeSelectSchema).nullish(),
+}).strict();
+
+export const LottoCountOutputTypeSelectSchema: z.ZodType<Prisma.LottoCountOutputTypeSelect> = z.object({
+  collaborators: z.boolean().optional(),
+}).strict();
+
+export const LottoSelectSchema: z.ZodType<Prisma.LottoSelect> = z.object({
+  id: z.boolean().optional(),
+  creatorId: z.boolean().optional(),
+  creator: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+  collaborators: z.union([z.boolean(),z.lazy(() => UserFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => LottoCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 
 
@@ -396,7 +445,9 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   roles: z.lazy(() => EnumRoleNullableListFilterSchema).optional(),
   hashedPassword: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   accounts: z.lazy(() => AccountListRelationFilterSchema).optional(),
-  sessions: z.lazy(() => SessionListRelationFilterSchema).optional()
+  sessions: z.lazy(() => SessionListRelationFilterSchema).optional(),
+  createdLotti: z.lazy(() => LottoListRelationFilterSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoListRelationFilterSchema).optional()
 }).strict();
 
 export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z.object({
@@ -408,7 +459,9 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   roles: z.lazy(() => SortOrderSchema).optional(),
   hashedPassword: z.lazy(() => SortOrderSchema).optional(),
   accounts: z.lazy(() => AccountOrderByRelationAggregateInputSchema).optional(),
-  sessions: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional()
+  sessions: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoOrderByRelationAggregateInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> = z.object({
@@ -480,6 +533,45 @@ export const VerificationTokenScalarWhereWithAggregatesInputSchema: z.ZodType<Pr
   identifier: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   token: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   expires: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
+export const LottoWhereInputSchema: z.ZodType<Prisma.LottoWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => LottoWhereInputSchema),z.lazy(() => LottoWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => LottoWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => LottoWhereInputSchema),z.lazy(() => LottoWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  creatorId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  creator: z.union([ z.lazy(() => UserRelationFilterSchema),z.lazy(() => UserWhereInputSchema) ]).optional(),
+  collaborators: z.lazy(() => UserListRelationFilterSchema).optional()
+}).strict();
+
+export const LottoOrderByWithRelationInputSchema: z.ZodType<Prisma.LottoOrderByWithRelationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional(),
+  creator: z.lazy(() => UserOrderByWithRelationInputSchema).optional(),
+  collaborators: z.lazy(() => UserOrderByRelationAggregateInputSchema).optional()
+}).strict();
+
+export const LottoWhereUniqueInputSchema: z.ZodType<Prisma.LottoWhereUniqueInput> = z.object({
+  id: z.number().int().optional()
+}).strict();
+
+export const LottoOrderByWithAggregationInputSchema: z.ZodType<Prisma.LottoOrderByWithAggregationInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => LottoCountOrderByAggregateInputSchema).optional(),
+  _avg: z.lazy(() => LottoAvgOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => LottoMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => LottoMinOrderByAggregateInputSchema).optional(),
+  _sum: z.lazy(() => LottoSumOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const LottoScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.LottoScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => LottoScalarWhereWithAggregatesInputSchema),z.lazy(() => LottoScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => LottoScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => LottoScalarWhereWithAggregatesInputSchema),z.lazy(() => LottoScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  creatorId: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
 }).strict();
 
 export const ExampleCreateInputSchema: z.ZodType<Prisma.ExampleCreateInput> = z.object({
@@ -684,7 +776,9 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.string(),
   accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
-  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional()
+  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoCreateNestedManyWithoutCreatorInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoCreateNestedManyWithoutCollaboratorsInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreateInput> = z.object({
@@ -696,7 +790,9 @@ export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreat
   roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.string(),
   accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
-  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCreatorInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCollaboratorsInputSchema).optional()
 }).strict();
 
 export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object({
@@ -707,7 +803,9 @@ export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object
   roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
-  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional()
+  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUpdateManyWithoutCreatorNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdateInput> = z.object({
@@ -719,7 +817,9 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdat
   roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
-  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCreatorNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> = z.object({
@@ -791,6 +891,44 @@ export const VerificationTokenUncheckedUpdateManyInputSchema: z.ZodType<Prisma.V
   identifier: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   token: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const LottoCreateInputSchema: z.ZodType<Prisma.LottoCreateInput> = z.object({
+  id: z.number().int(),
+  creator: z.lazy(() => UserCreateNestedOneWithoutCreatedLottiInputSchema),
+  collaborators: z.lazy(() => UserCreateNestedManyWithoutCollaboratorLottiInputSchema).optional()
+}).strict();
+
+export const LottoUncheckedCreateInputSchema: z.ZodType<Prisma.LottoUncheckedCreateInput> = z.object({
+  id: z.number().int(),
+  creatorId: z.number().int(),
+  collaborators: z.lazy(() => UserUncheckedCreateNestedManyWithoutCollaboratorLottiInputSchema).optional()
+}).strict();
+
+export const LottoUpdateInputSchema: z.ZodType<Prisma.LottoUpdateInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  creator: z.lazy(() => UserUpdateOneRequiredWithoutCreatedLottiNestedInputSchema).optional(),
+  collaborators: z.lazy(() => UserUpdateManyWithoutCollaboratorLottiNestedInputSchema).optional()
+}).strict();
+
+export const LottoUncheckedUpdateInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  creatorId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  collaborators: z.lazy(() => UserUncheckedUpdateManyWithoutCollaboratorLottiNestedInputSchema).optional()
+}).strict();
+
+export const LottoCreateManyInputSchema: z.ZodType<Prisma.LottoCreateManyInput> = z.object({
+  id: z.number().int(),
+  creatorId: z.number().int()
+}).strict();
+
+export const LottoUpdateManyMutationInputSchema: z.ZodType<Prisma.LottoUpdateManyMutationInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const LottoUncheckedUpdateManyInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateManyInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  creatorId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
@@ -1075,11 +1213,21 @@ export const SessionListRelationFilterSchema: z.ZodType<Prisma.SessionListRelati
   none: z.lazy(() => SessionWhereInputSchema).optional()
 }).strict();
 
+export const LottoListRelationFilterSchema: z.ZodType<Prisma.LottoListRelationFilter> = z.object({
+  every: z.lazy(() => LottoWhereInputSchema).optional(),
+  some: z.lazy(() => LottoWhereInputSchema).optional(),
+  none: z.lazy(() => LottoWhereInputSchema).optional()
+}).strict();
+
 export const AccountOrderByRelationAggregateInputSchema: z.ZodType<Prisma.AccountOrderByRelationAggregateInput> = z.object({
   _count: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const SessionOrderByRelationAggregateInputSchema: z.ZodType<Prisma.SessionOrderByRelationAggregateInput> = z.object({
+  _count: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const LottoOrderByRelationAggregateInputSchema: z.ZodType<Prisma.LottoOrderByRelationAggregateInput> = z.object({
   _count: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -1140,6 +1288,41 @@ export const VerificationTokenMinOrderByAggregateInputSchema: z.ZodType<Prisma.V
   identifier: z.lazy(() => SortOrderSchema).optional(),
   token: z.lazy(() => SortOrderSchema).optional(),
   expires: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const UserListRelationFilterSchema: z.ZodType<Prisma.UserListRelationFilter> = z.object({
+  every: z.lazy(() => UserWhereInputSchema).optional(),
+  some: z.lazy(() => UserWhereInputSchema).optional(),
+  none: z.lazy(() => UserWhereInputSchema).optional()
+}).strict();
+
+export const UserOrderByRelationAggregateInputSchema: z.ZodType<Prisma.UserOrderByRelationAggregateInput> = z.object({
+  _count: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const LottoCountOrderByAggregateInputSchema: z.ZodType<Prisma.LottoCountOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const LottoAvgOrderByAggregateInputSchema: z.ZodType<Prisma.LottoAvgOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const LottoMaxOrderByAggregateInputSchema: z.ZodType<Prisma.LottoMaxOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const LottoMinOrderByAggregateInputSchema: z.ZodType<Prisma.LottoMinOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const LottoSumOrderByAggregateInputSchema: z.ZodType<Prisma.LottoSumOrderByAggregateInput> = z.object({
+  id: z.lazy(() => SortOrderSchema).optional(),
+  creatorId: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const StringFieldUpdateOperationsInputSchema: z.ZodType<Prisma.StringFieldUpdateOperationsInput> = z.object({
@@ -1216,6 +1399,19 @@ export const SessionCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.Ses
   connect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
+export const LottoCreateNestedManyWithoutCreatorInputSchema: z.ZodType<Prisma.LottoCreateNestedManyWithoutCreatorInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCreatorInputSchema),z.lazy(() => LottoCreateWithoutCreatorInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => LottoCreateManyCreatorInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const LottoCreateNestedManyWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoCreateNestedManyWithoutCollaboratorsInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
 export const AccountUncheckedCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.AccountUncheckedCreateNestedManyWithoutUserInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountCreateWithoutUserInputSchema).array(),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema),z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
@@ -1228,6 +1424,19 @@ export const SessionUncheckedCreateNestedManyWithoutUserInputSchema: z.ZodType<P
   connectOrCreate: z.union([ z.lazy(() => SessionCreateOrConnectWithoutUserInputSchema),z.lazy(() => SessionCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
   createMany: z.lazy(() => SessionCreateManyUserInputEnvelopeSchema).optional(),
   connect: z.union([ z.lazy(() => SessionWhereUniqueInputSchema),z.lazy(() => SessionWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const LottoUncheckedCreateNestedManyWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUncheckedCreateNestedManyWithoutCreatorInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCreatorInputSchema),z.lazy(() => LottoCreateWithoutCreatorInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => LottoCreateManyCreatorInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const LottoUncheckedCreateNestedManyWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUncheckedCreateNestedManyWithoutCollaboratorsInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
 }).strict();
 
 export const UserUpdaterolesInputSchema: z.ZodType<Prisma.UserUpdaterolesInput> = z.object({
@@ -1263,6 +1472,33 @@ export const SessionUpdateManyWithoutUserNestedInputSchema: z.ZodType<Prisma.Ses
   deleteMany: z.union([ z.lazy(() => SessionScalarWhereInputSchema),z.lazy(() => SessionScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
+export const LottoUpdateManyWithoutCreatorNestedInputSchema: z.ZodType<Prisma.LottoUpdateManyWithoutCreatorNestedInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCreatorInputSchema),z.lazy(() => LottoCreateWithoutCreatorInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => LottoUpsertWithWhereUniqueWithoutCreatorInputSchema),z.lazy(() => LottoUpsertWithWhereUniqueWithoutCreatorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => LottoCreateManyCreatorInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => LottoUpdateWithWhereUniqueWithoutCreatorInputSchema),z.lazy(() => LottoUpdateWithWhereUniqueWithoutCreatorInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => LottoUpdateManyWithWhereWithoutCreatorInputSchema),z.lazy(() => LottoUpdateManyWithWhereWithoutCreatorInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => LottoScalarWhereInputSchema),z.lazy(() => LottoScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const LottoUpdateManyWithoutCollaboratorsNestedInputSchema: z.ZodType<Prisma.LottoUpdateManyWithoutCollaboratorsNestedInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => LottoUpsertWithWhereUniqueWithoutCollaboratorsInputSchema),z.lazy(() => LottoUpsertWithWhereUniqueWithoutCollaboratorsInputSchema).array() ]).optional(),
+  set: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => LottoUpdateWithWhereUniqueWithoutCollaboratorsInputSchema),z.lazy(() => LottoUpdateWithWhereUniqueWithoutCollaboratorsInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => LottoUpdateManyWithWhereWithoutCollaboratorsInputSchema),z.lazy(() => LottoUpdateManyWithWhereWithoutCollaboratorsInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => LottoScalarWhereInputSchema),z.lazy(() => LottoScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
 export const AccountUncheckedUpdateManyWithoutUserNestedInputSchema: z.ZodType<Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountCreateWithoutUserInputSchema).array(),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema),z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
@@ -1289,6 +1525,85 @@ export const SessionUncheckedUpdateManyWithoutUserNestedInputSchema: z.ZodType<P
   update: z.union([ z.lazy(() => SessionUpdateWithWhereUniqueWithoutUserInputSchema),z.lazy(() => SessionUpdateWithWhereUniqueWithoutUserInputSchema).array() ]).optional(),
   updateMany: z.union([ z.lazy(() => SessionUpdateManyWithWhereWithoutUserInputSchema),z.lazy(() => SessionUpdateManyWithWhereWithoutUserInputSchema).array() ]).optional(),
   deleteMany: z.union([ z.lazy(() => SessionScalarWhereInputSchema),z.lazy(() => SessionScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const LottoUncheckedUpdateManyWithoutCreatorNestedInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateManyWithoutCreatorNestedInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCreatorInputSchema),z.lazy(() => LottoCreateWithoutCreatorInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCreatorInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => LottoUpsertWithWhereUniqueWithoutCreatorInputSchema),z.lazy(() => LottoUpsertWithWhereUniqueWithoutCreatorInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => LottoCreateManyCreatorInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => LottoUpdateWithWhereUniqueWithoutCreatorInputSchema),z.lazy(() => LottoUpdateWithWhereUniqueWithoutCreatorInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => LottoUpdateManyWithWhereWithoutCreatorInputSchema),z.lazy(() => LottoUpdateManyWithWhereWithoutCreatorInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => LottoScalarWhereInputSchema),z.lazy(() => LottoScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const LottoUncheckedUpdateManyWithoutCollaboratorsNestedInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateManyWithoutCollaboratorsNestedInput> = z.object({
+  create: z.union([ z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema).array(),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema),z.lazy(() => LottoCreateOrConnectWithoutCollaboratorsInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => LottoUpsertWithWhereUniqueWithoutCollaboratorsInputSchema),z.lazy(() => LottoUpsertWithWhereUniqueWithoutCollaboratorsInputSchema).array() ]).optional(),
+  set: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => LottoWhereUniqueInputSchema),z.lazy(() => LottoWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => LottoUpdateWithWhereUniqueWithoutCollaboratorsInputSchema),z.lazy(() => LottoUpdateWithWhereUniqueWithoutCollaboratorsInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => LottoUpdateManyWithWhereWithoutCollaboratorsInputSchema),z.lazy(() => LottoUpdateManyWithWhereWithoutCollaboratorsInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => LottoScalarWhereInputSchema),z.lazy(() => LottoScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const UserCreateNestedOneWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserCreateNestedOneWithoutCreatedLottiInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutCreatedLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCreatedLottiInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutCreatedLottiInputSchema).optional(),
+  connect: z.lazy(() => UserWhereUniqueInputSchema).optional()
+}).strict();
+
+export const UserCreateNestedManyWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserCreateNestedManyWithoutCollaboratorLottiInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema).array(),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const UserUncheckedCreateNestedManyWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUncheckedCreateNestedManyWithoutCollaboratorLottiInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema).array(),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const UserUpdateOneRequiredWithoutCreatedLottiNestedInputSchema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutCreatedLottiNestedInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutCreatedLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCreatedLottiInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => UserCreateOrConnectWithoutCreatedLottiInputSchema).optional(),
+  upsert: z.lazy(() => UserUpsertWithoutCreatedLottiInputSchema).optional(),
+  connect: z.lazy(() => UserWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => UserUpdateWithoutCreatedLottiInputSchema),z.lazy(() => UserUncheckedUpdateWithoutCreatedLottiInputSchema) ]).optional(),
+}).strict();
+
+export const UserUpdateManyWithoutCollaboratorLottiNestedInputSchema: z.ZodType<Prisma.UserUpdateManyWithoutCollaboratorLottiNestedInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema).array(),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => UserUpsertWithWhereUniqueWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUpsertWithWhereUniqueWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  set: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => UserUpdateWithWhereUniqueWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUpdateWithWhereUniqueWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => UserUpdateManyWithWhereWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUpdateManyWithWhereWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => UserScalarWhereInputSchema),z.lazy(() => UserScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const UserUncheckedUpdateManyWithoutCollaboratorLottiNestedInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyWithoutCollaboratorLottiNestedInput> = z.object({
+  create: z.union([ z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema).array(),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema),z.lazy(() => UserCreateOrConnectWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => UserUpsertWithWhereUniqueWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUpsertWithWhereUniqueWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  set: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => UserWhereUniqueInputSchema),z.lazy(() => UserWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => UserUpdateWithWhereUniqueWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUpdateWithWhereUniqueWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => UserUpdateManyWithWhereWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUpdateManyWithWhereWithoutCollaboratorLottiInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => UserScalarWhereInputSchema),z.lazy(() => UserScalarWhereInputSchema).array() ]).optional(),
 }).strict();
 
 export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.object({
@@ -1461,7 +1776,9 @@ export const UserCreateWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateWi
   cellar: z.string(),
   roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.string(),
-  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional()
+  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoCreateNestedManyWithoutCreatorInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoCreateNestedManyWithoutCollaboratorsInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutAccountsInput> = z.object({
@@ -1472,7 +1789,9 @@ export const UserUncheckedCreateWithoutAccountsInputSchema: z.ZodType<Prisma.Use
   cellar: z.string(),
   roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.string(),
-  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCreatorInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCollaboratorsInputSchema).optional()
 }).strict();
 
 export const UserCreateOrConnectWithoutAccountsInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutAccountsInput> = z.object({
@@ -1492,7 +1811,9 @@ export const UserUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUpdateWi
   cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional()
+  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUpdateManyWithoutCreatorNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutAccountsInput> = z.object({
@@ -1503,7 +1824,9 @@ export const UserUncheckedUpdateWithoutAccountsInputSchema: z.ZodType<Prisma.Use
   cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCreatorNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const UserCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateWithoutSessionsInput> = z.object({
@@ -1513,7 +1836,9 @@ export const UserCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateWi
   cellar: z.string(),
   roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.string(),
-  accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional()
+  accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoCreateNestedManyWithoutCreatorInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoCreateNestedManyWithoutCollaboratorsInputSchema).optional()
 }).strict();
 
 export const UserUncheckedCreateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutSessionsInput> = z.object({
@@ -1524,7 +1849,9 @@ export const UserUncheckedCreateWithoutSessionsInputSchema: z.ZodType<Prisma.Use
   cellar: z.string(),
   roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.string(),
-  accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional()
+  accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCreatorInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCollaboratorsInputSchema).optional()
 }).strict();
 
 export const UserCreateOrConnectWithoutSessionsInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutSessionsInput> = z.object({
@@ -1544,7 +1871,9 @@ export const UserUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUpdateWi
   cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional()
+  accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUpdateManyWithoutCreatorNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const UserUncheckedUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutSessionsInput> = z.object({
@@ -1555,7 +1884,9 @@ export const UserUncheckedUpdateWithoutSessionsInputSchema: z.ZodType<Prisma.Use
   cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
   hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
+  accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCreatorNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
 }).strict();
 
 export const AccountCreateWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateWithoutUserInput> = z.object({
@@ -1618,6 +1949,41 @@ export const SessionCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.SessionC
   skipDuplicates: z.boolean().optional()
 }).strict();
 
+export const LottoCreateWithoutCreatorInputSchema: z.ZodType<Prisma.LottoCreateWithoutCreatorInput> = z.object({
+  id: z.number().int(),
+  collaborators: z.lazy(() => UserCreateNestedManyWithoutCollaboratorLottiInputSchema).optional()
+}).strict();
+
+export const LottoUncheckedCreateWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUncheckedCreateWithoutCreatorInput> = z.object({
+  id: z.number().int(),
+  collaborators: z.lazy(() => UserUncheckedCreateNestedManyWithoutCollaboratorLottiInputSchema).optional()
+}).strict();
+
+export const LottoCreateOrConnectWithoutCreatorInputSchema: z.ZodType<Prisma.LottoCreateOrConnectWithoutCreatorInput> = z.object({
+  where: z.lazy(() => LottoWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => LottoCreateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema) ]),
+}).strict();
+
+export const LottoCreateManyCreatorInputEnvelopeSchema: z.ZodType<Prisma.LottoCreateManyCreatorInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => LottoCreateManyCreatorInputSchema),z.lazy(() => LottoCreateManyCreatorInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
+}).strict();
+
+export const LottoCreateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoCreateWithoutCollaboratorsInput> = z.object({
+  id: z.number().int(),
+  creator: z.lazy(() => UserCreateNestedOneWithoutCreatedLottiInputSchema)
+}).strict();
+
+export const LottoUncheckedCreateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUncheckedCreateWithoutCollaboratorsInput> = z.object({
+  id: z.number().int(),
+  creatorId: z.number().int()
+}).strict();
+
+export const LottoCreateOrConnectWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoCreateOrConnectWithoutCollaboratorsInput> = z.object({
+  where: z.lazy(() => LottoWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema) ]),
+}).strict();
+
 export const AccountUpsertWithWhereUniqueWithoutUserInputSchema: z.ZodType<Prisma.AccountUpsertWithWhereUniqueWithoutUserInput> = z.object({
   where: z.lazy(() => AccountWhereUniqueInputSchema),
   update: z.union([ z.lazy(() => AccountUpdateWithoutUserInputSchema),z.lazy(() => AccountUncheckedUpdateWithoutUserInputSchema) ]),
@@ -1678,6 +2044,165 @@ export const SessionScalarWhereInputSchema: z.ZodType<Prisma.SessionScalarWhereI
   expires: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
+export const LottoUpsertWithWhereUniqueWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUpsertWithWhereUniqueWithoutCreatorInput> = z.object({
+  where: z.lazy(() => LottoWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => LottoUpdateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedUpdateWithoutCreatorInputSchema) ]),
+  create: z.union([ z.lazy(() => LottoCreateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCreatorInputSchema) ]),
+}).strict();
+
+export const LottoUpdateWithWhereUniqueWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUpdateWithWhereUniqueWithoutCreatorInput> = z.object({
+  where: z.lazy(() => LottoWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => LottoUpdateWithoutCreatorInputSchema),z.lazy(() => LottoUncheckedUpdateWithoutCreatorInputSchema) ]),
+}).strict();
+
+export const LottoUpdateManyWithWhereWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUpdateManyWithWhereWithoutCreatorInput> = z.object({
+  where: z.lazy(() => LottoScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => LottoUpdateManyMutationInputSchema),z.lazy(() => LottoUncheckedUpdateManyWithoutCreatedLottiInputSchema) ]),
+}).strict();
+
+export const LottoScalarWhereInputSchema: z.ZodType<Prisma.LottoScalarWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => LottoScalarWhereInputSchema),z.lazy(() => LottoScalarWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => LottoScalarWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => LottoScalarWhereInputSchema),z.lazy(() => LottoScalarWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  creatorId: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+}).strict();
+
+export const LottoUpsertWithWhereUniqueWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUpsertWithWhereUniqueWithoutCollaboratorsInput> = z.object({
+  where: z.lazy(() => LottoWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => LottoUpdateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedUpdateWithoutCollaboratorsInputSchema) ]),
+  create: z.union([ z.lazy(() => LottoCreateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedCreateWithoutCollaboratorsInputSchema) ]),
+}).strict();
+
+export const LottoUpdateWithWhereUniqueWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUpdateWithWhereUniqueWithoutCollaboratorsInput> = z.object({
+  where: z.lazy(() => LottoWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => LottoUpdateWithoutCollaboratorsInputSchema),z.lazy(() => LottoUncheckedUpdateWithoutCollaboratorsInputSchema) ]),
+}).strict();
+
+export const LottoUpdateManyWithWhereWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUpdateManyWithWhereWithoutCollaboratorsInput> = z.object({
+  where: z.lazy(() => LottoScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => LottoUpdateManyMutationInputSchema),z.lazy(() => LottoUncheckedUpdateManyWithoutCollaboratorLottiInputSchema) ]),
+}).strict();
+
+export const UserCreateWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserCreateWithoutCreatedLottiInput> = z.object({
+  name: z.string(),
+  surname: z.string(),
+  email: z.string(),
+  cellar: z.string(),
+  roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.string(),
+  accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
+  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoCreateNestedManyWithoutCollaboratorsInputSchema).optional()
+}).strict();
+
+export const UserUncheckedCreateWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutCreatedLottiInput> = z.object({
+  id: z.number().int().optional(),
+  name: z.string(),
+  surname: z.string(),
+  email: z.string(),
+  cellar: z.string(),
+  roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.string(),
+  accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCollaboratorsInputSchema).optional()
+}).strict();
+
+export const UserCreateOrConnectWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutCreatedLottiInput> = z.object({
+  where: z.lazy(() => UserWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => UserCreateWithoutCreatedLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCreatedLottiInputSchema) ]),
+}).strict();
+
+export const UserCreateWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserCreateWithoutCollaboratorLottiInput> = z.object({
+  name: z.string(),
+  surname: z.string(),
+  email: z.string(),
+  cellar: z.string(),
+  roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.string(),
+  accounts: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
+  sessions: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoCreateNestedManyWithoutCreatorInputSchema).optional()
+}).strict();
+
+export const UserUncheckedCreateWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutCollaboratorLottiInput> = z.object({
+  id: z.number().int().optional(),
+  name: z.string(),
+  surname: z.string(),
+  email: z.string(),
+  cellar: z.string(),
+  roles: z.union([ z.lazy(() => UserCreaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.string(),
+  accounts: z.lazy(() => AccountUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  sessions: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedCreateNestedManyWithoutCreatorInputSchema).optional()
+}).strict();
+
+export const UserCreateOrConnectWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserCreateOrConnectWithoutCollaboratorLottiInput> = z.object({
+  where: z.lazy(() => UserWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema) ]),
+}).strict();
+
+export const UserUpsertWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserUpsertWithoutCreatedLottiInput> = z.object({
+  update: z.union([ z.lazy(() => UserUpdateWithoutCreatedLottiInputSchema),z.lazy(() => UserUncheckedUpdateWithoutCreatedLottiInputSchema) ]),
+  create: z.union([ z.lazy(() => UserCreateWithoutCreatedLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCreatedLottiInputSchema) ]),
+}).strict();
+
+export const UserUpdateWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserUpdateWithoutCreatedLottiInput> = z.object({
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  surname: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
+  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
+}).strict();
+
+export const UserUncheckedUpdateWithoutCreatedLottiInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutCreatedLottiInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  surname: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  collaboratorLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCollaboratorsNestedInputSchema).optional()
+}).strict();
+
+export const UserUpsertWithWhereUniqueWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUpsertWithWhereUniqueWithoutCollaboratorLottiInput> = z.object({
+  where: z.lazy(() => UserWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => UserUpdateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedUpdateWithoutCollaboratorLottiInputSchema) ]),
+  create: z.union([ z.lazy(() => UserCreateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedCreateWithoutCollaboratorLottiInputSchema) ]),
+}).strict();
+
+export const UserUpdateWithWhereUniqueWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUpdateWithWhereUniqueWithoutCollaboratorLottiInput> = z.object({
+  where: z.lazy(() => UserWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => UserUpdateWithoutCollaboratorLottiInputSchema),z.lazy(() => UserUncheckedUpdateWithoutCollaboratorLottiInputSchema) ]),
+}).strict();
+
+export const UserUpdateManyWithWhereWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUpdateManyWithWhereWithoutCollaboratorLottiInput> = z.object({
+  where: z.lazy(() => UserScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => UserUpdateManyMutationInputSchema),z.lazy(() => UserUncheckedUpdateManyWithoutCollaboratorsInputSchema) ]),
+}).strict();
+
+export const UserScalarWhereInputSchema: z.ZodType<Prisma.UserScalarWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => UserScalarWhereInputSchema),z.lazy(() => UserScalarWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => UserScalarWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => UserScalarWhereInputSchema),z.lazy(() => UserScalarWhereInputSchema).array() ]).optional(),
+  id: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  surname: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  cellar: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  roles: z.lazy(() => EnumRoleNullableListFilterSchema).optional(),
+  hashedPassword: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+}).strict();
+
 export const AccountCreateManyUserInputSchema: z.ZodType<Prisma.AccountCreateManyUserInput> = z.object({
   id: z.string().cuid().optional(),
   type: z.string(),
@@ -1696,6 +2221,10 @@ export const SessionCreateManyUserInputSchema: z.ZodType<Prisma.SessionCreateMan
   id: z.string().cuid().optional(),
   sessionToken: z.string(),
   expires: z.coerce.date()
+}).strict();
+
+export const LottoCreateManyCreatorInputSchema: z.ZodType<Prisma.LottoCreateManyCreatorInput> = z.object({
+  id: z.number().int()
 }).strict();
 
 export const AccountUpdateWithoutUserInputSchema: z.ZodType<Prisma.AccountUpdateWithoutUserInput> = z.object({
@@ -1756,6 +2285,70 @@ export const SessionUncheckedUpdateManyWithoutSessionsInputSchema: z.ZodType<Pri
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   sessionToken: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   expires: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const LottoUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUpdateWithoutCreatorInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  collaborators: z.lazy(() => UserUpdateManyWithoutCollaboratorLottiNestedInputSchema).optional()
+}).strict();
+
+export const LottoUncheckedUpdateWithoutCreatorInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateWithoutCreatorInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  collaborators: z.lazy(() => UserUncheckedUpdateManyWithoutCollaboratorLottiNestedInputSchema).optional()
+}).strict();
+
+export const LottoUncheckedUpdateManyWithoutCreatedLottiInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateManyWithoutCreatedLottiInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const LottoUpdateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUpdateWithoutCollaboratorsInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  creator: z.lazy(() => UserUpdateOneRequiredWithoutCreatedLottiNestedInputSchema).optional()
+}).strict();
+
+export const LottoUncheckedUpdateWithoutCollaboratorsInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateWithoutCollaboratorsInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  creatorId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const LottoUncheckedUpdateManyWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.LottoUncheckedUpdateManyWithoutCollaboratorLottiInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  creatorId: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const UserUpdateWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUpdateWithoutCollaboratorLottiInput> = z.object({
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  surname: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  accounts: z.lazy(() => AccountUpdateManyWithoutUserNestedInputSchema).optional(),
+  sessions: z.lazy(() => SessionUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUpdateManyWithoutCreatorNestedInputSchema).optional()
+}).strict();
+
+export const UserUncheckedUpdateWithoutCollaboratorLottiInputSchema: z.ZodType<Prisma.UserUncheckedUpdateWithoutCollaboratorLottiInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  surname: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  accounts: z.lazy(() => AccountUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  sessions: z.lazy(() => SessionUncheckedUpdateManyWithoutUserNestedInputSchema).optional(),
+  createdLotti: z.lazy(() => LottoUncheckedUpdateManyWithoutCreatorNestedInputSchema).optional()
+}).strict();
+
+export const UserUncheckedUpdateManyWithoutCollaboratorsInputSchema: z.ZodType<Prisma.UserUncheckedUpdateManyWithoutCollaboratorsInput> = z.object({
+  id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  surname: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  cellar: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  roles: z.union([ z.lazy(() => UserUpdaterolesInputSchema),z.lazy(() => RoleSchema).array() ]).optional(),
+  hashedPassword: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 /////////////////////////////////////////
@@ -2062,6 +2655,68 @@ export const VerificationTokenFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.Veri
   where: VerificationTokenWhereUniqueInputSchema,
 }).strict()
 
+export const LottoFindFirstArgsSchema: z.ZodType<Prisma.LottoFindFirstArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereInputSchema.optional(),
+  orderBy: z.union([ LottoOrderByWithRelationInputSchema.array(),LottoOrderByWithRelationInputSchema ]).optional(),
+  cursor: LottoWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ LottoScalarFieldEnumSchema,LottoScalarFieldEnumSchema.array() ]).optional(),
+}).strict()
+
+export const LottoFindFirstOrThrowArgsSchema: z.ZodType<Prisma.LottoFindFirstOrThrowArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereInputSchema.optional(),
+  orderBy: z.union([ LottoOrderByWithRelationInputSchema.array(),LottoOrderByWithRelationInputSchema ]).optional(),
+  cursor: LottoWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ LottoScalarFieldEnumSchema,LottoScalarFieldEnumSchema.array() ]).optional(),
+}).strict()
+
+export const LottoFindManyArgsSchema: z.ZodType<Prisma.LottoFindManyArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereInputSchema.optional(),
+  orderBy: z.union([ LottoOrderByWithRelationInputSchema.array(),LottoOrderByWithRelationInputSchema ]).optional(),
+  cursor: LottoWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ LottoScalarFieldEnumSchema,LottoScalarFieldEnumSchema.array() ]).optional(),
+}).strict()
+
+export const LottoAggregateArgsSchema: z.ZodType<Prisma.LottoAggregateArgs> = z.object({
+  where: LottoWhereInputSchema.optional(),
+  orderBy: z.union([ LottoOrderByWithRelationInputSchema.array(),LottoOrderByWithRelationInputSchema ]).optional(),
+  cursor: LottoWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict()
+
+export const LottoGroupByArgsSchema: z.ZodType<Prisma.LottoGroupByArgs> = z.object({
+  where: LottoWhereInputSchema.optional(),
+  orderBy: z.union([ LottoOrderByWithAggregationInputSchema.array(),LottoOrderByWithAggregationInputSchema ]).optional(),
+  by: LottoScalarFieldEnumSchema.array(),
+  having: LottoScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict()
+
+export const LottoFindUniqueArgsSchema: z.ZodType<Prisma.LottoFindUniqueArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereUniqueInputSchema,
+}).strict()
+
+export const LottoFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.LottoFindUniqueOrThrowArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereUniqueInputSchema,
+}).strict()
+
 export const ExampleCreateArgsSchema: z.ZodType<Prisma.ExampleCreateArgs> = z.object({
   select: ExampleSelectSchema.optional(),
   data: z.union([ ExampleCreateInputSchema,ExampleUncheckedCreateInputSchema ]),
@@ -2257,4 +2912,45 @@ export const VerificationTokenUpdateManyArgsSchema: z.ZodType<Prisma.Verificatio
 
 export const VerificationTokenDeleteManyArgsSchema: z.ZodType<Prisma.VerificationTokenDeleteManyArgs> = z.object({
   where: VerificationTokenWhereInputSchema.optional(),
+}).strict()
+
+export const LottoCreateArgsSchema: z.ZodType<Prisma.LottoCreateArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  data: z.union([ LottoCreateInputSchema,LottoUncheckedCreateInputSchema ]),
+}).strict()
+
+export const LottoUpsertArgsSchema: z.ZodType<Prisma.LottoUpsertArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereUniqueInputSchema,
+  create: z.union([ LottoCreateInputSchema,LottoUncheckedCreateInputSchema ]),
+  update: z.union([ LottoUpdateInputSchema,LottoUncheckedUpdateInputSchema ]),
+}).strict()
+
+export const LottoCreateManyArgsSchema: z.ZodType<Prisma.LottoCreateManyArgs> = z.object({
+  data: z.union([ LottoCreateManyInputSchema,LottoCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict()
+
+export const LottoDeleteArgsSchema: z.ZodType<Prisma.LottoDeleteArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  where: LottoWhereUniqueInputSchema,
+}).strict()
+
+export const LottoUpdateArgsSchema: z.ZodType<Prisma.LottoUpdateArgs> = z.object({
+  select: LottoSelectSchema.optional(),
+  include: LottoIncludeSchema.optional(),
+  data: z.union([ LottoUpdateInputSchema,LottoUncheckedUpdateInputSchema ]),
+  where: LottoWhereUniqueInputSchema,
+}).strict()
+
+export const LottoUpdateManyArgsSchema: z.ZodType<Prisma.LottoUpdateManyArgs> = z.object({
+  data: z.union([ LottoUpdateManyMutationInputSchema,LottoUncheckedUpdateManyInputSchema ]),
+  where: LottoWhereInputSchema.optional(),
+}).strict()
+
+export const LottoDeleteManyArgsSchema: z.ZodType<Prisma.LottoDeleteManyArgs> = z.object({
+  where: LottoWhereInputSchema.optional(),
 }).strict()

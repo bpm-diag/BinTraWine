@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import Account from '@/components/account';
 import { Separator } from '@/components/ui/separator';
-import { MdLogout, MdAdd } from 'react-icons/md'
+import { MdLogout, MdAdd, MdBarChart } from 'react-icons/md'
 import Logo from '@/components/ui/logo';
 import { TabProps } from "@/pages";
 import { cn } from '@/utils';
@@ -17,8 +17,7 @@ import {
 import { api } from '@/utils/api';
 import { checkIdLotto } from "@/utils/utilsFunctions";
 
-export interface HeaderProps
-    extends React.HTMLAttributes<HTMLHeadElement> {
+export interface HeaderProps extends React.HTMLAttributes<HTMLHeadElement> {
     number_of_lotti: number
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
@@ -37,8 +36,15 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         const { data: session, status } = useSession();
 
         const newTab = () => {
-            setSensori.mutate(number_of_lotti)
+            setSensori.mutate({
+                lottoId: number_of_lotti,
+                creatorId: session!.user.id
+            })
             setTabs(oldState => [...oldState, { triggerKey: `${number_of_lotti}`, triggerName: `Lotto ${number_of_lotti}`, status: 'IN CORSO' }])
+        }
+
+        const newAnalytics = () => {
+            setTabs(oldState => [...oldState, { triggerKey: `analytics`, triggerName: `Analytics`, status: 'COMPLETATO' }])
         }
 
         return (
