@@ -28,9 +28,8 @@ const getNumberOfCollaborators = (currentLotto: number, lottiCollaborators: { lo
     return value
 }
 
-const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
-    ({ className, number_of_chains, setTabs }, ref) => {
-
+const Catalog = (props: CatalogProps) => {
+        const { className, number_of_chains, setTabs } = props;
         const [currentPage, setCurrentPage] = useState<number>(1);
         const lottiCollaborators = api.lotto.getAllLotti.useQuery()
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_chains))
@@ -71,6 +70,6 @@ const Catalog = React.forwardRef<HTMLDivElement, CatalogProps>(
                 </div>
             </div>
         );
-    });
+    };
 
 export default Catalog;

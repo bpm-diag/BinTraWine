@@ -31,9 +31,8 @@ const getCharts = (charts: Charts, currentSelected: string): ChartData[] => {
     }
 }
 
-const Analytics = React.forwardRef<HTMLDivElement, AnalyticsProps>(
-    ({ className }, ref) => {
-
+const Analytics = (props: AnalyticsProps) => {
+        const { className } = props;
         const analytics = api.blockChainRouter.getAnalytics.useQuery();
 
         const buttons: { id: string, name: string, icon: React.ElementType }[] = [
@@ -108,6 +107,6 @@ const Analytics = React.forwardRef<HTMLDivElement, AnalyticsProps>(
                 </div>
             </div>
         );
-    });
+    };
 
 export default Analytics;

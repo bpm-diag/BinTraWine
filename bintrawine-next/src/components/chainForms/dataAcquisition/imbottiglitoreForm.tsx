@@ -27,9 +27,8 @@ type FieldProduttoreType = {
     label: string;
 }
 
-const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreFormProps>(
-    ({ className, idLotto }, ref) => {
-
+const ImbottigliatoreForm = (props: ImbottigliatoreFormProps) => {
+        const { className, idLotto } = props;
         const utils = api.useContext()
         const sendImbottigliatoreData = api.imbottigliatore.send.useMutation({
             onSuccess() {
@@ -90,6 +89,6 @@ const ImbottigliatoreForm = React.forwardRef<HTMLDivElement, ImbottigliatoreForm
                 </div>
             </div>
         )
-    });
+    };
 
 export default ImbottigliatoreForm;

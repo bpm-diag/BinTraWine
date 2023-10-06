@@ -23,9 +23,8 @@ const elementExist = (tabprops: TabProps[], currentKey: string): boolean => {
     return exist
 }
 
-const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
-    ({ className, idLotto, name, status, avatars, lastUpdate, setTabs }, ref) => {
-
+const ProductCard = (props: ProductCardProps) => {
+        const { className, idLotto, name, status, avatars, lastUpdate, setTabs } = props
         return (
             <div onClick={() => setTabs(oldState => {
                 if (elementExist(oldState, idLotto)) return [...oldState]
@@ -68,6 +67,6 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default ProductCard;

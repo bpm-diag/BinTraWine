@@ -33,9 +33,8 @@ type FieldDistributoreType = {
     label: string;
 }
 
-const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
-    ({ className, idLotto }, ref) => {
-
+const DistributoreForm = (props: ViticoltoreFormProps) => {
+        const { className, idLotto } = props;
         const utils = api.useContext()
         const sendDistributoreData = api.distributore.send.useMutation({
             onSuccess() {
@@ -144,6 +143,6 @@ const DistributoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default DistributoreForm;

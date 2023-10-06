@@ -35,9 +35,8 @@ type FieldViticoltoreType = {
     label: string;
 }
 
-const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
-    ({ className, idLotto }, ref) => {
-
+const ViticoltoreForm = (props: ViticoltoreFormProps) => {
+        const { className, idLotto } = props;
         const utils = api.useContext()
         const sendViticoltoreData = api.viticoltore.send.useMutation({
             onSuccess() {
@@ -130,6 +129,6 @@ const ViticoltoreForm = React.forwardRef<HTMLDivElement, ViticoltoreFormProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default ViticoltoreForm;

@@ -8,9 +8,8 @@ export interface PaginatorProps
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
 
-const Paginator = React.forwardRef<HTMLDivElement, PaginatorProps>(
-    ({ className, numberOfPages, selectedPage, setCurrentPage }, ref) => {
-
+const Paginator = (props: PaginatorProps) => {
+        const { className, numberOfPages, selectedPage, setCurrentPage } = props
         const checkNewPage = (newPage: number, increment: boolean): number => {
             if (newPage <= numberOfPages && newPage > 0) return newPage
             if (increment) return newPage - 1
@@ -46,6 +45,6 @@ const Paginator = React.forwardRef<HTMLDivElement, PaginatorProps>(
                 </ul >
             </nav >
         )
-    });
+    };
 
 export default Paginator;

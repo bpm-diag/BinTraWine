@@ -27,9 +27,8 @@ type FieldEnteCertificatoreType = {
     label: string;
 }
 
-const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
-    ({ className, idLotto }, ref) => {
-
+const EnteCertificatoreForm = (props: AgronomoFormProps) => {
+        const { className, idLotto } = props;
         const utils = api.useContext()
         const sendEnteCertificatoreData = api.enteCertificatore.send.useMutation({
             onSuccess() {
@@ -88,6 +87,6 @@ const EnteCertificatoreForm = React.forwardRef<HTMLDivElement, AgronomoFormProps
                 </div>
             </div>
         )
-    });
+    };
 
 export default EnteCertificatoreForm;

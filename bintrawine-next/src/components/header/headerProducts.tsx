@@ -8,9 +8,8 @@ export interface HeaderProductsProps
     wines: string[]
 }
 
-const HeaderProducts = React.forwardRef<HTMLDivElement, HeaderProductsProps>(
-    ({ className, wines, ...props }, ref) => {
-
+const HeaderProducts = (props: HeaderProductsProps) => {
+        const { className, wines } = props;
         return (
             <div className="flex flex-row gap-4 px-8 py-3 h-14 items-center bg-white">
                 <Button className='bg-accent'>
@@ -28,6 +27,5 @@ const HeaderProducts = React.forwardRef<HTMLDivElement, HeaderProductsProps>(
                 }
             </div>
         )
-    })
-
+    }
 export default HeaderProducts;

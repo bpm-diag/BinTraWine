@@ -12,9 +12,8 @@ export interface ShowDataProps
     }[]
 }
 
-const ShowData = React.forwardRef<HTMLDivElement, ShowDataProps>(
-    ({ className, title, data, preTitle }, ref) => {
-
+const ShowData = (props: ShowDataProps) => {
+        const { className, title, data, preTitle } = props;
         return (
             <div className={cn("flex-1 p-7 flex flex-col gap-8", className)}>
                 <div className="">
@@ -34,6 +33,6 @@ const ShowData = React.forwardRef<HTMLDivElement, ShowDataProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default ShowData;
