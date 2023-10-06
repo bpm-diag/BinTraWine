@@ -33,9 +33,8 @@ export interface AccountProps
     close?: boolean;
 }
 
-const Account = 
-    (props: AccountProps) => {
-        const { className, variant, size, name, surname, role, icon = true, close = false } = props
+const Account = (
+    ({ className, variant, size, name, surname, role, icon = true, close = false, ...props }: AccountProps) => {
         return (
             <div
                 className={`${cn(counterVariants({ variant, size, className }))}`}
@@ -57,6 +56,6 @@ const Account =
                 }
             </div>
         )
-    }
+    });
 
 export default Account;
