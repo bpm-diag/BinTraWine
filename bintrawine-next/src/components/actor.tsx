@@ -16,9 +16,8 @@ export interface ActorItemProps
     data: ActorData
 }
 
-const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
-    ({ className, data }, ref) => {
-
+const Actor = (props: ActorItemProps) => {
+    const { className, data } = props
         return (
             <div className={cn(className, "flex flex-col gap-4 p-2 bg-surface", data.disabled ? "opacity-40" : "")}>
                 <div className="flex flex-col gap-1">
@@ -42,7 +41,6 @@ const Actor = React.forwardRef<HTMLDivElement, ActorItemProps>(
                 </div>
             </div>
         )
-    }
-);
+    };
 
 export default Actor;

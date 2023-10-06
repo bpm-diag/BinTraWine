@@ -23,9 +23,8 @@ export interface ActorItemProps
     disabled?: boolean
 }
 
-const ActorItem = React.forwardRef<HTMLDivElement, ActorItemProps>(
-    ({ className, actorItem, countedData, disabled }, ref) => {
-
+const ActorItem = (props: ActorItemProps) => {
+        const { className, actorItem, countedData, disabled } = props
         return (
             <Accordion disabled={disabled} type="single" className={cn(className, "data-[state=open]:border-2 data-[state=open]:border-primary")} collapsible>
                 <AccordionItem className="data-[state=open]:border-2 data-[state=open]:border-primary" value="item-1">
@@ -55,6 +54,6 @@ const ActorItem = React.forwardRef<HTMLDivElement, ActorItemProps>(
                 </AccordionItem>
             </Accordion>
         )
-    });
+    };
 
 export default ActorItem;

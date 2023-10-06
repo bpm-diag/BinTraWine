@@ -6,9 +6,8 @@ export interface HeaderPathProps
     paths: string[]
 }
 
-const HeaderPath = React.forwardRef<HTMLDivElement, HeaderPathProps>(
-    ({ className, paths, ...props }, ref) => {
-
+const HeaderPath = (props: HeaderPathProps) => {
+        const { className, paths } = props;
         return (
             <div className='flex flex-row gap-4 px-8 py-3 h-14 items-center bg-white'>
                 {
@@ -25,6 +24,6 @@ const HeaderPath = React.forwardRef<HTMLDivElement, HeaderPathProps>(
                 }
             </div>
         )
-    })
+    }
 
 export default HeaderPath;

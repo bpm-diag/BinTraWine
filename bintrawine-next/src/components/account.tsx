@@ -33,8 +33,9 @@ export interface AccountProps
     close?: boolean;
 }
 
-const Account = React.forwardRef<HTMLDivElement, AccountProps>(
-    ({ className, variant, size, name, surname, role, icon = true, close = false, ...props }, ref) => {
+const Account = 
+    (props: AccountProps) => {
+        const { className, variant, size, name, surname, role, icon = true, close = false } = props
         return (
             <div
                 className={`${cn(counterVariants({ variant, size, className }))}`}
@@ -56,6 +57,6 @@ const Account = React.forwardRef<HTMLDivElement, AccountProps>(
                 }
             </div>
         )
-    })
+    }
 
 export default Account;

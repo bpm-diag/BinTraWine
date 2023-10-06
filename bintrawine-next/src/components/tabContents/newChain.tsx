@@ -14,9 +14,8 @@ export interface NewChainProps
     idLotto: string
 }
 
-const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
-    ({ className, idLotto }, ref) => {
-
+const NewChain = (props: NewChainProps) => {
+        const { className, idLotto } = props;
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
         const sensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto));
 
@@ -70,6 +69,6 @@ const NewChain = React.forwardRef<HTMLDivElement, NewChainProps>(
                 }
             </div>
         );
-    });
+    };
 
 export default NewChain;

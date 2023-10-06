@@ -28,9 +28,8 @@ type FormSelection = {
     chainForm: React.ElementType
 }
 
-const ChainForm = React.forwardRef<HTMLDivElement, ChainFormProps>(
-    ({ className, idLotto, filieraChainSensori, filieraChain }, ref) => {
-
+const ChainForm = (props: ChainFormProps) => {
+        const { className, idLotto, filieraChain, filieraChainSensori } = props;
         const [manuale, setManuale] = useState<"MANUALE" | "SENSORI">("MANUALE")
 
         const { data: session, status } = useSession();
@@ -68,6 +67,6 @@ const ChainForm = React.forwardRef<HTMLDivElement, ChainFormProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default ChainForm;
