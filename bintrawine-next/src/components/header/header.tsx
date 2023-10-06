@@ -22,9 +22,8 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLHeadElement> {
     setTabs: React.Dispatch<React.SetStateAction<TabProps[]>>
 }
 
-const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
-    ({ className, number_of_lotti, setTabs, ...props }, ref) => {
-
+const Header = (props: HeaderProps) => {
+        const { className, number_of_lotti, setTabs} = props;
         const utils = api.useContext()
         const getLatestLotto = api.blockChainRouter.getManualData.useQuery(checkIdLotto(number_of_lotti))
         const setSensori = api.blockChainRouter.setSensoriData.useMutation({
@@ -86,6 +85,6 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
                 </div>
             </header >
         );
-    });
+    };
 
 export default Header;

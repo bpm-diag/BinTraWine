@@ -35,9 +35,8 @@ const filteredPeople = (searchedString: string, allPeople: User[]): User[] => {
     return availablePeople
 }
 
-const SearchPeopleDialog = React.forwardRef<HTMLDivElement, SearchPeopleDialogProps>(
-    ({ className, idLotto }, ref) => {
-
+const SearchPeopleDialog = (props: SearchPeopleDialogProps) => {
+        const { className, idLotto } = props;
         const utils = api.useContext()
         const addPerson = api.lotto.addPerson.useMutation({
             onSuccess() {
@@ -64,8 +63,8 @@ const SearchPeopleDialog = React.forwardRef<HTMLDivElement, SearchPeopleDialogPr
                         <Input onChange={(e) => setPeoopleToShow(filteredPeople(e.target.value, allUsers.data!))} placeholder="Nome e Cognome" type="text" />
                         <div className="flex flex-row flex-wrap gap-2">
                             {
-                                peopleToShow.map(person => {
-                                    return <Account onClick={() => setSelectedUser(person)} className={`self-start hover:cursor-pointer hover:bg-accent ${(selectedUser && selectedUser.id === person.id) ? "bg-accent" : ""}`} icon={false} variant='selected' name={person.name} surname={person.surname} />
+                                peopleToShow.map((person,index) => {
+                                    return <Account key={index} onClick={() => setSelectedUser(person)} className={`self-start hover:cursor-pointer hover:bg-accent ${(selectedUser && selectedUser.id === person.id) ? "bg-accent" : ""}`} icon={false} variant='selected' name={person.name} surname={person.surname} />
                                 })
                             }
                         </div>
@@ -81,6 +80,6 @@ const SearchPeopleDialog = React.forwardRef<HTMLDivElement, SearchPeopleDialogPr
                 </DialogFooter>
             </DialogContent>
         )
-    });
+    };
 
 export default SearchPeopleDialog;

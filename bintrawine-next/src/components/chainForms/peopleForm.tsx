@@ -19,9 +19,8 @@ export interface PeopleFormProps
     setManuale: React.Dispatch<React.SetStateAction<"MANUALE" | "SENSORI">>
 }
 
-const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
-    ({ className, idLotto, chainType, selected, setManuale }, ref) => {
-
+const PeopleForm = (props: PeopleFormProps) => {
+        const { className, idLotto, chainType, selected, setManuale } = props;
         const utils = api.useContext()
         const lotto = api.lotto.getLotto.useQuery(idLotto);
         const deletePerson = api.lotto.deletePerson.useMutation({
@@ -64,8 +63,8 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                     <div className="flex flex-wrap gap-2">
                         {
                             lotto.isFetched &&
-                            lotto.data?.collaborators.map(person => {
-                                return <Account onClick={() => deletePerson.mutate({ user: person.id, lottoId: idLotto })} className="bg-accent_light" close variant='selected' name={person.name} surname={person.surname} />
+                            lotto.data?.collaborators.map((person,index) => {
+                                return <Account key={index} onClick={() => deletePerson.mutate({ user: person.id, lottoId: idLotto })} className="bg-accent_light" close variant='selected' name={person.name} surname={person.surname} />
                             })
                         }
                     </div>
@@ -84,6 +83,6 @@ const PeopleForm = React.forwardRef<HTMLDivElement, PeopleFormProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default PeopleForm;
