@@ -11,9 +11,8 @@ export interface CustomerTableProps
     }[]
 }
 
-const CustomerTable = React.forwardRef<HTMLDivElement, CustomerTableProps>(
-    ({ className, data }, ref) => {
-
+const CustomerTable = (props: CustomerTableProps) => {
+        const { className, data } = props
         return (
             <div className={cn(className, "flex flex-col gap-2 bg-white rounded-xl p-12")}>
                 {
@@ -28,6 +27,6 @@ const CustomerTable = React.forwardRef<HTMLDivElement, CustomerTableProps>(
                 }
             </div>
         )
-    });
+    };
 
 export default CustomerTable;

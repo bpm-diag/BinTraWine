@@ -8,15 +8,14 @@ export interface CustomerDataProps
     value: string
 }
 
-const CustomerData = React.forwardRef<HTMLDivElement, CustomerDataProps>(
-    ({ className, title, value }, ref) => {
-
+const CustomerData = (props: CustomerDataProps) => {
+        const { className, title, value } = props
         return (
             <div className={cn(className, "flex flex-col bg-white")}>
                 <p className="text-primary text-lg font-primary font-thin">{title}</p>
                 <p className="text-primary text-lg font-primary font-semibold">{value}</p>
             </div>
         )
-    });
+    };
 
 export default CustomerData;

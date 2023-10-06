@@ -29,9 +29,8 @@ export interface TagProps
     small?: boolean;
 }
 
-const Tag = React.forwardRef<HTMLDivElement, TagProps>(
-    ({ className, variant, size, selected = false, ...props }, ref) => {
-
+const Tag = (props: TagProps) => {
+        const { className, variant, size, selected = false, small = false } = props
         return (
             <div
                 className={`${cn(tagVariants({ variant, size, className }))}`}
@@ -39,6 +38,6 @@ const Tag = React.forwardRef<HTMLDivElement, TagProps>(
             >
             </div>
         );
-    });
+    };
 
 export default Tag;

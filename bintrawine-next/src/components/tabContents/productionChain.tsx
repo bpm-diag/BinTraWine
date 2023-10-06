@@ -11,9 +11,8 @@ export interface ProductionChainProps
     idLotto: string
 }
 
-const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
-    ({ className, idLotto }, ref) => {
-
+const ProductionChain = (props:ProductionChainProps) => {
+        const { className, idLotto } = props
         const { data: session } = useSession();
         const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
         const getDatiSensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto))
@@ -721,6 +720,6 @@ const ProductionChain = React.forwardRef<HTMLDivElement, ProductionChainProps>(
                 </div>
             </>
         );
-    });
+    };
 
 export default ProductionChain;

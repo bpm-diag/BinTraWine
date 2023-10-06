@@ -17,9 +17,8 @@ export interface ActorDescriptionProps
     actorDescription: ActorDescriptionType
 }
 
-const ActorDescription = React.forwardRef<HTMLDivElement, ActorDescriptionProps>(
-    ({ className, actorDescription }, ref) => {
-
+const ActorDescription = (props: ActorDescriptionProps) => {
+        const { className, actorDescription } = props
         return (
             <Accordion type="single" className={cn(className)} collapsible>
                 <AccordionItem value="item-1">
@@ -38,6 +37,6 @@ const ActorDescription = React.forwardRef<HTMLDivElement, ActorDescriptionProps>
                 </AccordionItem>
             </Accordion>
         )
-    });
+    };
 
 export default ActorDescription;

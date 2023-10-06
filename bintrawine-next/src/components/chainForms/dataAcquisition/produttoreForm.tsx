@@ -27,9 +27,8 @@ type FieldProduttoreType = {
     label: string;
 }
 
-const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
-    ({ className, idLotto }, ref) => {
-
+const ProduttoreForm = (props: ProduttoreFormProps) => {
+        const { className, idLotto } = props;
         const utils = api.useContext()
         const sendProduttoreData = api.produttore.send.useMutation({
             onSuccess() {
@@ -89,6 +88,6 @@ const ProduttoreForm = React.forwardRef<HTMLDivElement, ProduttoreFormProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default ProduttoreForm;

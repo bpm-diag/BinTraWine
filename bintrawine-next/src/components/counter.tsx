@@ -27,8 +27,8 @@ export interface CounterProps
     selected?: boolean;
 }
 
-const Counter = React.forwardRef<HTMLDivElement, CounterProps>(
-    ({ className, variant, size, selected = false, ...props }, ref) => {
+const Counter = (props: CounterProps) => {
+        const { className, variant, size, selected = false } = props
         return (
             <div
                 className={`${cn(counterVariants({ variant, size, className }))}`}
@@ -36,6 +36,6 @@ const Counter = React.forwardRef<HTMLDivElement, CounterProps>(
             >
             </div>
         );
-    });
+    };
 
 export default Counter;

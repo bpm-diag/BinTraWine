@@ -26,9 +26,8 @@ type FieldAgronomoType = {
     label: string;
 }
 
-const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
-    ({ className }, ref) => {
-
+const AgronomoForm = (props: AgronomoFormProps) => {
+        const { className } = props;
         const utils = api.useContext()
         const sendAgronomoData = api.agronomo.send.useMutation({
             onSuccess() {
@@ -87,6 +86,6 @@ const AgronomoForm = React.forwardRef<HTMLDivElement, AgronomoFormProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default AgronomoForm;

@@ -4,12 +4,11 @@ export interface RivenditoreFormProps
     extends React.HTMLAttributes<HTMLDivElement> {
 }
 
-const RivenditoreForm = React.forwardRef<HTMLDivElement, RivenditoreFormProps>(
-    ({ className }, ref) => {
+const RivenditoreForm = (props: RivenditoreFormProps) => {
 
         return (
             <div></div>
         )
-    });
+    };
 
 export default RivenditoreForm;

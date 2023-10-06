@@ -10,9 +10,8 @@ export interface ChainProps
     disabled?: boolean;
 }
 
-const Chain = React.forwardRef<HTMLDivElement, ChainProps>(
-    ({ className, chainType, completed = false, disabled = false, ...props }, ref) => {
-
+const Chain = (props: ChainProps) => {
+        const { className, chainType, completed = false, disabled = false } = props
         return (
             <div className={cn("flex flex-col p-7", disabled ? "hover:cursor-not-allowed" : "hover:cursor-pointer hover:bg-surface_dark focus:bg-surface_dark", className)} {...props}>
                 <p className={`font-primary font-normal text-xl ${disabled ? 'text-black_dim' : 'text-primary'}`}>{chainType}</p>
@@ -22,6 +21,6 @@ const Chain = React.forwardRef<HTMLDivElement, ChainProps>(
                 </div>
             </div>
         )
-    });
+    };
 
 export default Chain;
