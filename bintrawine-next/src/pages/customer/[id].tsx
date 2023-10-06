@@ -5,7 +5,7 @@ import { BsLinkedin, BsFacebook } from "react-icons/bs";
 import CustomerTable from "@/components/customer/customerTable";
 import { api } from "@/utils/api";
 import Loader from "@/components/loading";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 export default function Customer() {
 
