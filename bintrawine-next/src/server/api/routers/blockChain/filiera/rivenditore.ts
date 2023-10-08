@@ -37,11 +37,11 @@ export const rivenditoreRouter = createTRPCRouter({
         })
 });
 
-export const getSensoriRivenditore = (input: number): Promise<void | { rivenditore: RivenditoreSensoriSchemaForm, distributoreData: DistributoreInRivenditoreData | undefined }> => {
+export const getSensoriRivenditore = (input: number): Promise<{ rivenditore: RivenditoreSensoriSchemaForm, distributoreData: DistributoreInRivenditoreData | undefined }> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
-            const data = await contract.methods.getDatiSensoriRivenditore(input).call({ from: currentAddress, privateFor: privateFor })
+            //const data = await contract.methods.getDatiSensoriRivenditore(input).call({ from: currentAddress, privateFor: privateFor })
 
             // dati distributore
             try {
@@ -67,17 +67,22 @@ export const getSensoriRivenditore = (input: number): Promise<void | { rivendito
 
             } catch (error) {
                 console.log("NOT AUTHORIZED", input)
+                return {
+                    rivenditore: {
+                        tipologiaQuantita: "tipologia 1"
+                    },
+                    distributoreData: undefined
+                };
             }
-
+        })
+        .catch((error) => {
+            console.error("ERROR", error);
             return {
                 rivenditore: {
                     tipologiaQuantita: "tipologia 1"
                 },
                 distributoreData: undefined
             };
-        })
-        .catch((error) => {
-            console.error("ERROR", error);
         })
 }
 
@@ -94,7 +99,7 @@ export const setSensoriRivenditore = (input: number) => {
         })
 }
 
-export const getRivenditoreAnalytics = (): Promise<void | ChartData[]> => {
+export const getRivenditoreAnalytics = (): Promise<undefined | ChartData[]> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -116,5 +121,6 @@ export const getRivenditoreAnalytics = (): Promise<void | ChartData[]> => {
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }

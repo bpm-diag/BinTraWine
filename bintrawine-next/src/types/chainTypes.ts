@@ -335,7 +335,6 @@ export type FilieraChain = {
     },
     viticoltore: {
         data: ViticoltoreSchemaForm | undefined,
-        agronomoData: AgronomoInViticoltoreData | undefined,
         completed: boolean
     },
     produttore: {
@@ -345,13 +344,10 @@ export type FilieraChain = {
     },
     imbottigliatore: {
         data: ImbottigliatoreSchemaForm | undefined,
-        produttoreData: ProduttoreInImbottigliatoreData | undefined,
-        viticoltoreData: ViticoltoreInImbottigliatoreData | undefined,
         completed: boolean
     },
     distributore: {
         data: DistributoreSchemaForm | undefined,
-        imbottigliatoreData: ImbottigliatoreInDistributoreData | undefined,
         completed: boolean
     },
     enteCertificatore: {

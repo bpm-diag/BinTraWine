@@ -41,7 +41,7 @@ export const viticoltoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualViticoltoreData = (input: number): Promise<void | { viticoltore: ViticoltoreSchemaForm, agronomoData: AgronomoInViticoltoreData }> => {
+export const getManualViticoltoreData = (input: number): Promise<undefined | ViticoltoreSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -50,12 +50,6 @@ export const getManualViticoltoreData = (input: number): Promise<void | { vitico
             const destinazioneUva = await contract.methods.getDestinazioneUva(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const datiVendita = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
 
-            // dati agronomo
-            const superficieTerreno = await contract.methods.getSuperficieTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
-            const umiditaTerreno = await contract.methods.getUmiditaTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
-            const temperaturaTerreno = await contract.methods.getTemperaturaTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
-            const pioggiaTerreno = await contract.methods.getPioggiaTerreno(input).call({ from: currentAddress, privateFor: privateFor }) as string
-
             const nomeProdotto = datiVendita['0'] as string
             const prezzoVendita = datiVendita['1'] as string
             const quantitaVendita = datiVendita['2'] as string
@@ -63,29 +57,22 @@ export const getManualViticoltoreData = (input: number): Promise<void | { vitico
             const dataVendita = datiVendita['4'] as string
 
             const retrievedData = {
-                viticoltore: {
-                    dataRaccolta: dataRaccolta,
-                    datiForniture: datiForniture,
-                    destinazioneUva: destinazioneUva,
-                    nomeProdotto: nomeProdotto,
-                    prezzo: prezzoVendita,
-                    quantitaVendita: quantitaVendita,
-                    nomeClienteVendita: nomeCliente,
-                    dataVendita: dataVendita,
-                    viticoltoreAddress: false
-                },
-                agronomoData: {
-                    superficieTerreno: superficieTerreno,
-                    umiditaTerreno: umiditaTerreno,
-                    temperaturaTerreno: temperaturaTerreno,
-                    pioggiaTerreno: pioggiaTerreno
-                }
+                dataRaccolta: dataRaccolta,
+                datiForniture: datiForniture,
+                destinazioneUva: destinazioneUva,
+                nomeProdotto: nomeProdotto,
+                prezzo: prezzoVendita,
+                quantitaVendita: quantitaVendita,
+                nomeClienteVendita: nomeCliente,
+                dataVendita: dataVendita,
+                viticoltoreAddress: false
             }
 
             return retrievedData
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
 
@@ -101,7 +88,7 @@ export const getViticoltoreIDLotto = (): Promise<void | number> => {
         })
 }
 
-export const getSensoriViticoltore = (input: number): Promise<void | ViticoltoreSensoriSchemaForm> => {
+export const getSensoriViticoltore = (input: number): Promise<undefined | ViticoltoreSensoriSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -122,6 +109,7 @@ export const getSensoriViticoltore = (input: number): Promise<void | Viticoltore
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
 
@@ -138,7 +126,7 @@ export const setSensoriViticoltore = (input: number) => {
         })
 }
 
-export const getViticoltoreAnalytics = (): Promise<void | ChartData[]> => {
+export const getViticoltoreAnalytics = (): Promise<undefined | ChartData[]> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -171,5 +159,6 @@ export const getViticoltoreAnalytics = (): Promise<void | ChartData[]> => {
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }

@@ -114,7 +114,7 @@ export const getProduttoreIDLotto = (): Promise<void | number> => {
         })
 }
 
-export const getSensoriProduttore = (input: number): Promise<void | ProduttoreSensoriSchemaForm> => {
+export const getSensoriProduttore = (input: number): Promise<undefined | ProduttoreSensoriSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -133,6 +133,7 @@ export const getSensoriProduttore = (input: number): Promise<void | ProduttoreSe
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
 
@@ -149,7 +150,7 @@ export const setSensoriProduttore = (input: number) => {
         })
 }
 
-export const getProduttoreAnalytics = (): Promise<void | ChartData[]> => {
+export const getProduttoreAnalytics = (): Promise<undefined | ChartData[]> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -182,5 +183,6 @@ export const getProduttoreAnalytics = (): Promise<void | ChartData[]> => {
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }

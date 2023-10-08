@@ -92,7 +92,7 @@ export const setSensoriAgronomo = (input: number) => {
 		})
 }
 
-export const getSensoriAgronomo = (input: number): Promise<void | AgronomoSensoriSchemaForm> => {
+export const getSensoriAgronomo = (input: number): Promise<undefined | AgronomoSensoriSchemaForm> => {
 	return web3.eth.getAccounts()
 		.then(async (accounts) => {
 			const [currentAddress, ...other] = accounts;
@@ -110,10 +110,12 @@ export const getSensoriAgronomo = (input: number): Promise<void | AgronomoSensor
 		})
 		.catch((error) => {
 			console.error("ERROR", error);
+			return undefined
 		})
+
 }
 
-export const getAgronomoAnalytics = (): Promise<void | ChartData[]> => {
+export const getAgronomoAnalytics = (): Promise<undefined | ChartData[]> => {
 	return web3.eth.getAccounts()
 		.then(async (accounts) => {
 			const [currentAddress, ...other] = accounts;
@@ -153,5 +155,6 @@ export const getAgronomoAnalytics = (): Promise<void | ChartData[]> => {
 		})
 		.catch((error) => {
 			console.error("ERROR", error);
+			return undefined
 		})
 }

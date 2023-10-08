@@ -36,7 +36,7 @@ export const distributoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualDistributoreData = (input: number): Promise<void | { distributore: DistributoreSchemaForm, imbottigliatoreData: ImbottigliatoreInDistributoreData | undefined }> => {
+export const getManualDistributoreData = (input: number): Promise<undefined | DistributoreSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -48,28 +48,20 @@ export const getManualDistributoreData = (input: number): Promise<void | { distr
             const nomeCliente = datiVendita['3'] as string
             const dataVendita = datiVendita['4'] as string
 
-            // dati imbottigliatore                    
-            const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
-
             const retrievedData = {
-                distributore: {
-                    destinazioneDiConsegna: destinazione,
-                    nomeProdotto: nomeProdotto,
-                    prezzo: prezzoVendita,
-                    quantitaVendita: quantita,
-                    nomeClienteVendita: nomeCliente,
-                    dataVendita: dataVendita,
-                    distributoreAddress: false
-                },
-                imbottigliatoreData: {
-                    codiceABarre: codiceABarre
-                }
+                destinazioneDiConsegna: destinazione,
+                nomeProdotto: nomeProdotto,
+                prezzo: prezzoVendita,
+                quantitaVendita: quantita,
+                nomeClienteVendita: nomeCliente,
+                dataVendita: dataVendita,
+                distributoreAddress: false
             }
 
             return retrievedData
         })
         .catch((error) => {
-
+            return undefined
         })
 }
 
@@ -85,7 +77,7 @@ export const getDistributoreIDLotto = (): Promise<void | number> => {
         })
 }
 
-export const getSensoriDistributore = (input: number): Promise<void | DistributoreSensoriSchemaForm> => {
+export const getSensoriDistributore = (input: number): Promise<undefined | DistributoreSensoriSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -99,6 +91,7 @@ export const getSensoriDistributore = (input: number): Promise<void | Distributo
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
 
@@ -115,7 +108,7 @@ export const setSensoriDistributore = (input: number) => {
         })
 }
 
-export const getDistributoreAnalytics = (): Promise<void | ChartData[]> => {
+export const getDistributoreAnalytics = (): Promise<undefined | ChartData[]> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -148,5 +141,6 @@ export const getDistributoreAnalytics = (): Promise<void | ChartData[]> => {
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }

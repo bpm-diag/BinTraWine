@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import z, { unknown } from 'zod'
-import { LottoCreateArgsSchema, LottoIncludeSchema, UserUpdateWithWhereUniqueWithoutCollaboratorLottiInputSchema } from 'prisma/generated/zod';
+import z from 'zod'
+import { LottoCreateArgsSchema } from 'prisma/generated/zod';
 
 export const lottoRouter = createTRPCRouter({
     create: publicProcedure
@@ -20,7 +20,11 @@ export const lottoRouter = createTRPCRouter({
                 },
                 include: {
                     creator: true,
-                    collaborators: true
+                    collaborators: {
+                        include: {
+                            user: true
+                        }
+                    }
                 }
             })
             return lotto
@@ -50,7 +54,13 @@ export const lottoRouter = createTRPCRouter({
             user: z.number()
         }))
         .mutation(async ({ input, ctx }) => {
-            const addPerson = ctx.prisma.lotto.update({
+            const newAddPerson = ctx.prisma.lottiOnUsers.create({
+                data: {
+                    lottoId: input.lottoId,
+                    userId: input.user
+                }
+            })
+            /*const addPerson = ctx.prisma.lotto.update({
                 where: {
                     id: input.lottoId
                 },
@@ -61,17 +71,19 @@ export const lottoRouter = createTRPCRouter({
                         }
                     }
                 }
-            })
-            return addPerson
+            })*/
+            return newAddPerson
         }),
 
     deletePerson: publicProcedure
-        .input(z.object({
-            lottoId: z.number(),
-            user: z.number()
-        }))
+        .input(z.number())
         .mutation(async ({ input, ctx }) => {
-            const addPerson = ctx.prisma.lotto.update({
+            const deletePerson = ctx.prisma.lottiOnUsers.delete({
+                where: {
+                    id: input
+                }
+            })
+            /*const addPerson = ctx.prisma.lotto.update({
                 where: {
                     id: input.lottoId
                 },
@@ -82,7 +94,7 @@ export const lottoRouter = createTRPCRouter({
                         }
                     }
                 }
-            })
-            return addPerson
+            })*/
+            return deletePerson
         }),
 });

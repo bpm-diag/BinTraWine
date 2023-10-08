@@ -101,13 +101,6 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user?.hashedPassword) return null;
         if (credentials.password !== user.hashedPassword) return null
 
-        //const isCorrectPassword = await bcrypt.compare(
-        //  credentials.password,
-        //  user.hashedPassword
-        //);
-
-        //if (!isCorrectPassword) return null;
-
         return user;
       },
     })

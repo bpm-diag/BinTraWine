@@ -9,6 +9,7 @@ import {
     EnteCertificatoreSchemaForm,
     FilieraChain,
     FilieraChainSensori,
+    ViticoltoreInProduttoreData,
     Charts,
     Customer
 } from '@/types/chainTypes';
@@ -35,11 +36,11 @@ const checkViticoltoreData = (viticoltoreData: (void | ViticoltoreSchemaForm)): 
     return [undefined, false]
 }
 
-const checkProduttoreData = (produttoreData: (void | ProduttoreSchemaForm)): [ProduttoreSchemaForm | undefined, boolean] => {
-    if (!produttoreData) return [undefined, false]
-    const { prodottiVinificazione, quantitaVinoOttenuto, quantitaVinoRivendicato } = produttoreData
-    if (prodottiVinificazione && quantitaVinoOttenuto && quantitaVinoRivendicato) return [produttoreData, true]
-    return [undefined, false]
+const checkProduttoreData = (produttoreData: (void | { produttore: ProduttoreSchemaForm, viticoltoreData: ViticoltoreInProduttoreData | undefined })): [ProduttoreSchemaForm | undefined, ViticoltoreInProduttoreData | undefined, boolean] => {
+    if (!produttoreData) return [undefined, undefined, false]
+    const { prodottiVinificazione, quantitaVinoOttenuto, quantitaVinoRivendicato } = produttoreData.produttore
+    if (prodottiVinificazione && quantitaVinoOttenuto && quantitaVinoRivendicato) return [produttoreData.produttore, produttoreData.viticoltoreData, true]
+    return [undefined, produttoreData.viticoltoreData, false]
 }
 
 const checkImbottigliatoreData = (imbottigliatoreData: (void | ImbottigliatoreSchemaForm)): [ImbottigliatoreSchemaForm | undefined, boolean] => {
@@ -90,19 +91,13 @@ export const blockChainRouter = createTRPCRouter({
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
-            const viticoltoreData = await getManualViticoltoreData(input)
-            const produttoreData = await getManualProduttoreData(input)
-            const imbottigliatoreData = await getManualImbottigliatoreData(input)
-            const distributoreData = await getManualDistributoreData(input)
-            const enteCertificatoreData = await getManualEnteCertificatoreData(input)
-
             // get and check data
             const [agronomoManualData, agronomoCompleted] = checkAgronomoData(await getManualAgronomoData(input))
-            const [viticoltoreManualData, viticoltoreCompleted] = checkViticoltoreData(viticoltoreData?.viticoltore)
-            const [produttoreManualData, produttoreCompleted] = checkProduttoreData(produttoreData?.produttore)
-            const [imbottigliatoreManualData, imbottigliatoreCompleted] = checkImbottigliatoreData(imbottigliatoreData?.imbottigliatore)
-            const [distributoreManualData, distributoreCompleted] = checkDistributoreData(distributoreData?.distributore)
-            const [enteCertificatoreManualData, enteCertificatoreCompleted] = checkEnteCertificatoreData(enteCertificatoreData)
+            const [viticoltoreManualData, viticoltoreCompleted] = checkViticoltoreData(await getManualViticoltoreData(input))
+            const [produttoreManualData, viticoltoreDataInProduttore, produttoreCompleted] = checkProduttoreData(await getManualProduttoreData(input))
+            const [imbottigliatoreManualData, imbottigliatoreCompleted] = checkImbottigliatoreData(await getManualImbottigliatoreData(input))
+            const [distributoreManualData, distributoreCompleted] = checkDistributoreData(await getManualDistributoreData(input))
+            const [enteCertificatoreManualData, enteCertificatoreCompleted] = checkEnteCertificatoreData(await getManualEnteCertificatoreData(input))
             const allCompleted = agronomoCompleted && viticoltoreCompleted && produttoreCompleted && imbottigliatoreCompleted && distributoreCompleted && enteCertificatoreCompleted
             const filieraData: FilieraChain = {
                 completed: allCompleted,
@@ -112,23 +107,19 @@ export const blockChainRouter = createTRPCRouter({
                 },
                 viticoltore: {
                     data: viticoltoreManualData,
-                    agronomoData: viticoltoreData?.agronomoData,
                     completed: viticoltoreCompleted
                 },
                 produttore: {
                     data: produttoreManualData,
-                    viticoltoreData: produttoreData?.viticoltoreData,
+                    viticoltoreData: viticoltoreDataInProduttore,
                     completed: produttoreCompleted
                 },
                 imbottigliatore: {
                     data: imbottigliatoreManualData,
-                    produttoreData: imbottigliatoreData?.produttoreData,
-                    viticoltoreData: imbottigliatoreData?.viticoltoreData,
                     completed: imbottigliatoreCompleted
                 },
                 distributore: {
                     data: distributoreManualData,
-                    imbottigliatoreData: distributoreData?.imbottigliatoreData,
                     completed: distributoreCompleted
                 },
                 enteCertificatore: {
@@ -159,33 +150,31 @@ export const blockChainRouter = createTRPCRouter({
                 }
             })
 
-            if (lotto == null) await ctx.prisma.lotto.create({
-                data: {
-                    id: input.lottoId,
-                    creatorId: input.creatorId
-                }
-            })
+            if (lotto == null) {
+                console.log("CREATE LOTTO")
+                await ctx.prisma.lotto.create({
+                    data: {
+                        id: input.lottoId,
+                        creatorId: input.creatorId
+                    }
+                })
+            }
         }),
 
     getSensoriData: publicProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
-            const sensoriAgronomo = await getSensoriAgronomo(input)
-            const sensoriViticoltore = await getSensoriViticoltore(input)
-            const sensoriProduttore = await getSensoriProduttore(input)
-            const sensoriImbottigliatore = await getSensoriImbottigliatore(input)
-            const sensoriDistributore = await getSensoriDistributore(input)
             const sensoriRivenditore = await getSensoriRivenditore(input)
 
             const filieraChainSensori: FilieraChainSensori = {
                 completed: false,
-                agronomo: sensoriAgronomo ?? undefined,
-                viticoltore: sensoriViticoltore ?? undefined,
-                produttore: sensoriProduttore ?? undefined,
-                imbottigliatore: sensoriImbottigliatore ?? undefined,
-                distributore: sensoriDistributore ?? undefined,
-                rivenditore: sensoriRivenditore ?? undefined
+                agronomo: await getSensoriAgronomo(input),
+                viticoltore: await getSensoriViticoltore(input),
+                produttore: await getSensoriProduttore(input),
+                imbottigliatore: await getSensoriImbottigliatore(input),
+                distributore: await getSensoriDistributore(input),
+                rivenditore: sensoriRivenditore
             }
 
             return checkSensoriData(filieraChainSensori)
@@ -211,20 +200,14 @@ export const blockChainRouter = createTRPCRouter({
 
     getAnalytics: publicProcedure
         .query(async ({ ctx }) => {
-            const agronomoAnalytics = await getAgronomoAnalytics();
-            const distributoreAnalytics = await getDistributoreAnalytics()
-            const imbottigliatoreAnalytics = await getImbottigliatoreAnalytics()
-            const produttoreAnalytics = await getProduttoreAnalytics()
-            const rivenditoreAnalytics = await getRivenditoreAnalytics()
-            const viticoltoreAnalytics = await getViticoltoreAnalytics()
 
             const chartData: Charts = {
-                agronomo: agronomoAnalytics!,
-                distributore: distributoreAnalytics!,
-                imbottigliatore: imbottigliatoreAnalytics!,
-                produttore: produttoreAnalytics!,
-                rivenditore: rivenditoreAnalytics!,
-                viticoltore: viticoltoreAnalytics!
+                agronomo: await getAgronomoAnalytics(),
+                distributore: await getDistributoreAnalytics(),
+                imbottigliatore: await getImbottigliatoreAnalytics(),
+                produttore: await getProduttoreAnalytics(),
+                rivenditore: await getRivenditoreAnalytics(),
+                viticoltore: await getViticoltoreAnalytics()
             }
 
             return chartData

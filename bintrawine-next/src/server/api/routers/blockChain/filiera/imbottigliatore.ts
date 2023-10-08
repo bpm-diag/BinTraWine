@@ -41,7 +41,7 @@ export const imbottigliatoreRouter = createTRPCRouter({
         })
 });
 
-export const getManualImbottigliatoreData = (input: number): Promise<void | { imbottigliatore: ImbottigliatoreSchemaForm, produttoreData: ProduttoreInImbottigliatoreData, viticoltoreData: ViticoltoreInImbottigliatoreData }> => {
+export const getManualImbottigliatoreData = (input: number): Promise<undefined | ImbottigliatoreSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -51,30 +51,18 @@ export const getManualImbottigliatoreData = (input: number): Promise<void | { im
             const localitaUve = await contract.methods.getlocalitaUve(input).call({ from: currentAddress, privateFor: privateFor }) as string
             const codiceABarre = await contract.methods.getCodiceBarre(input).call({ from: currentAddress, privateFor: privateFor }) as string
 
-            // dati produttore
-            const prodottiVinificazione = await contract.methods.getListaProdottiVinificazione(input).send({ from: currentAddress, privateFor: privateFor }) as string
-            // dati viticoltore
-            const destinazioneUva = await contract.methods.getDestinazioneUva(input).send({ from: currentAddress, privateFor: privateFor }) as string
-
             const retrievedData = {
-                imbottigliatore: {
-                    presenzaSolfiti: presenzaSolfiti,
-                    presenzaAllergeni: presenzaAllergeni,
-                    localitaUve: localitaUve,
-                    codiceAbarre: codiceABarre
-                },
-                produttoreData: {
-                    prodottiVinificazione: prodottiVinificazione
-                },
-                viticoltoreData: {
-                    destinazioneUva: destinazioneUva
-                }
+                presenzaSolfiti: presenzaSolfiti,
+                presenzaAllergeni: presenzaAllergeni,
+                localitaUve: localitaUve,
+                codiceAbarre: codiceABarre
             }
 
             return retrievedData
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
 
@@ -90,7 +78,7 @@ export const getImbottigliatoreIDLotto = (): Promise<void | number> => {
         })
 }
 
-export const getSensoriImbottigliatore = (input: number): Promise<void | ImbottigliatoreSensoriSchemaForm> => {
+export const getSensoriImbottigliatore = (input: number): Promise<undefined | ImbottigliatoreSensoriSchemaForm> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -106,6 +94,7 @@ export const getSensoriImbottigliatore = (input: number): Promise<void | Imbotti
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
 
@@ -122,7 +111,7 @@ export const setSensoriImbottigliatore = (input: number) => {
         })
 }
 
-export const getImbottigliatoreAnalytics = (): Promise<void | ChartData[]> => {
+export const getImbottigliatoreAnalytics = (): Promise<undefined | ChartData[]> => {
     return web3.eth.getAccounts()
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
@@ -155,5 +144,6 @@ export const getImbottigliatoreAnalytics = (): Promise<void | ChartData[]> => {
         })
         .catch((error) => {
             console.error("ERROR", error);
+            return undefined
         })
 }
