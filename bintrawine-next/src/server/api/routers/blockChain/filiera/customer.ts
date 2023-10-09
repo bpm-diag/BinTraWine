@@ -4,7 +4,7 @@ import { customerAbi } from '@/server/api/routers/blockChain/filiera/abis';
 import { Customer } from '@/types/chainTypes';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
-const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.SERVER_IP}:22006`));
+const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:22006`));
 const contract = new web3.eth.Contract(customerAbi, contracts.customer);
 
 const privateFor: string[] = ["BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=", "QfeDAys9MPDs2XHExtc84jKGHxZg/aj52DTh0vtA3Xc=",

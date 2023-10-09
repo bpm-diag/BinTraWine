@@ -7,7 +7,7 @@ import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
 import { ChartData } from '@/types/chainTypes';
 
-const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.SERVER_IP}:22006`));
+const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:22006`));
 
 const contract = new web3.eth.Contract(AgronomoAbi, contracts.agronomo);
 const sensoriContract = new web3.eth.Contract(SimulatoreSensori, contracts.simulatoreSensori);

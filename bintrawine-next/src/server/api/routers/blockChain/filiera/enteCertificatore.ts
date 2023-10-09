@@ -5,7 +5,7 @@ import { EnteCertificatoreSchema, EnteCertificatoreSchemaForm, AgronomoInEnteCer
 import { EnteCertificatoreAbi } from '@/server/api/routers/blockChain/filiera/abis';
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 
-const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.SERVER_IP}:22006`));
+const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:22006`));
 
 const contract = new web3.eth.Contract(EnteCertificatoreAbi, contracts.enteCertificatore);
 
