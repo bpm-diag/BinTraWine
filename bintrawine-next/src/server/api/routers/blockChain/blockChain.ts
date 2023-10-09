@@ -184,6 +184,7 @@ export const blockChainRouter = createTRPCRouter({
     getLatestIDLotto: publicProcedure
         .query(async ({ ctx }) => {
 
+            console.log("GET LATEST ID LOTTO")
             const agronomoIDLotto = await getAgronomoIDLotto()
             const viticoltoreIDLotto = await getViticoltoreIDLotto()
             const distributoreIDLotto = await getDistributoreIDLotto()
