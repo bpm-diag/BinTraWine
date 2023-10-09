@@ -68,6 +68,7 @@ export const getManualAgronomoData = (input: number): Promise<void | AgronomoSch
 }
 
 export const getAgronomoIDLotto = (): Promise<void | number> => {
+	console.log("getAgronomoIDLotto")
 	return web3.eth.getAccounts()
 		.then(async (accounts) => {
 			const [currentAddress, ...other] = accounts;
@@ -75,6 +76,7 @@ export const getAgronomoIDLotto = (): Promise<void | number> => {
 			return data;
 		})
 		.catch((error) => {
+			console.log("ERROR on getAgronomoIDLotto")
 			console.error("ERROR", error);
 		})
 }
