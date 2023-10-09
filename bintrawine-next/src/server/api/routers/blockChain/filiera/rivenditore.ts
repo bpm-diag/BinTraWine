@@ -42,7 +42,6 @@ export const getSensoriRivenditore = (input: number): Promise<{ rivenditore: Riv
         .then(async (accounts) => {
             const [currentAddress, ...other] = accounts;
             //const data = await contract.methods.getDatiSensoriRivenditore(input).call({ from: currentAddress, privateFor: privateFor })
-
             // dati distributore
             try {
                 const distributore = await contract.methods.getDatiVendita(input).call({ from: currentAddress, privateFor: privateFor })
@@ -66,7 +65,6 @@ export const getSensoriRivenditore = (input: number): Promise<{ rivenditore: Riv
                 };
 
             } catch (error) {
-                console.log("NOT AUTHORIZED", input)
                 return {
                     rivenditore: {
                         tipologiaQuantita: "tipologia 1"

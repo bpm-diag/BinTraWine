@@ -184,13 +184,13 @@ export const blockChainRouter = createTRPCRouter({
     getLatestIDLotto: publicProcedure
         .query(async ({ ctx }) => {
 
-            console.log("GET LATEST ID LOTTO")
             const agronomoIDLotto = await getAgronomoIDLotto()
             const viticoltoreIDLotto = await getViticoltoreIDLotto()
             const distributoreIDLotto = await getDistributoreIDLotto()
             const imbottigliatoreIDLotto = await getImbottigliatoreIDLotto()
             const produttoreIDLotto = await getProduttoreIDLotto()
             const enteCertificatoreIDLotto = await getEnteCertificatoreIDLotto()
+            console.log("GET LATEST ID LOTTO")
 
             if (agronomoIDLotto && viticoltoreIDLotto && distributoreIDLotto && imbottigliatoreIDLotto && produttoreIDLotto && enteCertificatoreIDLotto) {
                 return Math.max(agronomoIDLotto, viticoltoreIDLotto, distributoreIDLotto, imbottigliatoreIDLotto, produttoreIDLotto, enteCertificatoreIDLotto)
