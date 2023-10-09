@@ -6,7 +6,7 @@ import { ViticoltoreAbi, SimulatoreSensori } from '@/server/api/routers/blockCha
 import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { ChartData } from '@/types/chainTypes';
 
-const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:22006`));
+const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:${process.env.NODE_PORT}`));
 
 const contract = new web3.eth.Contract(ViticoltoreAbi, contracts.vitcoltore);
 const sensoriContract = new web3.eth.Contract(SimulatoreSensori, contracts.simulatoreSensori);

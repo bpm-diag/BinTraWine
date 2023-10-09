@@ -7,7 +7,7 @@ import { contracts } from '@/server/api/routers/blockChain/filiera/contracts';
 import { getRandomNumber } from '@/utils/utilsFunctions';
 import { ChartData } from '@/types/chainTypes';
 
-const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:22006`));
+const web3 = new Web3(new Web3.providers.HttpProvider(`http://${process.env.NODE_IP}:${process.env.NODE_PORT}`));
 
 const contract = new web3.eth.Contract(AgronomoAbi, contracts.agronomo);
 const sensoriContract = new web3.eth.Contract(SimulatoreSensori, contracts.simulatoreSensori);
@@ -68,7 +68,6 @@ export const getManualAgronomoData = (input: number): Promise<void | AgronomoSch
 }
 
 export const getAgronomoIDLotto = (): Promise<void | number> => {
-	console.log("getAgronomoIDLotto")
 	return web3.eth.getAccounts()
 		.then(async (accounts) => {
 			const [currentAddress, ...other] = accounts;
@@ -76,7 +75,6 @@ export const getAgronomoIDLotto = (): Promise<void | number> => {
 			return data;
 		})
 		.catch((error) => {
-			console.log("ERROR on getAgronomoIDLotto")
 			console.error("ERROR", error);
 		})
 }

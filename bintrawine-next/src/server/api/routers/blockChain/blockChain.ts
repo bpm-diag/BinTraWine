@@ -99,6 +99,7 @@ export const blockChainRouter = createTRPCRouter({
             const [distributoreManualData, distributoreCompleted] = checkDistributoreData(await getManualDistributoreData(input))
             const [enteCertificatoreManualData, enteCertificatoreCompleted] = checkEnteCertificatoreData(await getManualEnteCertificatoreData(input))
             const allCompleted = agronomoCompleted && viticoltoreCompleted && produttoreCompleted && imbottigliatoreCompleted && distributoreCompleted && enteCertificatoreCompleted
+
             const filieraData: FilieraChain = {
                 completed: allCompleted,
                 agronomo: {
@@ -151,7 +152,6 @@ export const blockChainRouter = createTRPCRouter({
             })
 
             if (lotto == null) {
-                console.log("CREATE LOTTO")
                 await ctx.prisma.lotto.create({
                     data: {
                         id: input.lottoId,
@@ -177,6 +177,8 @@ export const blockChainRouter = createTRPCRouter({
                 rivenditore: sensoriRivenditore
             }
 
+            console.log(filieraChainSensori)
+
             return checkSensoriData(filieraChainSensori)
 
         }),
@@ -190,7 +192,6 @@ export const blockChainRouter = createTRPCRouter({
             const imbottigliatoreIDLotto = await getImbottigliatoreIDLotto()
             const produttoreIDLotto = await getProduttoreIDLotto()
             const enteCertificatoreIDLotto = await getEnteCertificatoreIDLotto()
-            console.log("GET LATEST ID LOTTO")
 
             if (agronomoIDLotto && viticoltoreIDLotto && distributoreIDLotto && imbottigliatoreIDLotto && produttoreIDLotto && enteCertificatoreIDLotto) {
                 return Math.max(agronomoIDLotto, viticoltoreIDLotto, distributoreIDLotto, imbottigliatoreIDLotto, produttoreIDLotto, enteCertificatoreIDLotto)

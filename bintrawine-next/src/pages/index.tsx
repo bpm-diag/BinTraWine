@@ -34,7 +34,6 @@ export default function LandingPage() {
   const [currentTab, setCurrentTab] = useState<string>("catalogo");
 
   if (getTerreni.isFetched) {
-    console.log(getTerreni.data)
     if (getTerreni.data === 1 && !sensoriSetted) {
       setSensori.mutate({
         lottoId: 1,
