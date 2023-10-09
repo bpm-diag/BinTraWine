@@ -30,10 +30,6 @@ const PeopleForm = (props: PeopleFormProps) => {
         }
     })
 
-    if (lotto.isFetched) {
-        console.log("person", lotto.data)
-    }
-
     return (
         <div className={cn("p-7 flex flex-col col-span-2 gap-8 bg-white", className)}>
             {/* Titolo */}

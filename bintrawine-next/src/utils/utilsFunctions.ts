@@ -172,7 +172,7 @@ export const getDataToShowSensori = (id: string, filieraChainSensori: FilieraCha
             { label: "Temperatura di trasporto", value: filieraChainSensori.distributore?.temperaturaTrasporto + "°" ?? "" },
         ]
         case "rivenditore": return [
-            { label: "Tipologia - Quantità", value: filieraChainSensori.rivenditore?.tipologiaQuantita ?? "" },
+            { label: "Tipologia - Quantità", value: filieraChainSensori.rivenditore.rivenditore.tipologiaQuantita ?? "" },
         ]
         default: return []
     }

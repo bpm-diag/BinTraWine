@@ -18,12 +18,6 @@ const NewChain = (props: NewChainProps) => {
     const { className, idLotto } = props;
     const getLotto = api.blockChainRouter.getManualData.useQuery(Number(idLotto))
     const sensori = api.blockChainRouter.getSensoriData.useQuery(Number(idLotto));
-    if (getLotto.isFetched) {
-        console.log("LOTTO DATA", getLotto.data)
-    }
-    if (getLotto.isFetched) {
-        console.log("SENSORI DATA", sensori.data)
-    }
 
     const { data: session } = useSession();
 
