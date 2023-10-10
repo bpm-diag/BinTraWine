@@ -75,6 +75,10 @@ Once containers are running, wait a minute to perform the next action beacause q
 ```bash
 npm run migrate
 ```
+or
+```bash
+pnpm migrate
+```
 
 If the previous command is executed too early, an error will appear on console. Try to re-execute the command again until the deploy run correctly.
 
