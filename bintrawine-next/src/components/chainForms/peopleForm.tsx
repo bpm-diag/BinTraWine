@@ -56,7 +56,7 @@ const PeopleForm = (props: PeopleFormProps) => {
                                 <MdAddCircleOutline size={24} className="text-primary" />
                             </div>
                         </DialogTrigger>
-                        {lotto.isFetched && <SearchPeopleDialog idLotto={idLotto} />}
+                        {lotto.isFetched && <SearchPeopleDialog idLotto={idLotto} alreadyTaggedUsers={lotto.data.collaborators.map(person => person.user) ?? []} />}
                     </Dialog>
                 </div>
                 {/* Persone aggiunte */}

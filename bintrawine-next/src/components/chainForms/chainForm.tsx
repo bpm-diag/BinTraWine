@@ -32,9 +32,6 @@ const ChainForm = (props: ChainFormProps) => {
     const { className, idLotto, filieraChain, filieraChainSensori } = props;
     const [manuale, setManuale] = useState<"MANUALE" | "SENSORI">("MANUALE")
 
-    const { data: session } = useSession();
-    const [selectedChain, setSelectedChain] = React.useState<FormSelection>({ id: "agronomo", name: "Agronomo", chainForm: AgronomoForm });
-
     const formSelection: Map<string, FormSelection> = new Map([
         ["agronomo", { id: "agronomo", name: "Agronomo", chainForm: AgronomoForm }],
         ["viticoltore", { id: "viticoltore", name: "Viticoltore", chainForm: ViticoltoreForm }],
@@ -42,8 +39,15 @@ const ChainForm = (props: ChainFormProps) => {
         ["imbottigliatore", { id: "imbottigliatore", name: "Imbottigliatore", chainForm: ImbottigliatoreForm }],
         ["distributore", { id: "distributore", name: "Distributore", chainForm: DistributoreForm }],
         ["rivenditore", { id: "rivenditore", name: "Rivenditore", chainForm: RivenditoreForm }],
-        ["enteCertificatore", { id: "enteCertificatore", name: "Ente Certificatore", chainForm: EnteCertificatoreForm }],
+        ["entecertificatore", { id: "entecertificatore", name: "Ente Certificatore", chainForm: EnteCertificatoreForm }],
     ]);
+
+    const { data: session } = useSession();
+    const [selectedChain, setSelectedChain] = React.useState<FormSelection>(formSelection.get(session.user.roles[0].toString().toLowerCase()) as FormSelection ?? { id: "agronomo", name: "Agronomo", chainForm: AgronomoForm });
+
+    session.user.roles.map(role => {
+        console.log(role.toString().toLowerCase())
+    })
 
     return (
         <div className={cn("bg-surface col-span-3 rounded-sm grid grid-cols-5", className)}>
@@ -55,7 +59,7 @@ const ChainForm = (props: ChainFormProps) => {
                 <Chain disabled={!session?.user.roles.includes(Role.IMBOTTIGLIATORE)} onClick={() => { (session?.user.roles.includes(Role.IMBOTTIGLIATORE) && setSelectedChain(formSelection.get("imbottigliatore") as FormSelection)); setManuale("MANUALE") }} chainType="Imbottigliatore" completed={filieraChain.imbottigliatore.completed} />
                 <Chain disabled={!session?.user.roles.includes(Role.DISTRIBUITORE)} onClick={() => { (session?.user.roles.includes(Role.DISTRIBUITORE) && setSelectedChain(formSelection.get("distributore") as FormSelection)); setManuale("MANUALE") }} chainType="Distributore" completed={filieraChain.distributore.completed} />
                 <Chain disabled={!session?.user.roles.includes(Role.RIVENDITORE)} onClick={() => { (session?.user.roles.includes(Role.RIVENDITORE) && setSelectedChain(formSelection.get("rivenditore") as FormSelection)); setManuale("SENSORI") }} chainType="Rivenditore" completed />
-                <Chain disabled={!session?.user.roles.includes(Role.ENTECERTIFICATORE)} onClick={() => { (session?.user.roles.includes(Role.ENTECERTIFICATORE) && setSelectedChain(formSelection.get("enteCertificatore") as FormSelection)); setManuale("MANUALE") }} chainType="Ente Certificatore" completed={filieraChain.enteCertificatore.completed} />
+                <Chain disabled={!session?.user.roles.includes(Role.ENTECERTIFICATORE)} onClick={() => { (session?.user.roles.includes(Role.ENTECERTIFICATORE) && setSelectedChain(formSelection.get("entecertificatore") as FormSelection)); setManuale("MANUALE") }} chainType="Ente Certificatore" completed={filieraChain.enteCertificatore.completed} />
             </div>
             {/* Dettaglio Catena */}
             <PeopleForm idLotto={idLotto} selected={manuale} setManuale={setManuale} chainType={selectedChain.name} />

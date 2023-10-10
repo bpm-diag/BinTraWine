@@ -63,7 +63,7 @@ export const getCompletedByString = (id: string, filieraChain: FilieraChain): bo
         case "imbottigliatore": return filieraChain.imbottigliatore.completed
         case "distributore": return filieraChain.distributore.completed
         case "rivenditore": return false
-        case "enteCertificatore": return filieraChain.enteCertificatore.completed
+        case "entecertificatore": return filieraChain.enteCertificatore.completed
         default: return false
     }
 }
@@ -128,7 +128,7 @@ export const getDataToShow = (id: string, filieraChain: FilieraChain): { label: 
             { label: "Prezzo", value: filieraChain.distributore.data?.prezzo ?? "" },
             { label: "Quantita Vendita", value: String(filieraChain.distributore.data?.quantitaVendita) ?? "" }
         ]
-        case "enteCertificatore": return [
+        case "entecertificatore": return [
             { label: "Validazione", value: filieraChain.enteCertificatore.data?.validazione ?? "" },
             { label: "Certificazione", value: filieraChain.enteCertificatore.data?.certificazione ?? "" },
         ]
