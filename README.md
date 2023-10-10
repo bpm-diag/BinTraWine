@@ -82,7 +82,7 @@ pnpm migrate
 
 If the previous command is executed too early, an error will appear on console. Try to re-execute the command again until the deploy run correctly.
 
-10) The important step is to check if contract addresses just deployed are correct in the following file:
+10) The last important step is to check if contract addresses just deployed are correct in the following file:
 ```bash
 /bintrawine-next/src/server/api/routers/blockChain/filiera/contracts.ts
 ```
