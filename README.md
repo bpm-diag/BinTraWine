@@ -7,53 +7,73 @@ In the following guide, we are going to describe the necessary steps and instruc
 
 ### Requirements
 - Install [Docker](https://www.docker.com/)
-- Install [Node.js](https://nodejs.org/en)
-- Install [Truffle](https://trufflesuite.com/docs/truffle/quickstart/) framework
+- Install [Node.js](https://nodejs.org/en) (recommended version: **18.16.0**)
 
-### Build-up a Quorum Blockchain
-Build (or obtain access to) a Quorum Network in order to deploy the project and interact with it. 
+## Usage
 
-We suggest to use one of the following solutions: 
-- [quorum-examples](https://github.com/ConsenSys/quorum-examples)
-- [quorum-dev-quickstart](https://github.com/ConsenSys/quorum-dev-quickstart)
+Once requirements have been installed, clone the git repository by running the following command:
 
-**NB**: To test our prototype, we mainly used the 7nodes example. The actual version of the BinTraWine system is based on the Ethereum and Tessera addresses provided in such example and are, in part, the same used in the quorum-dev-quickstart example. However, some addresses could be different.
-
-### Deploy the Smart Contracts
-Once you have a Quorum network up and running, you can deploy the BinTraWine Smart Contracts.
-
-The Smart Contracts which are going to be deployed are the following:
-- [Agronomo.sol](contracts/Agronomo.sol) (Agronomist)
-- [Viticoltore.sol](contracts/Viticoltore.sol) (Grape Grower)
-- [Produttore.sol]((contracts/Produttore.sol)) (Wine Producer)
-- [Imbottigliatore.sol](contracts/Imbottigliatore.sol) (Filler)
-- [Distributore.sol](contracts/Distributore.sol) (Distributor)
-- [Rivenditore.sol](contracts/Rivenditore.sol) (Reseller)
-- [EnteCertificatore.sol](contracts/EnteCertificatore.sol) (Certifying Authority)
-- [Customer.sol](contracts/Customer.sol) (Consumer)
-
-Each Smart Contract represents a defined actor of the wine supply chain. 
-
-The project is istantiated as a Truffle project, such that the deployment and the connection to the Quorum network is managed by Truffle itself. [truffle-config.js](truffle-config.js) is the configuration file for the network.
-
-Deploy the Smart Contracts:
 ```bash
-truffle migrate --f 2 --to 2
+git clone https://github.com/bpm-diag/BinTraWine.git
+```
+The previous command pulls the code from the remote repository on GitHub. By default the branch main is fetched.
+Once the code has been fetched, the following must be executed to run the Web Application:
+
+1) Change the current directory to the root project folder:
+```bash
+cd BinTraWine
+```
+2) Add the **.env** file with the following variables:
+
+```bash
+DATABASE_URL="postgresql://postgres:test1234@postgres/postgresbtw?schema=public"
+SERVER_IP=149.132.178.150
+NEXTAUTH_URL=http://149.132.178.150:3000
+NEXTAUTH_SECRET=YRjU8nuKMtrm4JobvXs035ET6TYctOivoFGbbfPcWtc=
+NEXTAUTH_JWT_SECRET=YRjU8nuKMtrm4JobvXs035ET6TYctOivoFGbbfPcWtc=
+NODE_IP=149.132.178.150
+NODE_PORT=22006
+OUTSIDEPORT=3000
+POSTGRESQL_PASS=test1234
+```
+Change the **IP of the server** specified in **SERVER_IP**, **NEXTAUTH_URL** and **NODE_PORT** by setting the IP of the server where the application is deployed. Specify also another port in **NEXTAUTH_URL** and **OUTSIDEPORT**, if the **3000** is already occupied.
+
+Copy the same **.env** file in the **bintrawine-next** folder.
+
+3) Change the current directory to **bintrawine-next**
+```bash
+cd bintrawine-next
 ```
 
-Once all the contracts are deployed, you are ready to interact with the demo.
+4) Install node modules using **pnpm**:
+```bash
+pnpm install
+```
 
-### Interaction
-In [Html](https://github.com/bpm-diag/BinTraWine/tree/main/Html) folder you can find an HTML page for each actor:
+5) Generate prisma client:
+```bash
+npx prisma generate
+```
 
-1. [indexAgronomo.html](Html/indexAgronomo.html) (Agronomist)
-2. [indexViticoltore.html](Html/indexViticoltore.html) (Grape Grower)
-3. [indexProduttore.html](Html/indexProduttore.html) (Wine Producer)
-4. [indexImbottigliatore.html](Html/indexImbottigliatore.html) (Filler)
-5. [indexDistributore.html](Html/indexDistributore.html) (Distributor)
-6. [indexRivenditore.html](Html/indexRivenditore.html) (Reseller)
-7. [indexEnteCertificatore.html](Html/indexEnteCertificatore.html) (Certifying Authority)
-8. [indexCustomer.html](Html/indexCustomer.html) (Consumer)
+6) Prepare the build:
+```bash
+pnpm build
+```
 
-**NB.** We suggest to interact with the system following the order of the actors listed above. You will be able to see the results of the wine supply chain processes both in the Consumer and the Certyfing Authority pages, as the actors able to visualize the most relevant data.
+7) Change the current directory to the root one:
+```bash
+cd ..
+```
 
+8) Run docker containers in detach mode to run them in background:
+```bash
+docker-compose up -d
+```
+Once containers are running, wait a minute to perform the next action beacause quorum nodes must be initialized.
+
+9) Deploy smart contracts on the Blockchain:
+```bash
+npm run migrate
+```
+
+If the previous command is executed too early, an error will appear on console. Try to re-execute the command again until the deploy run correctly.
