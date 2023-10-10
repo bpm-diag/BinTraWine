@@ -177,8 +177,6 @@ export const blockChainRouter = createTRPCRouter({
                 rivenditore: sensoriRivenditore
             }
 
-            console.log(filieraChainSensori)
-
             return checkSensoriData(filieraChainSensori)
 
         }),
