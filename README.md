@@ -45,7 +45,7 @@ Copy the same **.env** file in the **bintrawine-next** folder.
 cd bintrawine-next
 ```
 
-4) Install node modules using **pnpm**:
+4) Install node modules using **pnpm** or **npm**:
 ```bash
 pnpm install
 ```
@@ -55,7 +55,7 @@ pnpm install
 npx prisma generate
 ```
 
-6) Prepare the build:
+6) Prepare the build using **pnpm** or **npm**:
 ```bash
 pnpm build
 ```
@@ -77,3 +77,9 @@ npm run migrate
 ```
 
 If the previous command is executed too early, an error will appear on console. Try to re-execute the command again until the deploy run correctly.
+
+10) The important step is to check if contract addresses just deployed are correct in the following file:
+```bash
+/bintrawine-next/src/server/api/routers/blockChain/filiera/contracts.ts
+```
+If the addresses are not correct, change them with the correct ones.
