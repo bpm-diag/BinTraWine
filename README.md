@@ -11,11 +11,8 @@ In the following guide, we are going to describe the necessary steps and instruc
 
 ## Usage
 
-Once requirements have been installed, clone the git repository by running the following command:
+Once requirements have been installed, clone the git repository.
 
-```bash
-git clone https://github.com/bpm-diag/BinTraWine.git
-```
 The previous command pulls the code from the remote repository on GitHub. By default the branch main is fetched.
 Once the code has been fetched, the following must be executed to run the Web Application:
 
