@@ -13,7 +13,6 @@ In the following guide, we are going to describe the necessary steps and instruc
 
 Once requirements have been installed, clone the git repository.
 
-The previous command pulls the code from the remote repository on GitHub. By default the branch main is fetched.
 Once the code has been fetched, the following must be executed to run the Web Application:
 
 1) Change the current directory to the root project folder:
