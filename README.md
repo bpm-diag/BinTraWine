@@ -1,9 +1,9 @@
-# Blockchain-based multi-party processes in coopetitive scenarios: the BinTraWine approach in agrifood supply chains
-This repository contains the actual version of the BinTraWine approach.
+# Supporting Business Confidentiality in Coopetitive Scenarios: the B-CONFIDENT Approach in Blockchain-based Supply Chains
+This repository contains the actual version of the B-CONFIDENT approach applied to the BinTraWine case study.
 
-In the following guide, we are going to describe the necessary steps and instructions to run the BinTraWine system.
+In the following guide, we are going to describe the necessary steps and instructions to run the B-CONFIDENT system applied to BinTraWine case study.
 
-## How to run the BinTraWine system
+## How to run the B-CONFIDENT system
 
 ### Requirements
 - Install [Docker](https://www.docker.com/)
