@@ -1,7 +1,7 @@
 # Supporting Business Confidentiality in Coopetitive Scenarios: the B-CONFIDENT Approach in Blockchain-based Supply Chains
-This repository contains the actual version of the B-CONFIDENT approach applied to the BinTraWine case study.
+This repository contains the actual version of the B-CONFIDENT approach applied to the case study of the paper.
 
-In the following guide, we are going to describe the necessary steps and instructions to run the B-CONFIDENT system applied to BinTraWine case study.
+In the following guide, we are going to describe the necessary steps and instructions to run the B-CONFIDENT system applied to the case study of the paper.
 
 ## How to run the B-CONFIDENT system
 
